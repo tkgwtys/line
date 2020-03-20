@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    管理画面
                 </div>
             </div>
         </div>

@@ -18,9 +18,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <style>body {
-            background-color: #26263c;
-        }</style>
 </head>
 <body>
 <div id="app">
