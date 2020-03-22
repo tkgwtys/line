@@ -43,6 +43,7 @@ class LineBotController extends Controller
 
             $replyToken = $event->getReplyToken();
             $replyText = $event->getText();
+            // メッセージ用
             $lineBot->replyText($replyToken, $replyText);
         }
     }
