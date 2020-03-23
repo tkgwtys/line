@@ -2,6 +2,8 @@
 
 namespace App\Service\Line;
 
+use App\Models\TalkWord;
+use Illuminate\Support\Facades\DB;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot;
 
@@ -25,6 +27,20 @@ class ReceiveTextService
      */
     public function execute(TextMessage $event)
     {
+        try {
+            // ラインID
+            $line_id = $event->getUserId();
+            DB::beginTransaction();
+            $input = [
+                'user_id' => $line_id,
+                'word' => $event->getText(),
+            ];
+            $talk_word_model = new TalkWord();
+            $talk_word_model->fill($input)->save();
+            DB::commit();
+        } catch (Exeption $e) {
+            DB::rollBack();
+        }
         return $event->getText();
     }
 }
