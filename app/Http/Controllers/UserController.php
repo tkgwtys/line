@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -13,7 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // フレンド取得
+        $users = User::all();
+        return view('admin.user.index')
+            ->with('users', $users);
     }
 
     /**

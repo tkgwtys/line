@@ -13,7 +13,6 @@ class AdminsTableSeeder extends Seeder
     {
         DB::table('Admins')->insert([
             [
-                'id' => (string)Str::orderedUuid(),
                 'name' => 'chiba',
                 'email' => 'bushi.chiba@abihc.com',
                 'password' => bcrypt('testtest'),

@@ -49,12 +49,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = (string)Uuid::generate()->string;
-            $model->{$model->getKeyName()} = (string)Str::orderedUuid();
-        });
-    }
+    /**
+     * ユーザーはUUIDを自動で実行しない
+     * ラインIDが上書きされてしまう
+     */
+//    protected static function boot()
+//    {
+//        parent::boot();
+//        static::creating(function ($model) {
+//            $model->{$model->getKeyName()} = (string)Uuid::generate()->string;
+//            $model->{$model->getKeyName()} = (string)Str::orderedUuid();
+//        });
+//    }
 }

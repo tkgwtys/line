@@ -29,8 +29,10 @@ class UnFollowService
     public function execute(UnfollowEvent $event)
     {
         try {
+            Log::debug('ブロック');
             DB::beginTransaction();
             $line_id = $event->getUserId();
+            Log::debug($line_id);
             $user_model = User::find($line_id);
             $user_model->blocked_at = Carbon::now();
             $user_model->save();
