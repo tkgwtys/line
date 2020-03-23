@@ -58,9 +58,15 @@ class LineBotController extends Controller
                     $service = new ReceiveLocationService($bot);
                     $reply_message = $service->execute($event);
                     break;
+                /**
+                 * ボタンの入力を受け取る
+                 */
                 case $event instanceof PostbackEvent:
                     Log::debug('PostBackEvent処理');
                     break;
+                /**
+                 * ブロック
+                 */
                 case $event instanceof UnfollowEvent:
                     $service = new UnFollowService($bot);
                     $reply_message = $service->execute($event) ? 'ブロックされました' : 'ブロックされたけど処理失敗';
