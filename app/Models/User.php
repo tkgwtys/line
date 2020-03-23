@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Str;
-use Webpatser\Uuid\Uuid;
 
 class User extends Authenticatable
 {
@@ -26,6 +24,7 @@ class User extends Authenticatable
         'sei_kana',
         'mei_kana',
         'tel',
+        'pictureUrl',
         'email',
         'password',
         'blocked_at',

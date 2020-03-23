@@ -37,28 +37,30 @@ class FollowService
                 logger()->info('failed to get profile. skip processing.');
                 return false;
             }
+            // プロフィール取得
+            $profile = $rsp->getJSONDecodedBody();
+            Log::debug($profile);
             // ユーザーチェック
             $user = User::where('id', $line_id)->first();
-            Log::debug($user);
             if (!$user) {
-                // なければ新規登録
-                $profile = $rsp->getJSONDecodedBody();
                 $user_model = new User();
                 $input = [
                     'id' => $line_id,
                     'name' => $profile['displayName'],
+                    'pictureUrl' => $profile['pictureUrl'],
                 ];
                 $user_model->fill($input)->save();
                 Log::info('新規フォロー処理成功');
             } else {
-                Log::debug($user->blocked_at);
                 if (is_null($user->blocked_at)) {
                     $user_model = User::find($line_id);
                     $user_model->blocked_at = Carbon::now();
+                    $user_model->pictureUrl = $profile['pictureUrl'];
                     $user_model->save();
                 } else {
                     $user_model = User::find($line_id);
                     $user_model->blocked_at = null;
+                    $user_model->pictureUrl = $profile['pictureUrl'];
                     $user_model->save();
                 }
             }
