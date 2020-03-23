@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->string('id', 64)->unique()->comment('ラインID')->nullable();
-            $table->string('display_name')->comment('ラインの表示名')->nullable();
+            $table->string('name')->comment('ラインの表示名')->nullable();
             $table->string('sei')->comment('性')->nullable();
             $table->string('mei')->comment('名')->nullable();
             $table->string('sei_kana')->comment('セイ')->nullable();

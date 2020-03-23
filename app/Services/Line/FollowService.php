@@ -46,7 +46,7 @@ class FollowService
                 $user_model = new User();
                 $input = [
                     'id' => $line_id,
-                    'display_name' => $profile['displayName'],
+                    'name' => $profile['displayName'],
                 ];
                 $user_model->fill($input)->save();
                 Log::info('新規フォロー処理成功');

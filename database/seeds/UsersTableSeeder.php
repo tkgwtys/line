@@ -13,8 +13,9 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('Users')->insert([
             [
-                'name'=>'user1',
-                'email'=>'user1@test.com',
+                'id' => (string)Str::orderedUuid(),
+                'name'=>'chiba',
+                'email'=>'bushi.chiba@abihc.com',
                 'password'=> bcrypt('testtest'),
             ],
         ]);

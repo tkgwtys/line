@@ -22,6 +22,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+/**
+ * ログイン前
+ */
 Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
     Route::get('/', function () {
         return view('admin.welcome');
@@ -33,7 +36,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
     Route::post('register', 'Admin\Auth\RegisterController@register')->name('admin.register');
     Route::get('password/rest', 'Admin\Auth\ForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
 });
+
+/**
+ * ログイン後
+ */
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
+    Route::get('/', function () {
+        return view('admin.welcome');
+    });
     Route::post('logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
     Route::get('home', 'Admin\HomeController@index')->name('admin.home');
     Route::resource('user', 'UserController');
