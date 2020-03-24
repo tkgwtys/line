@@ -13,7 +13,7 @@ class Admin extends Authenticatable
     use Notifiable;
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $table = 'users';
+    protected $table = 'admins';
 
     /**
      * The attributes that are mass assignable.
