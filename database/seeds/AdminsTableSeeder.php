@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 class AdminsTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Runn the database seeds.
      *
      * @return void
      */
