@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Webpatser\Uuid\Uuid;
@@ -48,6 +50,17 @@ class Player extends Model
         });
     }
 
+    /**
+     * @return HasOne
+     */
+    public function image()
+    {
+        return $this->hasOne(PlayerImage::class);
+    }
+
+    /**
+     * @return HasMany
+     */
     public function images()
     {
         return $this->hasMany(PlayerImage::class);

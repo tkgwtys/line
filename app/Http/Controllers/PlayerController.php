@@ -67,12 +67,18 @@ class PlayerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param int $player_id
      * @return void
      */
-    public function show($id)
+    public function show($player_id)
     {
-        //
+        $player = Player::find($player_id);
+        $player_image = PlayerImage::find($player_id);
+        return view('admin.player.show')
+            ->with([
+                'player' => $player,
+                'player_image' => $player_image,
+            ]);
     }
 
     /**
