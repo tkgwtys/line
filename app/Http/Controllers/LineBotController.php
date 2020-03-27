@@ -29,6 +29,7 @@ class LineBotController extends Controller
 
     public function callback(Request $request)
     {
+        Log::debug('1');
         $bot = app('line-bot');
 
         $signature = $request->header('x-line-signature');
@@ -36,83 +37,114 @@ class LineBotController extends Controller
             abort(400);
         }
 
+        Log::debug('2');
         $events = $bot->parseEventRequest($request->getContent(), $signature);
         foreach ($events as $event) {
+            Log::debug('3');
             $reply_token = $event->getReplyToken();
             // $reply_message = 'その操作はサポートしてません。.[' . get_class($event) . '][' . $event->getType() . ']';
 
-            if ($event instanceof MessageEvent) {
-                switch (true) {
-                    /**
-                     * 登録
-                     */
-                    case $event instanceof FollowEvent:
-                        $service = new FollowService($bot);
-                        $service->execute($event);// ? '友だち追加ありがとうございます(happy) 気になるトレーナーを見つけて予定をいれちゃおう！' : '友達登録されたけど処理に失敗したから何もしないよ';
-                        break;
-                    /**
-                     * Text
-                     */
-                    case $event instanceof TextMessage:
-                        $service = new ReceiveTextService($bot);
-                        $reply_message = $service->execute($event);
-                        if ($event->getText() == 'トレーナー') {
-                            $columns = []; // カルーセル型カラムを3つ追加する配列
+            Log::debug('4');
+            switch (true) {
+                /**
+                 * 登録
+                 */
+                case $event instanceof FollowEvent:
+                    Log::debug('FollowEvent');
+                    $service = new FollowService($bot);
+                    $service->execute($event);// ? '友だち追加ありがとうございます(happy) 気になるトレーナーを見つけて予定をいれちゃおう！' : '友達登録されたけど処理に失敗したから何もしないよ';
 
-                            foreach ($this->trainerArray() as $val) {
-                                // カルーセルに付与するボタンを作る
-                                $action = new UriTemplateActionBuilder(
-                                    "予約する",
-                                    "http://hiroasake.blogspot.com/");
-                                // カルーセルのカラムを作成する
-                                $column = new CarouselColumnTemplateBuilder(
-                                    $val['name'],
-                                    $val['self_introduction'],
-                                    $val['image'], [$action]);
-                                $columns[] = $column;
-                            }
-                            // カラムの配列を組み合わせてカルーセルを作成する
-                            $carousel = new CarouselTemplateBuilder($columns);
-                            // カルーセルを追加してメッセージを作る
-                            $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
-                            $bot->replyMessage($event->getReplyToken(), $carousel_message);
-                            // カラムの配列を組み合わせてカルーセルを作成する
-                            $carousel = new CarouselTemplateBuilder($columns);
-                            Log::debug(json_encode($carousel));
-                            // カルーセルを追加してメッセージを作る
-                            $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
-                            Log::debug(json_encode($carousel_message));
-                            $bot->replyMessage($event->getReplyToken(), $carousel_message);
-                        } else {
-                            $bot->replyText($reply_token, $reply_message);
+                    $columns = []; // カルーセル型カラムを3つ追加する配列
+
+                    foreach ($this->trainerArray() as $val) {
+                        // カルーセルに付与するボタンを作る
+                        $action = new UriTemplateActionBuilder(
+                            "予約する",
+                            "http://hiroasake.blogspot.com/");
+                        // カルーセルのカラムを作成する
+                        $column = new CarouselColumnTemplateBuilder(
+                            $val['name'],
+                            $val['self_introduction'],
+                            $val['image'], [$action]);
+                        $columns[] = $column;
+                    }
+                    // カラムの配列を組み合わせてカルーセルを作成する
+                    $carousel = new CarouselTemplateBuilder($columns);
+                    // カルーセルを追加してメッセージを作る
+                    $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
+                    $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                    // カラムの配列を組み合わせてカルーセルを作成する
+                    $carousel = new CarouselTemplateBuilder($columns);
+                    Log::debug(json_encode($carousel));
+                    // カルーセルを追加してメッセージを作る
+                    $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
+                    Log::debug(json_encode($carousel_message));
+                    $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                    break;
+                /**
+                 * Text
+                 */
+                case $event instanceof TextMessage:
+                    Log::debug('TextMessage');
+                    $service = new ReceiveTextService($bot);
+                    $reply_message = $service->execute($event);
+                    if ($event->getText() == 'トレーナー') {
+                        $columns = []; // カルーセル型カラムを3つ追加する配列
+
+                        foreach ($this->trainerArray() as $val) {
+                            // カルーセルに付与するボタンを作る
+                            $action = new UriTemplateActionBuilder(
+                                "予約する",
+                                "http://hiroasake.blogspot.com/");
+                            // カルーセルのカラムを作成する
+                            $column = new CarouselColumnTemplateBuilder(
+                                $val['name'],
+                                $val['self_introduction'],
+                                $val['image'], [$action]);
+                            $columns[] = $column;
                         }
-                        break;
-                    /**
-                     * 現在位置
-                     */
-                    case $event instanceof LocationMessage:
-                        $service = new ReceiveLocationService($bot);
-                        $reply_message = $service->execute($event);
+                        // カラムの配列を組み合わせてカルーセルを作成する
+                        $carousel = new CarouselTemplateBuilder($columns);
+                        // カルーセルを追加してメッセージを作る
+                        $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
+                        $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                        // カラムの配列を組み合わせてカルーセルを作成する
+                        $carousel = new CarouselTemplateBuilder($columns);
+                        Log::debug(json_encode($carousel));
+                        // カルーセルを追加してメッセージを作る
+                        $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
+                        Log::debug(json_encode($carousel_message));
+                        $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                    } else {
                         $bot->replyText($reply_token, $reply_message);
-                        break;
-                    /**
-                     * ボタンの入力を受け取る
-                     */
-                    case $event instanceof PostbackEvent:
-                        Log::debug('PostBackEvent処理');
-                        break;
-                    /**
-                     * ブロック
-                     */
-                    case $event instanceof UnfollowEvent:
-                        $service = new UnFollowService($bot);
-                        $reply_message = $service->execute($event) ? 'ブロックされました' : 'ブロックされたけど処理失敗';
-                        $bot->replyText($reply_token, $reply_message);
-                        break;
-                    default:
-                        // $body = $event->getEventBody();
-                        // logger()->warning('Unknown event. [' . get_class($event) . ']', compact('body'));
-                }
+                    }
+                    break;
+                /**
+                 * 現在位置
+                 */
+                case $event instanceof LocationMessage:
+                    $service = new ReceiveLocationService($bot);
+                    $reply_message = $service->execute($event);
+                    $bot->replyText($reply_token, $reply_message);
+                    break;
+                /**
+                 * ボタンの入力を受け取る
+                 */
+                case $event instanceof PostbackEvent:
+                    Log::debug('PostBackEvent処理');
+                    break;
+                /**
+                 * ブロック
+                 */
+                case $event instanceof UnfollowEvent:
+                    Log::debug('UnfollowEvent');
+                    $service = new UnFollowService($bot);
+                    $reply_message = $service->execute($event) ? 'ブロックされました' : 'ブロックされたけど処理失敗';
+                    $bot->replyText($reply_token, $reply_message);
+                    break;
+                default:
+                    // $body = $event->getEventBody();
+                    // logger()->warning('Unknown event. [' . get_class($event) . ']', compact('body'));
             }
         }
     }

@@ -14,15 +14,15 @@ class CreatePlayersTable extends Migration
     public function up()
     {
         Schema::create('players', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id', 64)->unique()->comment('ラインID')->nullable();
             $table->string('sei')->comment('性')->nullable();
             $table->string('mei')->comment('名')->nullable();
-            $table->string('sei_kana')->comment('セイ')->nullable();
-            $table->string('mei_kana')->comment('メイ')->nullable();
+            $table->string('sei_hira')->comment('セイ')->nullable();
+            $table->string('mei_hira')->comment('メイ')->nullable();
             $table->text('self_introduction')->comment('説明');
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

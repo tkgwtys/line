@@ -21,7 +21,13 @@ class Player extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'sei',
+        'mei',
+        'sei_hira',
+        'mei_hira',
+        'self_introduction',
+        'email',
+        'password',
     ];
 
     /**
@@ -40,5 +46,10 @@ class Player extends Model
             $model->{$model->getKeyName()} = (string)Uuid::generate()->string;
             $model->{$model->getKeyName()} = (string)Str::orderedUuid();
         });
+    }
+
+    public function images()
+    {
+        return $this->hasMany(PlayerImage::class);
     }
 }
