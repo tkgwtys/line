@@ -60,7 +60,7 @@ class LineBotController extends Controller
                         // カルーセルに付与するボタンを作る
                         $action = new UriTemplateActionBuilder(
                             "予約する",
-                            "http://hiroasake.blogspot.com/");
+                            config('app.url') . 'register?uid=' . $event->getUserId());
                         // カルーセルのカラムを作成する
                         $column = new CarouselColumnTemplateBuilder(
                             $val['name'],
@@ -72,13 +72,6 @@ class LineBotController extends Controller
                     $carousel = new CarouselTemplateBuilder($columns);
                     // カルーセルを追加してメッセージを作る
                     $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
-                    $bot->replyMessage($event->getReplyToken(), $carousel_message);
-                    // カラムの配列を組み合わせてカルーセルを作成する
-                    $carousel = new CarouselTemplateBuilder($columns);
-                    Log::debug(json_encode($carousel));
-                    // カルーセルを追加してメッセージを作る
-                    $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
-                    Log::debug(json_encode($carousel_message));
                     $bot->replyMessage($event->getReplyToken(), $carousel_message);
                     break;
                 /**
@@ -95,7 +88,7 @@ class LineBotController extends Controller
                             // カルーセルに付与するボタンを作る
                             $action = new UriTemplateActionBuilder(
                                 "予約する",
-                                "http://hiroasake.blogspot.com/");
+                                config('app.url') . 'register?uid=' . $event->getUserId());
                             // カルーセルのカラムを作成する
                             $column = new CarouselColumnTemplateBuilder(
                                 $val['name'],
@@ -107,13 +100,6 @@ class LineBotController extends Controller
                         $carousel = new CarouselTemplateBuilder($columns);
                         // カルーセルを追加してメッセージを作る
                         $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
-                        $bot->replyMessage($event->getReplyToken(), $carousel_message);
-                        // カラムの配列を組み合わせてカルーセルを作成する
-                        $carousel = new CarouselTemplateBuilder($columns);
-                        Log::debug(json_encode($carousel));
-                        // カルーセルを追加してメッセージを作る
-                        $carousel_message = new TemplateMessageBuilder("メッセージのタイトル", $carousel);
-                        Log::debug(json_encode($carousel_message));
                         $bot->replyMessage($event->getReplyToken(), $carousel_message);
                     } else {
                         $bot->replyText($reply_token, $reply_message);
