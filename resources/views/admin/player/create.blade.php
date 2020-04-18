@@ -60,7 +60,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group">
-                    <label>プロフィール内容</label>
+                    <label>自己紹介</label>
                     {{Form::textarea('self_introduction',old('self_introduction'), ['class' => 'form-control', 'size' => '30x5'])}}
                 </div>
             </div>
