@@ -2,13 +2,7 @@
 
 @section('content')
     <div class="container">
-        <nav aria-label="パンくずリスト">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{url('admin/home')}}">ホーム</a></li>
-                <li class="breadcrumb-item"><a href="{{url('admin/player')}}">トレーナ管理</a></li>
-                <li class="breadcrumb-item active" aria-current="page">トレーナ登録</li>
-            </ol>
-        </nav>
+        {{ Breadcrumbs::render('admin.player.create') }}
         <h1>トレーナ登録</h1>
         @if($errors->any())
             <div class="alert alert-danger">
