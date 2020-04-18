@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        {{ Breadcrumbs::render('admin.player') }}
         <h1>トレーナ管理</h1>
         <p>
             <a href="{{url('/admin/player/create')}}" class="btn btn-primary">トレーナ登録</a>
