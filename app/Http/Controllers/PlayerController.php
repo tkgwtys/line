@@ -76,6 +76,7 @@ class PlayerController extends Controller
         $player_image = PlayerImage::find($player_id);
         return view('admin.player.show')
             ->with([
+                'player_id' => $player_id,
                 'player' => $player,
                 'player_image' => $player_image,
             ]);

@@ -4,7 +4,7 @@
     <div class="container">
         <h1>トレーナ管理</h1>
         <p>
-            <a href="/admin/player/create" class="btn btn-primary">トレーナ登録</a>
+            <a href="{{url('/admin/player/create')}}" class="btn btn-primary">トレーナ登録</a>
         </p>
         <table class="table table-striped">
             <thead>
@@ -18,11 +18,12 @@
             @foreach($players as $player)
                 <tr>
                     <td>
-                        <a href="/admin/player/{{$player->id}}">
+                        <a href="{{url('/admin/player/'. $player->id)}}">
                             {{$player->sei}}{{$player->mei}}（{{$player->sei_hira}}{{$player->mei_hira}}）
                         </a>
                     </td>
-                    <td><img src="{{ asset('storage/images/players/'. $player->id .'/'. $player->images->file_name)}}"
+                    <td>
+                        <img src="{{ asset('storage/images/players/'. $player->id .'/'. $player->images->file_name)}}"
                              width="50"></td>
                     <td>{{$player->created_at}}</td>
                 </tr>
