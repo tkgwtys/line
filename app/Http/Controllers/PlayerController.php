@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
 use App\Models\Player;
 use App\Models\PlayerImage;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -46,10 +48,10 @@ class PlayerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return RedirectResponse|Redirector
+     * @param CreateUserRequest $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
         DB::transaction(function () use ($request) {
             $file_name = Str::random(32) . '.jpg';
@@ -60,7 +62,6 @@ class PlayerController extends Controller
                 'file_name' => $file_name,
             ])->save();
         });
-        // return redirect('/admin/player')->with('success', '新しいトレーナをを登録しました');
         return redirect('/admin/player'); //->with('success', '新しいトレーナをを登録しました');
     }
 
