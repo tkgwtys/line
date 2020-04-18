@@ -22,7 +22,8 @@
                             {{$player->sei}}{{$player->mei}}（{{$player->sei_hira}}{{$player->mei_hira}}）
                         </a>
                     </td>
-                    <td><img src="{{ asset('storage/images/players/' . $player->images->file_name)}}" width="50"></td>
+                    <td><img src="{{ asset('storage/images/players/'. $player->id .'/'. $player->images->file_name)}}"
+                             width="50"></td>
                     <td>{{$player->created_at}}</td>
                 </tr>
             @endforeach

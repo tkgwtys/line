@@ -12,6 +12,7 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Intervention\Image\Image;
 
 class PlayerController extends Controller
 {
@@ -51,10 +52,9 @@ class PlayerController extends Controller
     public function store(Request $request)
     {
         DB::transaction(function () use ($request) {
-            // ファイル名作成
             $file_name = Str::random(32) . '.jpg';
             $player = Player::create($request->all());
-            $request->file('image')->storeAs('public/images/players', $file_name);
+            $request->file('image')->storeAs('public/images/players/' . $player->id, $file_name);
             PlayerImage::create([
                 'player_id' => $player->id,
                 'file_name' => $file_name,
