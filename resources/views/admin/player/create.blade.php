@@ -55,7 +55,7 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>自己紹介</label>
-                    {{Form::textarea('self_introduction',old('self_introduction'), ['class' => 'form-control', 'size' => '30x5'])}}
+                    {{Form::textarea('self_introduction',old('self_introduction'), ['class' => 'form-control', 'size' => '30x5', 'placeholder' => 'ラインの仕様で40文字以内'])}}
                 </div>
             </div>
         </div>
