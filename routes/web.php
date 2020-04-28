@@ -30,7 +30,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'guest:admin'], function () {
         return view('admin.welcome');
     });
     Route::get('login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
-    Route::get('login', 'Admin\Auth\LoginController@showLoginForm')->name('admin.login');
     Route::post('login', 'Admin\Auth\LoginController@login')->name('admin.login');
     Route::get('register', 'Admin\Auth\RegisterController@showRegistrationForm')->name('admin.register');
     Route::post('register', 'Admin\Auth\RegisterController@register')->name('admin.register');

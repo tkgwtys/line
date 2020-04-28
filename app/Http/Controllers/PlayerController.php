@@ -54,9 +54,13 @@ class PlayerController extends Controller
     public function store(CreateUserRequest $request)
     {
         DB::transaction(function () use ($request) {
+            // ファイル名ランダム作成
             $file_name = Str::random(32) . '.jpg';
+            // POSTデーター取得
             $player = Player::create($request->all());
+            // 画像を保存している
             $request->file('image')->storeAs('public/images/players/' . $player->id, $file_name);
+            // POSTのデーターをデーターベースに保存している
             PlayerImage::create([
                 'player_id' => $player->id,
                 'file_name' => $file_name,
