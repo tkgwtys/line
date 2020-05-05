@@ -26,11 +26,6 @@ class PlayerController extends Controller
     public function index()
     {
         $players = Player::all();
-        if ($players) {
-            foreach ($players as $key => $play) {
-                $players[$key]->images = PlayerImage::where('player_id', $play->id)->first();
-            }
-        }
         return view('admin.player.index')
             ->with('players', $players);
     }
@@ -53,19 +48,12 @@ class PlayerController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        DB::transaction(function () use ($request) {
-            // ファイル名ランダム作成
-            $file_name = Str::random(32) . '.jpg';
-            // POSTデーター取得
-            $player = Player::create($request->all());
-            // 画像を保存している
-            $request->file('image')->storeAs('public/images/players/' . $player->id, $file_name);
-            // POSTのデーターをデーターベースに保存している
-            PlayerImage::create([
-                'player_id' => $player->id,
-                'file_name' => $file_name,
-            ])->save();
-        });
+        // ファイル名ランダム作成
+        $file_name = 'original.jpg';
+        // POSTデーター取得
+        $player = Player::create($request->all());
+        // 画像を保存している
+        $request->file('image')->storeAs('public/images/players/' . $player->id, $file_name);
         return redirect('/admin/player'); //->with('success', '新しいトレーナをを登録しました');
     }
 
@@ -78,12 +66,9 @@ class PlayerController extends Controller
     public function show($player_id)
     {
         $player = Player::find($player_id);
-        $player_image = PlayerImage::find($player_id);
         return view('admin.player.show')
             ->with([
-                'player_id' => $player_id,
                 'player' => $player,
-                'player_image' => $player_image,
             ]);
     }
 
