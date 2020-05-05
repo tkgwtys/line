@@ -24,8 +24,9 @@
                         </a>
                     </td>
                     <td>
-                        <img src="{{ asset('storage/images/players/'. $player->id .'/'. $player->images->file_name)}}"
-                             width="50"></td>
+                        <img src="{{ asset('storage/images/players/'. $player->id .'/original.jpg')}}"
+                             width="50">
+                    </td>
                     <td>{{$player->created_at}}</td>
                 </tr>
             @endforeach
