@@ -54,8 +54,8 @@ class PlayerController extends Controller
         $player = Player::create($request->all());
         // 画像を保存している
         $request->file('image')->storeAs('public/images/players/' . $player->id, $file_name);
-        Image::make(public_path('storage/images/players/' . $player->id . '/' . $file_name))
-            ->resize(300, 300)->save(public_path('storage/images/players/' . $player->id . '/300x300.jpg'));
+        Image::make($request->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
+        Image::make($request->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
         return redirect('/admin/player'); //->with('success', '新しいトレーナをを登録しました');
     }
 
