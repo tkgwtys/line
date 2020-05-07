@@ -29,14 +29,15 @@
                     </td>
                     <td>{{$player->created_at}}</td>
                     <td>
-                        <form action="{{url('/admin/player/'. $player->id)}}" method="post" style="display:inline">                    @csrf
+                        <form action="{{url('/admin/player/'. $player->id)}}" method="post" style="display:inline">              
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="_method" value="delete">
-                            <button type="submit" class="btn btn-danger">削除</button>
+                            <input type="submit" value="削除" class="btn btn-delete btn-danger" onclick="return confirm('削除しますか？')">
                         </form>
                     </td>
                 </tr>
+                <script>
+
 
             @endforeach
             </tbody>
