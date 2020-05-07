@@ -28,7 +28,16 @@
                              width="50">
                     </td>
                     <td>{{$player->created_at}}</td>
+                    <td>
+                        <form action="{{url('/admin/player/'. $player->id)}}" method="post" style="display:inline">                    @csrf
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn btn-danger">削除</button>
+                        </form>
+                    </td>
                 </tr>
+
             @endforeach
             </tbody>
         </table>
