@@ -105,6 +105,8 @@ class PlayerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $player_id=Player::find($id);
+        $player_id->delete();
+        return redirect('/admin/player');
     }
 }
