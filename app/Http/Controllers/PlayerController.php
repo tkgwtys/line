@@ -82,7 +82,8 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $player = Player::find($id);
+        return view('admin.player.edit',['player'=>$player]);
     }
 
     /**
@@ -94,7 +95,14 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $player = Player::find($id);
+        $player->sei = $request->sei;
+        $player->mei = $request->mei;
+        $player->sei_hira = $request->sei_hira;
+        $player->mei_hira = $request->mei_hira;
+        $player->self_introduction = $request->self_introduction;
+        $player->save();
+        return redirect('/admin/player');
     }
 
     /**
