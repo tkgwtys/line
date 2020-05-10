@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Player;
 use App\Models\PlayerImage;
 use Illuminate\Contracts\Foundation\Application;
@@ -82,7 +83,8 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $player = Player::find($id);
+        return view('admin.player.edit',['player'=>$player]);
     }
 
     /**
@@ -92,9 +94,24 @@ class PlayerController extends Controller
      * @param int $id
      * @return void
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $player = Player::find($id);
+
+        if($request->image) {
+            $request->file('image')->storeAs('public/images/players/' . $player->id, 'original.jpg');
+            Image::make($request->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
+            Image::make($request->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
+        }
+        $player->sei = $request->sei;
+        $player->mei = $request->mei;
+        $player->sei_hira = $request->sei_hira;
+        $player->mei_hira = $request->mei_hira;
+        $player->self_introduction = $request->self_introduction;
+        $player->save();
+
+        return redirect('/admin/player');
+
     }
 
     /**
