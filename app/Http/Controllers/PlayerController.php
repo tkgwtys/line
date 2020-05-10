@@ -97,14 +97,11 @@ class PlayerController extends Controller
     {
         $player = Player::find($id);
 
-        print_r($request->all());
-        exit();
-
-        $player_image = $request->image;
-        $player_image->file('image')->storeAs('public/images/players/' . $player->id, 'original.jpg');
-        Image::make($player_image->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
-        Image::make($player_image->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
-
+        if($request->image) {
+            $request->file('image')->storeAs('public/images/players/' . $player->id, 'original.jpg');
+            Image::make($request->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
+            Image::make($request->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
+        }
         $player->sei = $request->sei;
         $player->mei = $request->mei;
         $player->sei_hira = $request->sei_hira;
