@@ -5,18 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Player;
-use App\Models\PlayerImage;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Intervention\Image\ImageManagerStatic as Image;
-
 class PlayerController extends Controller
 {
     /**
@@ -49,6 +46,12 @@ class PlayerController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
+      $path = public_path('storage/images/players');
+      if(!(new Filesystem)->isDirectory($path)){
+          (new Filesystem)->makeDirectory($path, 0777, true);
+      }
+
+
         // ファイル名ランダム作成
         $file_name = 'original.jpg';
         // POSTデーター取得
@@ -87,12 +90,12 @@ class PlayerController extends Controller
         return view('admin.player.edit',['player'=>$player]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int $id
-     * @return void
+
+
+    /**　
+     * @param UpdateUserRequest $request
+     * @param $id
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(UpdateUserRequest $request, $id)
     {
