@@ -46,9 +46,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        session()->flush();
-        url()->previous('/admin');
-   //     $this->middleware('admins')->except('logout');
+        $this->middleware('guest')->except('logout');
     }
 
     public function logout(Request $request)
