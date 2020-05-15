@@ -12,7 +12,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
 class PlayerController extends Controller
 {
@@ -20,6 +22,7 @@ class PlayerController extends Controller
      * Display a listing of the resource.
      *
      * @return Factory|View
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function index()
     {

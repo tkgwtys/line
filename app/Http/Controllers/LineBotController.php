@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Player;
 use App\Service\Line\ReceiveTextService;
 use App\Services\Line\ReceiveLocationService;
 use App\Services\Line\FollowService;
 use App\Services\Line\UnFollowService;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot;
@@ -140,23 +142,27 @@ class LineBotController extends Controller
 
     private function trainerArray()
     {
-        return [
-            0 => [
-                'name' => '吉本恒生（よしもとこうき）',
-                // 'self_introduction' => 'ダイエット指導が1番の得意分野です。厳しいトレーニングの中で効果を感じながらも楽しめるような運動指導ができます。ダイエットを諦めていた方は是非ラミウスへお越しください。',
-                'self_introduction' =>
-                    'ダイエット指導が1番の得意分野です。厳しいトレーニングの中で効果を感じながらも楽しめるような運動指導ができます。',
-                'image' => 'https://tlex.cirplaix.com/storage/3U7A1158.jpg',
-            ],
-            1 => [
-                'name' => '上田翔',
-//                'self_introduction' =>
-//                    '初心者の方を対象にした運動不足解消や体力向上のためのメニュー作り・運動指導ができます。またお客様が継続して結果を出し続けられるような運動指導を心掛けています。',
-                'self_introduction' =>
-                    '初心者の方を対象にした運動不足解消や体力向上のためのメニュー作り・運動指導ができます。',
-                'image' => 'https://tlex.cirplaix.com/storage/b.jpg',
-            ]
-        ];
+
+        //データの取得
+        $players = Player::all();
+        //受け渡し用の配列作成
+        $players_multi_data =[];
+        //データ用配列作成
+        $players_data =[];
+        //Player::all()のデータを$players_multi_dataに代入
+        foreach($players as $player){
+            //'name'キー -> sei + mei
+            $players_data['name'] = $player['sei'].$player['mei'];
+            //'self_introduction'キー -> self_introduction
+            $players_data['self_introduction'] = $player['self_introduction'];
+            //image取得
+            $image = asset('storage/images/players/' . $player['id'].'/original.jpg');
+            $players_data['image'] = $image;
+
+            //連想配列$players_dataを代入
+            $players_multi_data[]=$players_data;
+        }
+        return $players_multi_data;
     }
 }
 
