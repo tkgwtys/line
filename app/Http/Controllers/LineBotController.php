@@ -150,19 +150,17 @@ class LineBotController extends Controller
         //データ用配列作成
         $players_data =[];
         //Player::all()のデータを$players_multi_dataに代入
-        foreach($players as $player){
+        foreach($players as $key => $player){
             //'name'キー -> sei + mei
-            $players_data['name'] = $player['sei'].$player['mei'];
+            $players_data[$key]['name'] = $player['sei'].$player['mei'];
             //'self_introduction'キー -> self_introduction
-            $players_data['self_introduction'] = $player['self_introduction'];
+            $players_data[$key]['self_introduction'] = $player['self_introduction'];
             //image取得
-            $image = asset('storage/images/players/' . $player['id'].'/original.jpg');
-            $players_data['image'] = $image;
+            $image = asset('storage/images/players/' . $player['id'].'/300x300.jpg');
+            $players_data[$key]['image'] = $image;
 
-            //連想配列$players_dataを代入
-            $players_multi_data[]=$players_data;
         }
-        return $players_multi_data;
+        return $players_data;
     }
 }
 
