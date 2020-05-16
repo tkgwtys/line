@@ -14,6 +14,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Intervention\Image\ImageManagerStatic as Image;
+
 class PlayerController extends Controller
 {
     /**
@@ -46,10 +47,10 @@ class PlayerController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-      $path = public_path('storage/images/players');
-      if(!(new Filesystem)->isDirectory($path)){
-          (new Filesystem)->makeDirectory($path, 0777, true);
-      }
+        $path = public_path('storage/images/players');
+        if (!(new Filesystem)->isDirectory($path)) {
+            (new Filesystem)->makeDirectory($path, 0777, true);
+        }
 
 
         // ファイル名ランダム作成
@@ -71,6 +72,12 @@ class PlayerController extends Controller
      */
     public function show($player_id)
     {
+        $time = [];
+        $t = strtotime('00:00');
+        for ($i = 0; $i < 5 * 12 * 24; $i += 5) {
+            $time[] = date('H:i', strtotime("+{$i} minutes", $t));
+        }
+        print_r($time);
         $player = Player::find($player_id);
         return view('admin.player.show')
             ->with([
@@ -87,9 +94,8 @@ class PlayerController extends Controller
     public function edit($id)
     {
         $player = Player::find($id);
-        return view('admin.player.edit',['player'=>$player]);
+        return view('admin.player.edit', ['player' => $player]);
     }
-
 
 
     /**　
@@ -101,7 +107,7 @@ class PlayerController extends Controller
     {
         $player = Player::find($id);
 
-        if($request->image) {
+        if ($request->image) {
             $request->file('image')->storeAs('public/images/players/' . $player->id, 'original.jpg');
             Image::make($request->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
             Image::make($request->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
@@ -125,7 +131,7 @@ class PlayerController extends Controller
      */
     public function destroy($id)
     {
-        $player_id=Player::find($id);
+        $player_id = Player::find($id);
         $player_id->delete();
         return redirect('/admin/player');
     }
