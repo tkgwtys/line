@@ -65,7 +65,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        if(empty($user) === FALSE) {
+            return view('edit', ['user' => $user]);
+        }else{
+            echo 'LINEで友達登録をしてください!';
+        }
+
     }
 
     /**
@@ -77,7 +83,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //UserをDBで見つける
+        $user = User::find($id);
+        //データ代入
+        $user->sei = $request->sei;
+        $user->mei = $request->mei;
+        $user->sei_hira = $request->sei_hira;
+        $user->mei_hira = $request->mei_hira;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        //DBへ保存
+        $user->save();
+
+        echo '登録ありがとうございます！';
+
+
     }
 
     /**
