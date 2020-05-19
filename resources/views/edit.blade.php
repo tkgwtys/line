@@ -16,7 +16,7 @@
                             <label for="sei" class="col-md-4 col-form-label text-md-right">姓</label>
 
                             <div class="col-md-6">
-                                <input id="sei" type="text" class="form-control @error('name') is-invalid @enderror" name="sei" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="sei" type="text" class="form-control @error('name') is-invalid @enderror" name="sei" value="<?= $user->sei ?>" required autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                             <label for="mei" class="col-md-4 col-form-label text-md-right">名</label>
 
                             <div class="col-md-6">
-                                <input id="mei" type="text" class="form-control @error('name') is-invalid @enderror" name="mei" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="mei" type="text" class="form-control @error('name') is-invalid @enderror" name="mei" value="<?= $user->mei ?>" required autocomplete="name" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -42,7 +42,7 @@
                             <label for="sei_hira" class="col-md-4 col-form-label text-md-right">せい（ふりがな）</label>
 
                             <div class="col-md-6">
-                                <input id="sei_hira" type="text" class="form-control @error('name') is-invalid @enderror" name="sei_hira" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="sei_hira" type="text" class="form-control @error('name') is-invalid @enderror" name="sei_hira" value="<?= $user->sei_hira ?>" required autocomplete="name" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -55,7 +55,7 @@
                             <label for="mei_hira" class="col-md-4 col-form-label text-md-right">めい（ふりがな）</label>
 
                             <div class="col-md-6">
-                                <input id="mei_hira" type="text" class="form-control @error('name') is-invalid @enderror" name="mei_hira" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="mei_hira" type="text" class="form-control @error('name') is-invalid @enderror" name="mei_hira" value="<?= $user->mei_hira ?>" required autocomplete="name" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -65,10 +65,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">電話番号</label>
+
+                            <div class="col-md-6">
+                                <input id="tel" type="tel" class="form-control @error('email') is-invalid @enderror" name="tel" value="<?= $user->tel ?>" required autocomplete="tel">
+
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">メールアドレス</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="<?= $user->email ?>" required autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -78,27 +92,29 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="password" class="col-md-4 col-form-label text-md-right">パスワード</label>--}}
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">--}}
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">パスワード確認</label>
+{{--                                @error('password')--}}
+{{--                                    <span class="invalid-feedback" role="alert">--}}
+{{--                                        <strong>{{ $message }}</strong>--}}
+{{--                                    </span>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
+{{--                        <div class="form-group row">--}}
+{{--                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">パスワード確認</label>--}}
+
+{{--                            <div class="col-md-6">--}}
+{{--                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
 
                         <div class="form-group row mb-0">
 

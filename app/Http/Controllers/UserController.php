@@ -66,10 +66,21 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+
         if(empty($user) === FALSE) {
             return view('edit', ['user' => $user]);
+
         }else{
-            echo 'LINEで友達登録をしてください!';
+           $test = config('app.env');
+           if($test === 'development'){
+            $qr_code = asset('storage/images/dev.png');
+            return view('qrcode')->with('qr_code', $qr_code);
+           }elseif ($test === 'production') {
+               $qr_code = asset('storage/images/test.png');
+               return view('qrcode')->with('qr_code', $qr_code);
+           }else{
+               echo 'Please check env file';
+           }
         }
 
     }
@@ -90,6 +101,7 @@ class UserController extends Controller
         $user->mei = $request->mei;
         $user->sei_hira = $request->sei_hira;
         $user->mei_hira = $request->mei_hira;
+        $user->tel = $request->tel;
         $user->email = $request->email;
         $user->password = $request->password;
         //DBへ保存

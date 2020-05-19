@@ -62,7 +62,7 @@ class LineBotController extends Controller
                         // カルーセルに付与するボタンを作る
                         $action = new UriTemplateActionBuilder(
                             "予約する",
-                            config('app.url') . 'register?uid=' . $event->getUserId());
+                            config('app.url') . 'user/'.$event->getUserId().'/edit');
                         // カルーセルのカラムを作成する
                         $column = new CarouselColumnTemplateBuilder(
                             $val['name'],
@@ -90,7 +90,7 @@ class LineBotController extends Controller
                             // カルーセルに付与するボタンを作る
                             $action = new UriTemplateActionBuilder(
                                 "予約する",
-                                config('app.url') . 'register?uid=' . $event->getUserId());
+                                config('app.url') . 'user/'.$event->getUserId().'/edit');
                             $action2 = new UriTemplateActionBuilder(
                                 "プロフィール",
                                 config('app.url') . 'register?uid=' . $event->getUserId());
