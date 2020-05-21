@@ -6,6 +6,12 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
+                <!-- フラッシュメッセージ -->
+                @if (session('flash_message'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('flash_message') }}
+                    </div>
+                @endif
 
                 <div class="card-body">
                     <form action="{{route('line-user.update',$user->id)}}" enctype = "multipart/form-data" method="post" >
