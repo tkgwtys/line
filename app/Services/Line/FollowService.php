@@ -47,7 +47,6 @@ class FollowService
                 $input = [
                     'id' => $line_id,
                     'name' => $profile['displayName'],
-                    'pictureUrl' => $profile['pictureUrl'],
                 ];
                 $user_model->fill($input)->save();
                 Log::info('新規フォロー処理成功');
@@ -55,12 +54,10 @@ class FollowService
                 if (is_null($user->blocked_at)) {
                     $user_model = User::find($line_id);
                     $user_model->blocked_at = Carbon::now();
-                    $user_model->pictureUrl = $profile['pictureUrl'];
                     $user_model->save();
                 } else {
                     $user_model = User::find($line_id);
                     $user_model->blocked_at = null;
-                    $user_model->pictureUrl = $profile['pictureUrl'];
                     $user_model->save();
                 }
             }

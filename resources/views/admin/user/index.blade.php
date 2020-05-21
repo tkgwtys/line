@@ -17,7 +17,6 @@
             @foreach($users as $user)
                 <tr>
                     <th scope="row"><a href="/admin/user/{{$user->id}}">{{$user->id}}</a></th>
-                    <td><img src="{{$user->pictureUrl}}" width="50"></td>
                     <td>{{$user->name}}</td>
                     <td>{{$user->created_at}}</td>
                     <td>{{$user->blocked_at}}</td>

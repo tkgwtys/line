@@ -25,7 +25,6 @@ class User extends Authenticatable
         'sei_hira',
         'mei_hira',
         'tel',
-        'pictureUrl',
         'email',
         'password',
         'blocked_at',
