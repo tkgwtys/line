@@ -67,7 +67,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if(empty($user) === FALSE) {
+        if($user) {
             return view('edit', ['user' => $user]);
 
         }else{
@@ -106,8 +106,9 @@ class UserController extends Controller
         $user->password = $request->password;
         //DBへ保存
         $user->save();
+        session()->flash('flash_message', '登録が完了しました');
+        return view('edit', ['user' => $user]);
 
-        echo '登録ありがとうございます！';
 
 
     }
