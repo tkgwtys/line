@@ -1,6 +1,6 @@
 <div class="col-12">
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm table-hover">
+        <table class="table table-bordered table-striped table-sm table-hover" id="target-table">
             <thead>
             <tr>
                 <th></th>
@@ -14,11 +14,11 @@
             </thead>
             <tbody>
             @foreach($player_array as $key => $player)
-                <tr>
+                <tr class="chara">
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                     @foreach($time_array as $key => $time)
                         @foreach($time as $hi)
-                            <td>-</td>
+                            <td id="{{$hi}}" data-toggle="modal" data-target="#exampleModal">{{$hi}}</td>
                         @endforeach
                     @endforeach
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
@@ -26,6 +26,36 @@
             @endforeach
             </tbody>
         </table>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">予約</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="aaTime"></div>
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Recipient:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                <button type="button" class="btn btn-primary">保存する</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -36,6 +66,7 @@
 {{--        <tr>--}}
 {{--            <th></th>--}}
 {{--            <th>--}}
+
 {{--                Extra small devices--}}
 {{--                <small>Phones (&lt;768px)</small>--}}
 {{--            </th>--}}
