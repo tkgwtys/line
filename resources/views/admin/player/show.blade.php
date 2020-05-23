@@ -7,4 +7,5 @@
         <p>{{$player->self_introduction}}</p>
         <img src="{{ asset('storage/images/players/'. $player->id .'/original.jpg')}}" width="300">
     </div>
+    @include('common.reservation_table', ['time_array' => $time_array])
 @endsection

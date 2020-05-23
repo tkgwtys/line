@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
+
 class PlayerController extends Controller
 {
     /**
@@ -49,10 +50,10 @@ class PlayerController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-      $path = public_path('storage/images/players');
-      if(!(new Filesystem)->isDirectory($path)){
-          (new Filesystem)->makeDirectory($path, 0777, true);
-      }
+        $path = public_path('storage/images/players');
+        if (!(new Filesystem)->isDirectory($path)) {
+            (new Filesystem)->makeDirectory($path, 0777, true);
+        }
 
 
         // ファイル名ランダム作成
@@ -74,11 +75,17 @@ class PlayerController extends Controller
      */
     public function show($player_id)
     {
+        $time_array = [];
+        for ($i = 7; $i <= 23; $i++) {
+            for ($j = 0; $j <= 55; $j += 15) {
+                $time_array[$i][$j] = sprintf("%02d:%02d\n", $i, $j);
+            }
+        }
+        $player_array = Player::all();
         $player = Player::find($player_id);
-        return view('admin.player.show')
-            ->with([
-                'player' => $player,
-            ]);
+        return view('admin.player.show',
+            compact('player', 'time_array', 'player_array')
+        );
     }
 
     /**
@@ -90,9 +97,8 @@ class PlayerController extends Controller
     public function edit($id)
     {
         $player = Player::find($id);
-        return view('admin.player.edit',['player'=>$player]);
+        return view('admin.player.edit', ['player' => $player]);
     }
-
 
 
     /**　
@@ -104,7 +110,7 @@ class PlayerController extends Controller
     {
         $player = Player::find($id);
 
-        if($request->image) {
+        if ($request->image) {
             $request->file('image')->storeAs('public/images/players/' . $player->id, 'original.jpg');
             Image::make($request->file('image'))->resize(300, 300)->save('storage/images/players/' . $player->id . '/300x300.jpg');
             Image::make($request->file('image'))->resize(500, 500)->save('storage/images/players/' . $player->id . '/500x500.jpg');
@@ -128,7 +134,7 @@ class PlayerController extends Controller
      */
     public function destroy($id)
     {
-        $player_id=Player::find($id);
+        $player_id = Player::find($id);
         $player_id->delete();
         return redirect('/admin/player');
     }
