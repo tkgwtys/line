@@ -19,6 +19,7 @@
         "laravelcollective/html": "~5.0",
         "linecorp/line-bot-sdk": "4.2.*",
         "moontoast/math": "^1.2",
+        "nesbot/carbon": "^2.34",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {

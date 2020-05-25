@@ -4,6 +4,7 @@
             <thead>
             <tr>
                 <th></th>
+                <th></th>
                 @foreach($time_array as $key => $time)
                     @foreach($time as $hi)
                         <td>{{$hi}}</td>
@@ -12,19 +13,22 @@
                 <th></th>
             </tr>
             </thead>
+            @foreach($days_array as $day)
             <tbody>
+            <tr class="chara">
+            <th rowspan="{{count($player_array)}}">{{$day}}</th>
             @foreach($player_array as $key => $player)
-                <tr class="chara">
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                     @foreach($time_array as $key => $time)
                         @foreach($time as $hi)
-                            <td id="{{$hi}}" data-toggle="modal" data-target="#exampleModal">{{$hi}}</td>
+                            <td id="{{$day}} {{$hi}}" data-toggle="modal" data-target="#exampleModal">{{$hi}}</td>
                         @endforeach
                     @endforeach
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                 </tr>
             @endforeach
             </tbody>
+            @endforeach
         </table>
     </div>
 </div>

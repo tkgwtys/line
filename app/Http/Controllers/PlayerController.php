@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Player;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Filesystem\Filesystem;
@@ -82,9 +83,14 @@ class PlayerController extends Controller
             }
         }
         $player_array = Player::all();
+        $days_array = [];
+        for ($i = 0; $i <= 6; $i++ ) {
+            $days_array[] = Carbon::today()->addDay($i)->format('Y年m月d日');
+        }
+
         $player = Player::find($player_id);
         return view('admin.player.show',
-            compact('player', 'time_array', 'player_array')
+            compact('player', 'time_array', 'player_array', 'days_array')
         );
     }
 
