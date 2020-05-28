@@ -13,9 +13,15 @@
 $('#target-table td').on('click', function () {
     // 時間ID取得
     const tdId = $(this)[0].id;
-
-    $('#aaTime').text(tdId);
-    console.log('--------------');
     console.log(tdId);
-    console.log('--------------');
-})
+    $('#aaTime').text(tdId);
+});
+
+const flatpickr = require('flatpickr');
+const japan = require('flatpickr/dist/l10n/ja.js').default.ja;
+console.log(japan);
+flatpickr('.selector', {
+    dateFormat: 'Y/m/d',
+    locale: japan,
+});
+
