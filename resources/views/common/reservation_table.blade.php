@@ -21,7 +21,7 @@
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                     @foreach($time_array as $key => $time)
                         @foreach($time as $hi)
-                            <td id="{{$day}} {{$hi}}" data-toggle="modal" data-target="#exampleModal">{{$hi}}</td>
+                            <td id="{{$day}} {{$hi}}" data-toggle="modal" data-target="#exampleModal"></td>
                         @endforeach
                     @endforeach
                     <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
