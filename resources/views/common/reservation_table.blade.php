@@ -43,7 +43,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="aaTime"></div>
+                <input id="aaTime" value="" class="selector" type="text"/>
+{{--                <div id="aaTime"></div>--}}
                 <form>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Recipient:</label>
