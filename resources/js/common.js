@@ -31,6 +31,7 @@ flatpickr('.selector', {
     maxTime: "23:45",
     dateFormat: 'Y年m月d日 H:i',
     locale: japan,
+    minuteIncrement: 15,
 });
 
 
