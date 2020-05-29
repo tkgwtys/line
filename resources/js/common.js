@@ -15,7 +15,6 @@ $('#target-table td').on('click', function () {
     // const tdId = $(this)[0].id;
     const day = $(this).data('day');
     const time = $(this).data('time');
-
     $('#day').val(day);
     $('#time').val(time);
 });
@@ -25,6 +24,7 @@ const japan = require('flatpickr/dist/l10n/ja.js').default.ja;
 flatpickr('.selector', {
     // enableTime: true, // タイムピッカーを有効
     // enableSeconds: true, // '秒' を無効
+    // enableSeconds: false, // '秒' を無効
     time_24hr: false, // 24時間表示
     defaultHour: 7, // 時
     defaultMinute: 0, // 分

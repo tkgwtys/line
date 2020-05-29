@@ -38,33 +38,43 @@
     <div class="modal-dialog modal-dialog-fluid modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">予約</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">予約確認</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
-                    <input id="day" value="" class="selector form-control" type="text"/>
+                    <div class="form-group">
+                        <input id="day" value="" class="selector form-control" type="text"/>
+                    </div>
                     {{--                <div id="aaTime"></div>--}}
-                    <select class="form-control" id="time">
-                        @foreach($time_array as $key => $time)
-                            <optgroup label="{{$key}}">
-                                @foreach($time as $hi)
-                                    <option value="{{$hi}}">{{$hi}}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
-                    </select>
+                    <div class="form-group">
+                        <select class="form-control" id="time">
+                            @foreach($time_array as $key => $time)
+                                <optgroup label="{{$key}}">
+                                    @foreach($time as $hi)
+                                        <option value="{{$hi}}">{{$hi}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">お名前</label>
-                        <input type="text" class="form-control" id="recipient-name" value="予約してきた人の名前が入る予定">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="recipient-name"
+                            placeholder="予約した人の名前が入る予定"
+                            value="佐々木のぞみ">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                <button type="button" class="btn btn-primary">予約を確定する</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                <button type="button" class="btn btn-danger">予約却下</button>
+                <button type="button" class="btn btn-success">予約確定する</button>
             </div>
         </div>
     </div>

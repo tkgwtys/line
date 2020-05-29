@@ -52311,6 +52311,7 @@ var japan = __webpack_require__(/*! flatpickr/dist/l10n/ja.js */ "./node_modules
 flatpickr('.selector', {
   // enableTime: true, // タイムピッカーを有効
   // enableSeconds: true, // '秒' を無効
+  // enableSeconds: false, // '秒' を無効
   time_24hr: false,
   // 24時間表示
   defaultHour: 7,
