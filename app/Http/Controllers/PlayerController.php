@@ -76,18 +76,21 @@ class PlayerController extends Controller
      */
     public function show($player_id)
     {
+        // 時間
         $time_array = [];
         for ($i = 7; $i <= 23; $i++) {
             for ($j = 0; $j <= 55; $j += 15) {
                 $time_array[$i][$j] = sprintf("%02d:%02d\n", $i, $j);
             }
         }
+        // トレーナ全員
         $player_array = Player::all();
+        // 日付
         $days_array = [];
-        for ($i = 0; $i <= 6; $i++ ) {
+        for ($i = 0; $i <= 6; $i++) {
             $days_array[] = Carbon::today()->addDay($i)->format('Y年m月d日');
         }
-
+        // プレイヤー１件
         $player = Player::find($player_id);
         return view('admin.player.show',
             compact('player', 'time_array', 'player_array', 'days_array')

@@ -46,11 +46,10 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">日付</label>
                         <input id="day" value="" class="selector form-control" type="text"/>
                     </div>
+                    {{--                <div id="aaTime"></div>--}}
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">時間</label>
                         <select class="form-control" id="time">
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
