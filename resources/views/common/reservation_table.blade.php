@@ -14,20 +14,21 @@
             </tr>
             </thead>
             @foreach($days_array as $day)
-            <tbody>
-            <tr class="chara">
-            <th rowspan="{{count($player_array)}}">{{$day}}</th>
-            @foreach($player_array as $key => $player)
-                    <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
-                    @foreach($time_array as $key => $time)
-                        @foreach($time as $hi)
-                            <td id="{{$day}} {{$hi}}" data-toggle="modal" data-target="#exampleModal"></td>
+                <tbody>
+                <tr class="chara">
+                    <th rowspan="{{count($player_array)}}">{{$day}}</th>
+                    @foreach($player_array as $key => $player)
+                        <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
+                        @foreach($time_array as $key => $time)
+                            @foreach($time as $hi)
+                                <td data-day="{{$day}}" data-time="{{$hi}}" data-toggle="modal"
+                                    data-target="#exampleModal"></td>
+                            @endforeach
                         @endforeach
-                    @endforeach
-                    <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
+                        <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                 </tr>
-            @endforeach
-            </tbody>
+                @endforeach
+                </tbody>
             @endforeach
         </table>
     </div>
@@ -43,22 +44,27 @@
                 </button>
             </div>
             <div class="modal-body">
-                <input id="aaTime" value="" class="selector" type="text"/>
-{{--                <div id="aaTime"></div>--}}
                 <form>
+                    <input id="day" value="" class="selector form-control" type="text"/>
+                    {{--                <div id="aaTime"></div>--}}
+                    <select class="form-control" id="time">
+                        @foreach($time_array as $key => $time)
+                            <optgroup label="{{$key}}">
+                                @foreach($time as $hi)
+                                    <option value="{{$hi}}">{{$hi}}</option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Recipient:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                    <div class="form-group">
-                        <label for="message-text" class="col-form-label">Message:</label>
-                        <textarea class="form-control" id="message-text"></textarea>
+                        <label for="recipient-name" class="col-form-label">お名前</label>
+                        <input type="text" class="form-control" id="recipient-name" value="予約してきた人の名前が入る予定">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                <button type="button" class="btn btn-primary">保存する</button>
+                <button type="button" class="btn btn-primary">予約を確定する</button>
             </div>
         </div>
     </div>

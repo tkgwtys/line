@@ -52297,22 +52297,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // });
 $('#target-table td').on('click', function () {
   // 時間ID取得
-  var tdId = $(this)[0].id;
-  console.log(tdId); // Modal Inputの id='aaTime' value=''に値送信
-
-  document.getElementById('aaTime').value = tdId;
+  // const tdId = $(this)[0].id;
+  var day = $(this).data('day');
+  var time = $(this).data('time');
+  $('#day').val(day);
+  $('#time').val(time);
 });
 
 var flatpickr = __webpack_require__(/*! flatpickr */ "./node_modules/flatpickr/dist/flatpickr.js");
 
 var japan = __webpack_require__(/*! flatpickr/dist/l10n/ja.js */ "./node_modules/flatpickr/dist/l10n/ja.js")["default"].ja;
 
-console.log(japan);
 flatpickr('.selector', {
-  enableTime: true,
-  // タイムピッカーを有効
-  enableSeconds: false,
-  // '秒' を無効
+  // enableTime: true, // タイムピッカーを有効
+  // enableSeconds: true, // '秒' を無効
   time_24hr: false,
   // 24時間表示
   defaultHour: 7,
@@ -52321,9 +52319,10 @@ flatpickr('.selector', {
   // 分
   minTime: "07:00",
   maxTime: "23:45",
-  dateFormat: 'Y年m月d日 H:i',
-  locale: japan,
-  minuteIncrement: 15
+  // dateFormat: 'Y年m月d日 H:i',
+  dateFormat: 'Y年m月d日',
+  locale: japan // minuteIncrement: 15,
+
 });
 
 /***/ }),
