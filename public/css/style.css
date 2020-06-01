@@ -4,7 +4,11 @@
 
 
 .modal-dialog-fluid {
-    min-width:75%;
+    min-width: 75%;
     max-width: 80%;
     width: 150%;
+}
+
+.scroll_div {
+    box-sizing: initial;
 }
