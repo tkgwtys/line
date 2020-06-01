@@ -49,13 +49,13 @@
                     <!-- Authentication Links -->
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('admin.login') }}">{{ __('ログイン') }}</a>
                         </li>
-                        @if (Route::has('register'))
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.register') }}">{{ __('Register') }}</a>
-                            </li>
-                        @endif
+{{--                        @if (Route::has('register'))--}}
+{{--                            <li class="nav-item">--}}
+{{--                                <a class="nav-link" href="{{ route('admin.register') }}">{{ __('Register') }}</a>--}}
+{{--                            </li>--}}
+{{--                        @endif--}}
                     @else
                         @if(Auth::guard('admin')->check())
                             <li class="nav-item dropdown">

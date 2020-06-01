@@ -69,19 +69,20 @@ Test10
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
-                <a href="{{ url('/home') }}">Home</a>
+                <a href="{{ url('/home') }}">ホーム</a>
             @else
-                <a href="{{ route('login') }}">Login</a>
+                <a href="{{ route('login') }}">ログイン</a>
 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}">Register</a>
+                    <a href="{{ route('register') }}">新規登録</a>
                 @endif
             @endauth
         </div>
     @endif
     <div class="content">
         <div class="title m-b-md">
-            {{ config('app.name', 'ハイパー管理画面') }}
+            {{ config('app.name', 'ハイパー管理画面') }}<br>
+            こちらは一般ユーザ画面です。管理画面は<a href="/admin/home">こちら</a>
         </div>
     </div>
 </div>

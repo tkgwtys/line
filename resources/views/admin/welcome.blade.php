@@ -68,19 +68,20 @@
     @if (Route::has('login'))
         <div class="top-right links">
             @auth
-                <a href="{{ url('/admin/home') }}">Home</a>
+                <a href="{{ url('/admin/home') }}">ホーム</a>
             @else
-                <a href="{{ route('admin.login') }}">Login</a>
+                <a href="{{ route('admin.login') }}">ログイン</a>
 
-                @if (Route::has('register'))
-                    <a href="{{ route('admin.register') }}">Register</a>
-                @endif
+                {{--                @if (Route::has('register'))--}}
+                {{--                    <a href="{{ route('admin.register') }}">新規登録</a>--}}
+                {{--                @endif--}}
             @endauth
         </div>
     @endif
     <div class="content">
         <div class="title m-b-md">
-            Line Bot ハイパー管理画面
+            Line Bot ハイパー管理画面<br>
+            ホームは<a href="/admin/home">こちら</a>
         </div>
     </div>
 </div>
