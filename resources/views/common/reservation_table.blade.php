@@ -1,6 +1,7 @@
 <div class="col-12">
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm table-hover" id="target-table">
+    <div class="scroll_div">
+        <table class="table table-bordered table-striped table-sm table-hover" id="target-table"
+               _fixedhead="rows:1; cols:2">
             <thead>
             <tr>
                 <th></th>
@@ -46,10 +47,13 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
+                        <label>予約日</label>
                         <input id="day" value="" class="selector form-control" type="text"/>
                     </div>
-                    {{--                <div id="aaTime"></div>--}}
+                {{--                <div id="aaTime"></div>--}}
+                <!-- 時間 -->
                     <div class="form-group">
+                        <label>予約時間</label>
                         <select class="form-control" id="time">
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
@@ -60,14 +64,36 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- 時間 -->
+                    <!-- トレーナ -->
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">お名前</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="recipient-name"
-                            placeholder="予約した人の名前が入る予定"
-                            value="佐々木のぞみ">
+                        <label>担当トレーナ</label>
+                        <select class="form-control" id="time">
+                            @foreach($player_array as $key => $player)
+                                <option>{{$player->sei}} {{$player->mei}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- トレーナ -->
+                    <div class="card">
+                        <div class="card-header">
+                            お客様
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">お名前</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="recipient-name"
+                                    placeholder="予約した人の名前が入る予定"
+                                    value="佐々木のぞみ">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">性別</label>
+                                女性
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
