@@ -10,15 +10,20 @@
 //     // console.log($(this).text());
 // });
 
+/**
+ *
+ */
 $('#target-table td').on('click', function () {
-    // 時間ID取得
-    // const tdId = $(this)[0].id;
     const day = $(this).data('day');
     const time = $(this).data('time');
-    $('#day').val(day);
-    $('#time').val(time);
+    $('#reservation_day').val(day);
+    $('#reservation_time').val(time);
 });
 
+/**
+ *
+ * @type {any | flatpickr}
+ */
 const flatpickr = require('flatpickr');
 const japan = require('flatpickr/dist/l10n/ja.js').default.ja;
 flatpickr('.selector', {
@@ -36,6 +41,10 @@ flatpickr('.selector', {
     // minuteIncrement: 15,
 });
 
+/**
+ *
+ * @type {HTMLElement}
+ */
 const aaa = document.getElementById('reservation_form');
 console.log("aaaaaaaaaa");
 console.log(aaa);

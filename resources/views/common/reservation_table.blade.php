@@ -50,11 +50,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="reservation_form" method="post" class="reservation_form">
+                <form id="reservation_form" method="post">
                     @csrf
                     <div class="form-group">
                         <label>予約日</label>
-                        <input id="day" value="" class="selector form-control" type="text"/>
+                        <input id="reservation_day" value="" class="selector form-control" type="text"/>
                     </div>
                 {{--                <div id="aaTime"></div>--}}
                 <!-- 時間 -->
@@ -91,7 +91,7 @@
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="userid"
+                                    id="reservation_user"
                                     placeholder="予約した人の名前が入る予定"
                                     value="佐々木のぞみ">
                             </div>
