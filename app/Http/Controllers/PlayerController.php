@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\ImageManager;
@@ -76,6 +77,7 @@ class PlayerController extends Controller
      */
     public function show($player_id)
     {
+
         // 時間
         $time_array = [];
         for ($i = 7; $i <= 23; $i++) {
