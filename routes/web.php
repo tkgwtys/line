@@ -51,5 +51,6 @@ Route::group(['middleware' => 'basicauth'], function () {
         Route::get('home', 'Admin\HomeController@index')->name('admin.home');
         Route::resource('user', 'UserController');
         Route::resource('player', 'PlayerController');
+        Route::resource('reservation', 'ReservationController');
     });
 });

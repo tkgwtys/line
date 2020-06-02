@@ -17,3 +17,7 @@ const mix = require('laravel-mix');
 mix.js(['resources/js/app.js', 'resources/js/common.js', 'node_modules/flatpickr/dist/flatpickr.js'], 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .stylus('node_modules/flatpickr/src/style/flatpickr.styl', 'public/css');
+
+if (mix.inProduction()) {
+    mix.version();
+}

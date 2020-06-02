@@ -36,4 +36,14 @@ flatpickr('.selector', {
     // minuteIncrement: 15,
 });
 
+const aaa = document.getElementById('reservation_form');
+console.log("aaaaaaaaaa");
+console.log(aaa);
+console.log("aaaaaaaaaa");
+
+$('#reservation_form').on('submit', function (e) {
+    console.log(this);
+    alert('aaaa');
+});
+
 

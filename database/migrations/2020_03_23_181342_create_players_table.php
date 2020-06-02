@@ -14,7 +14,7 @@ class CreatePlayersTable extends Migration
     public function up()
     {
         Schema::create('players', function (Blueprint $table) {
-            $table->string('id', 64)->unique()->comment('ラインID')->nullable();
+            $table->string('id', 64)->unique()->comment('プレイヤーID')->nullable();
             $table->string('sei')->comment('性')->nullable();
             $table->string('mei')->comment('名')->nullable();
             $table->string('sei_hira')->comment('セイ')->nullable();
