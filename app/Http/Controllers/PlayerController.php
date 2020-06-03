@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Intervention\Image\ImageManager;
@@ -80,7 +81,7 @@ class PlayerController extends Controller
         $time_array = [];
         for ($i = 7; $i <= 23; $i++) {
             for ($j = 0; $j <= 55; $j += 15) {
-                $time_array[$i][$j] = sprintf("%02d:%02d\n", $i, $j);
+                $time_array[$i][$j] = sprintf("%02d:%02d", $i, $j);
             }
         }
         // トレーナ全員
@@ -88,7 +89,7 @@ class PlayerController extends Controller
         // 日付
         $days_array = [];
         for ($i = 0; $i <= 6; $i++) {
-            $days_array[] = Carbon::today()->addDay($i)->format('Y年m月d日');
+            $days_array[] = Carbon::today()->addDay($i)->format('Y-m-d');
         }
         // プレイヤー１件
         $player = Player::find($player_id);
@@ -130,9 +131,7 @@ class PlayerController extends Controller
         $player->mei_hira = $request->mei_hira;
         $player->self_introduction = $request->self_introduction;
         $player->save();
-
         return redirect('/admin/player');
-
     }
 
     /**
