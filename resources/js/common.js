@@ -45,14 +45,27 @@ flatpickr('.selector', {
  *
  * @type {HTMLElement}
  */
-const aaa = document.getElementById('reservation_form');
-console.log("aaaaaaaaaa");
-console.log(aaa);
-console.log("aaaaaaaaaa");
-
 $('#reservation_form').on('submit', function (e) {
-    console.log(this);
-    alert('aaaa');
+    e.preventDefault();
+    const form = $(this);
+    console.log(form.serializeArray());
+    console.log(form.prop('action'));
+    console.log(form.prop('action'));
+
+
+    $.ajax({
+        type: form.prop('action'),
+        url: '/admin/reservation',
+        data: form.serialize(),
+    }).done(function (data) {
+        // 通信が成功したときの処理
+        console.log('ok');
+    }).fail(function () {
+        // 通信が失敗したときの処理
+        console.log('ng');
+    }).always(function (data) {
+        // 通信が完了したとき
+    });
 });
 
 

@@ -50,14 +50,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="reservation_form" method="post">
+                <form id="reservation_form" method="get" action="/admin/reservation">
                     @csrf
                     <div class="form-group">
                         <label>予約日</label>
                         <input id="reservation_day" value="" class="selector form-control" type="text"/>
                     </div>
-                {{--                <div id="aaTime"></div>--}}
-                <!-- 時間 -->
+                    <!-- 時間 -->
                     <div class="form-group">
                         <label>予約時間</label>
                         <select class="form-control" id="reservation_time" name="reservation_time">
