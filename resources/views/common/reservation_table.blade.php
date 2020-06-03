@@ -20,7 +20,7 @@
                 <tr class="chara">
                     <th rowspan="{{count($player_array)}}">{{$day}}</th>
                     @foreach($player_array as $key => $player)
-                        <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
+                        <th class="playerName" data-playerId">{{$player->sei}}{{$player->mei}}</th>
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
                                 <td data-day="{{$day}}" data-time="{{$hi}}" data-toggle="modal"
@@ -56,10 +56,11 @@
                         <label>予約日</label>
                         <input id="reservation_day" value="" class="selector form-control" type="text"/>
                     </div>
+                    <input type="hidden" value="" id="selected_date" name="selected_date">
                     <!-- 時間 -->
                     <div class="form-group">
                         <label>予約時間</label>
-                        <select class="form-control" id="reservation_time" name="reservation_time">
+                        <select class="form-control" id="selected_time" name="selected_time">
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
                                     @foreach($time as $hi)

@@ -1,23 +1,9 @@
-// $('.chara').on('click', function () {
-//     console.log(this);
-//     // const hiddenVal = $(this).children('td')[0].innerText;
-//     // const nameVal = $(this).children('td')[1].innerText;
-//     // alert('No: ' + hiddenVal + ' name: ' + nameVal);
-//     // const td = $(this).children('td')[0];
-//     // const tr = $(this).closest('tr')[0];
-//     // console.log('td:' + td.cellIndex);
-//     // console.log('tr:' + tr.rowIndex);
-//     // console.log($(this).text());
-// });
-
-/**
- *
- */
 $('#target-table td').on('click', function () {
     const day = $(this).data('day');
     const time = $(this).data('time');
     $('#reservation_day').val(day);
-    $('#reservation_time').val(time);
+    $('#selected_time').val(time);
+    $('#selected_date').val(day);
 });
 
 /**
@@ -36,9 +22,13 @@ flatpickr('.selector', {
     minTime: "07:00",
     maxTime: "23:45",
     // dateFormat: 'Y年m月d日 H:i',
-    dateFormat: 'Y年m月d日',
+    dateFormat: 'Y-m-d',
     locale: japan,
     // minuteIncrement: 15,
+    // カレンダーが変更されたら
+    onChange(selectedDates) {
+        $('#selected_date').val(`${selectedDates[0].getFullYear()}-${selectedDates[0].getMonth() + 1}-${selectedDates[0].getDate()}`);
+    },
 });
 
 /**
@@ -51,7 +41,6 @@ $('#reservation_form').on('submit', function (e) {
     console.log(form.serializeArray());
     console.log(form.prop('action'));
     console.log(form.prop('action'));
-
 
     $.ajax({
         type: form.prop('action'),
