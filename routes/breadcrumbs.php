@@ -12,7 +12,7 @@ Breadcrumbs::for('admin.home', function ($trail) {
 
 /**
  * フレンド一覧
- * /admin/user
+ * /admin/useshowUserr
  */
 Breadcrumbs::for('adminUsers', function ($trail) {
     $trail->parent('admin.home');
@@ -23,7 +23,7 @@ Breadcrumbs::for('adminUsers', function ($trail) {
  * フレンド詳細
  * /admin/user/U7fb49ca09c50b7d869f4c667eb3dcdc3
  */
-Breadcrumbs::for('showUser', function ($trail, $user) {
+Breadcrumbs::for('adminUser', function ($trail, $user) {
     $trail->parent('adminUsers');
     $trail->push($user->display_name, url('/admin/user' . $user->id));
 });
