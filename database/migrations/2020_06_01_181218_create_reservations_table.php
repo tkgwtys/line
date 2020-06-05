@@ -15,11 +15,11 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('user_id', 64)->unique()->comment('ラインID')->nullable();
-            $table->string('player_id', 64)->unique()->comment('ラインID')->nullable();
+            $table->string('user_id', 64)->unique()->comment('予約者')->nullable();
+            $table->string('player_id', 64)->unique()->comment('トレーナ')->nullable();
             $table->integer('status')->default(10)->comment('10=>仮予約、20=>却下,30=>確定');
             $table->integer('category')->default(10)->comment('10=>ライン、20=>WEB');
-            $table->dateTime('reservation_at')->comment('10=>ライン、20=>WEB');
+            $table->dateTime('reserved_at')->comment('10=>ライン、20=>WEB');
             $table->timestamps();
         });
     }

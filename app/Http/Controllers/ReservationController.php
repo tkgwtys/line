@@ -35,8 +35,10 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        Log::debug($request->all());
+        $selected_date = $request->get('selected_date');    // '2020-06-05',
+        $user_id = $request->get('user_id');                // U8299f8c45d021558f0d6e0355e5ccc6c',
+        $player_id = $request->get('player_id');            // 'U8299f8c45d021558f0d6e0355e5ccc6c',
+        $selected_time = $request->get('selected_time');    //  '07:00',
     }
 
     /**

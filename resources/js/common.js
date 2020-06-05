@@ -40,11 +40,11 @@ $('#reservation_form').on('submit', function (e) {
     const form = $(this);
     console.log(form.serializeArray());
     console.log(form.prop('action'));
-    console.log(form.prop('action'));
+    console.log(form.prop('method'));
 
     $.ajax({
-        type: form.prop('action'),
-        url: '/admin/reservation',
+        type: form.prop('method'),
+        url: form.prop('action'),
         data: form.serialize(),
     }).done(function (data) {
         // 通信が成功したときの処理

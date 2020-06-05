@@ -28,10 +28,11 @@ class UpdateUserRequest extends FormRequest
             'mei' => 'required|string|max:30',
             'sei_hira' => 'required|string|max:30',
             'mei_hira' => 'required|string|max:30',
-            'self_introduction' => 'required|max:40',
+            //'self_introduction' => 'required|max:40',
             'image' => '|image|mimes:jpeg,png,jpg',
         ];
     }
+
     public function messages()
     {
         return [

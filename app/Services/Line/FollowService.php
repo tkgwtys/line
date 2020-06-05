@@ -39,17 +39,15 @@ class FollowService
             }
             // プロフィール取得
             $profile = $rsp->getJSONDecodedBody();
-            Log::debug($profile);
             // ユーザーチェック
             $user = User::where('id', $line_id)->first();
+            Log::debug($user);
             if (!$user) {
                 $user_model = new User();
-                $input = [
-                    'id' => $line_id,
-                    'name' => $profile['displayName'],
-                ];
-                $user_model->fill($input)->save();
-                Log::info('新規フォロー処理成功');
+                $user_model->id = $line_id;
+                $user_model->display_name = $profile['displayName'];
+                $user_model->picture_url = $profile['pictureUrl'];
+                $user_model->save();
             } else {
                 if (is_null($user->blocked_at)) {
                     $user_model = User::find($line_id);
@@ -57,6 +55,8 @@ class FollowService
                     $user_model->save();
                 } else {
                     $user_model = User::find($line_id);
+                    $user_model->display_name = $profile['displayName'];
+                    $user_model->picture_url = $profile['pictureUrl'];
                     $user_model->blocked_at = null;
                     $user_model->save();
                 }
@@ -65,6 +65,7 @@ class FollowService
             return true;
         } catch (Exeption $e) {
             DB::rollBack();
+            Log::info('新規フォロー処理失敗');
             return false;
         }
     }

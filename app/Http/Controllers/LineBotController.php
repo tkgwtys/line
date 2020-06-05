@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Player;
+use App\Models\User;
 use App\Service\Line\ReceiveTextService;
 use App\Services\Line\ReceiveLocationService;
 use App\Services\Line\FollowService;
@@ -33,19 +33,16 @@ class LineBotController extends Controller
     {
         Log::debug('1');
         $bot = app('line-bot');
-
         $signature = $request->header('x-line-signature');
         if (!LINEBot\SignatureValidator::validateSignature($request->getContent(), config('app.line.channel_secret'), $signature)) {
             abort(400);
         }
-
         Log::debug('2');
         $events = $bot->parseEventRequest($request->getContent(), $signature);
         foreach ($events as $event) {
             Log::debug('3');
             $reply_token = $event->getReplyToken();
             // $reply_message = 'その操作はサポートしてません。.[' . get_class($event) . '][' . $event->getType() . ']';
-
             Log::debug('4');
             switch (true) {
                 /**
@@ -55,19 +52,20 @@ class LineBotController extends Controller
                     Log::debug('FollowEvent');
                     $service = new FollowService($bot);
                     $service->execute($event);// ? '友だち追加ありがとうございます(happy) 気になるトレーナーを見つけて予定をいれちゃおう！' : '友達登録されたけど処理に失敗したから何もしないよ';
-
                     $columns = []; // カルーセル型カラムを3つ追加する配列
-
                     foreach ($this->trainerArray() as $val) {
                         // カルーセルに付与するボタンを作る
                         $action = new UriTemplateActionBuilder(
                             "予約する",
-                            config('app.url') . 'user/'.$event->getUserId().'/edit');
+                            config('app.url') . 'reservation/' . $event->getUserId());
                         // カルーセルのカラムを作成する
+                        $action2 = new UriTemplateActionBuilder(
+                            "プロフィール",
+                            config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
                         $column = new CarouselColumnTemplateBuilder(
                             $val['name'],
                             $val['self_introduction'],
-                            $val['image'], [$action]);
+                            $val['image'], [$action, $action2]);
                         $columns[] = $column;
                     }
                     // カラムの配列を組み合わせてカルーセルを作成する
@@ -83,17 +81,19 @@ class LineBotController extends Controller
                     Log::debug('TextMessage');
                     $service = new ReceiveTextService($bot);
                     $reply_message = $service->execute($event);
+                    /**
+                     * トレーナ
+                     */
                     if ($event->getText() == 'トレーナー') {
                         $columns = []; // カルーセル型カラムを3つ追加する配列
-
                         foreach ($this->trainerArray() as $val) {
                             // カルーセルに付与するボタンを作る
                             $action = new UriTemplateActionBuilder(
                                 "予約する",
-                                config('app.url') . 'user/'.$event->getUserId().'/edit');
+                                config('app.url') . 'reservation/' . $event->getUserId());
                             $action2 = new UriTemplateActionBuilder(
                                 "プロフィール",
-                                config('app.url') . 'register?uid=' . $event->getUserId());
+                                config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
                             // カルーセルのカラムを作成する
                             $column = new CarouselColumnTemplateBuilder(
                                 $val['name'],
@@ -140,25 +140,26 @@ class LineBotController extends Controller
         }
     }
 
+    /**
+     * トレーナ取得
+     * @return array
+     */
     private function trainerArray()
     {
-
         //データの取得
-        $players = Player::all();
-        //受け渡し用の配列作成
-        $players_multi_data =[];
+        $players = User::where('level', 20)->get();
         //データ用配列作成
-        $players_data =[];
+        $players_data = [];
         //Player::all()のデータを$players_multi_dataに代入
-        foreach($players as $key => $player){
+        foreach ($players as $key => $player) {
             //'name'キー -> sei + mei
-            $players_data[$key]['name'] = $player['sei'].$player['mei'];
+            $players_data[$key]['player_id'] = $player['id'];
+            $players_data[$key]['name'] = $player['sei'] . $player['mei'];
             //'self_introduction'キー -> self_introduction
             $players_data[$key]['self_introduction'] = $player['self_introduction'];
             //image取得
-            $image = asset('storage/images/players/' . $player['id'].'/300x300.jpg');
+            $image = asset('storage/images/players/' . $player['id'] . '/300x300.jpg?' . time());
             $players_data[$key]['image'] = $image;
-
         }
         return $players_data;
     }
