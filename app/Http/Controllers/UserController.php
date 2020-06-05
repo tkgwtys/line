@@ -67,20 +67,20 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if($user) {
+        if ($user) {
             return view('edit', ['user' => $user]);
 
-        }else{
-           $test = config('app.env');
-           if($test === 'development'){
-            $qr_code = asset('storage/images/dev.png');
-            return view('qrcode')->with('qr_code', $qr_code);
-           }elseif ($test === 'production') {
-               $qr_code = asset('storage/images/test.png');
-               return view('qrcode')->with('qr_code', $qr_code);
-           }else{
-               echo 'Please check env file';
-           }
+        } else {
+            $test = config('app.env');
+            if ($test === 'development') {
+                $qr_code = asset('storage/images/dev.png');
+                return view('qrcode')->with('qr_code', $qr_code);
+            } elseif ($test === 'production') {
+                $qr_code = asset('storage/images/test.png');
+                return view('qrcode')->with('qr_code', $qr_code);
+            } else {
+                echo 'Please check env file';
+            }
         }
 
     }
@@ -108,7 +108,6 @@ class UserController extends Controller
         $user->save();
         session()->flash('flash_message', '登録が完了しました');
         return view('edit', ['user' => $user]);
-
 
 
     }

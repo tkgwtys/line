@@ -8,9 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+
     public $incrementing = false;
     protected $keyType = 'string';
     protected $table = 'users';
+
+    private $level = [
+        10 => '一般',
+        20 => 'トレーナー',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +35,16 @@ class User extends Authenticatable
         'password',
         'blocked_at',
     ];
+
+    public function getLevelAll()
+    {
+        return $this->level;
+    }
+
+    public function getLevel($level = 10)
+    {
+        return $this->level[$level];
+    }
 
     /**
      * The attributes that should be hidden for arrays.

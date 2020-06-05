@@ -24,7 +24,7 @@
                         </a>
                     </td>
                     <td>
-                        <img src="{{ asset('storage/images/players/'. $player->id .'/original.jpg'). '?' . time() }}"
+                        <img src="{{ asset('storage/images/players/'. $player->id .'/original.jpg')}}"
                              width="50">
                     </td>
                     <td>{{$player->created_at}}</td>
@@ -32,8 +32,7 @@
                         <form action="{{url('/admin/player/'. $player->id)}}" method="post" style="display:inline">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="削除" class="btn btn-delete btn-danger"
-                                   onclick="return confirm('削除しますか？')">
+                            <input type="submit" value="削除" class="btn btn-delete btn-danger" onclick="return confirm('削除しますか？')">
                         </form>
                     </td>
                     <td>

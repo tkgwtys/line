@@ -20,7 +20,7 @@
                 <tr class="chara">
                     <th rowspan="{{count($player_array)}}">{{$day}}</th>
                     @foreach($player_array as $key => $player)
-                        <th class="playerName" data-playerId">{{$player->sei}}{{$player->mei}}</th>
+                        <th class="playerName">{{$player->sei}}{{$player->mei}}</th>
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
                                 <td data-day="{{$day}}" data-time="{{$hi}}" data-toggle="modal"
