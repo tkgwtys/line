@@ -71,6 +71,7 @@ class UsersTableSeeder extends Seeder
                 'tel' => '',
                 'email' => '',
                 'level' => 20,
+                'picture_url' => 'https://profile.line-scdn.net/0hIHA8wAcsFmd8QT3yIy5pMEAEGAoLbxAvBC4NVFlHSwcDJQIxF3dRVlwUHVVZcVU0QyJaVlAWHFVT',
                 'password' => bcrypt('testtest'),
                 'created_at' => $date,
                 'updated_at' => $date
