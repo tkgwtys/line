@@ -11,15 +11,6 @@ Breadcrumbs::for('admin.home', function ($trail) {
 });
 
 /**
- * トレーナ一覧
- * /admin/player
- */
-Breadcrumbs::for('admin.player', function ($trail) {
-    $trail->parent('admin.home');
-    $trail->push('トレーナ管理', url('/admin/player'));
-});
-
-/**
  * フレンド一覧
  * /admin/user
  */
@@ -35,6 +26,24 @@ Breadcrumbs::for('adminUsers', function ($trail) {
 Breadcrumbs::for('showUser', function ($trail, $user) {
     $trail->parent('adminUsers');
     $trail->push($user->display_name, url('/admin/user' . $user->id));
+});
+
+/**
+ * トレーナ一覧
+ * /admin/player
+ */
+Breadcrumbs::for('adminPlayers', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('トレーナ管理', url('/admin/player'));
+});
+
+/**
+ * トレーナ詳細
+ * /admin/player/U7fb49ca09c50b7d869f4c667eb3dcdc3
+ */
+Breadcrumbs::for('adminPlayer', function ($trail, $player) {
+    $trail->parent('adminPlayers');
+    $trail->push($player->display_name, url('/admin/user' . $player->id));
 });
 
 Breadcrumbs::for('admin.player.create', function ($trail) {

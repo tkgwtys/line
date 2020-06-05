@@ -13,7 +13,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 {{--    <script src="{{ asset('js/common.js') }}" defer></script>--}}
 
-    <!-- Fonts -->
+<!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
@@ -25,11 +25,12 @@
     <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
     <script src="https://unpkg.com/flatpickr"></script>
     <script src="{{ asset('js/fixed_midashi.js') }}" defer></script>
+    <link href="{{ asset('css/bootstrap-fs-modal.min.css') }}" rel="stylesheet">
 </head>
 <body onLoad="FixedMidashi.create();">
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm d-flex justify-content-between">
+        <div class="container-fluid">
             <a class="navbar-brand" href="{{ url('/admin/home') }}">
                 {{ config('app.name', 'ハイパー管理画面') }}
             </a>
@@ -52,11 +53,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.login') }}">{{ __('ログイン') }}</a>
                         </li>
-{{--                        @if (Route::has('register'))--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a class="nav-link" href="{{ route('admin.register') }}">{{ __('Register') }}</a>--}}
-{{--                            </li>--}}
-{{--                        @endif--}}
+                        {{--                        @if (Route::has('register'))--}}
+                        {{--                            <li class="nav-item">--}}
+                        {{--                                <a class="nav-link" href="{{ route('admin.register') }}">{{ __('Register') }}</a>--}}
+                        {{--                            </li>--}}
+                        {{--                        @endif--}}
                     @else
                         @if(Auth::guard('admin')->check())
                             <li class="nav-item dropdown">
