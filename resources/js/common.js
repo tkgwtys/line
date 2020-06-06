@@ -1,9 +1,9 @@
 $('#target-table td').on('click', function () {
     const day = $(this).data('day');
     const time = $(this).data('time');
-    $('#reservation_day').val(day);
-    $('#selected_time').val(time);
+    $('.selector').val(day);
     $('#selected_date').val(day);
+    $('#selected_time').val(time);
 });
 
 /**
