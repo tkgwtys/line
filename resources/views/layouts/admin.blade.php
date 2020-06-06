@@ -19,13 +19,13 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
     <script src="https://unpkg.com/flatpickr"></script>
     <script src="{{ asset('js/fixed_midashi.js') }}" defer></script>
     <link href="{{ asset('css/bootstrap-fs-modal.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body onLoad="FixedMidashi.create();">
 <div id="app">
