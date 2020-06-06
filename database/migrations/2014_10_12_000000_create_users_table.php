@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('mei_hira')->comment('めい')->nullable();
             $table->string('picture_url')->comment('ラインプロフィール画像')->nullable();
             $table->string('self_introduction')->comment('自己紹介')->nullable();
-            $table->integer('tel')->comment('電話番号')->nullable();
+            $table->string('tel')->comment('電話番号')->nullable();
             $table->integer('level')->comment('10 => 一般、20 => トレーナー')->nullable()->default(10);
             $table->string('email')->unique()->comment('メールアドレス')->nullable();
             $table->timestamp('email_verified_at')->nullable()->nullable();

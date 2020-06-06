@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
                 // PlayersTableSeeder::class,
                 AdminsTableSeeder::class,
                 UsersTableSeeder::class,
+                StoresTableSeeder::class,
+                CoursesTableSeeder::class,
             ]
         );
     }

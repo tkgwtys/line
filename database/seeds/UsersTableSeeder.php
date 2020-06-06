@@ -20,15 +20,14 @@ class UsersTableSeeder extends Seeder
                 'mei' => '武士',
                 'sei_hira' => 'ちば',
                 'mei_hira' => 'たけし',
-                'tel' => '08032015381',
+                'picture_url' => NULL,
+                'tel' => '080-3201-5381',
                 'email' => 'bushi.chiba@abihc.com',
                 'level' => 10,
                 'password' => bcrypt('testtest'),
                 'created_at' => $date,
                 'updated_at' => $date
             ],
-        ]);
-        DB::table('users')->insert([
             [
                 'id' => 'U84b55b6739d5f7ccce8f63de3307f857',
                 'display_name' => 'NAR🐘',
@@ -36,15 +35,14 @@ class UsersTableSeeder extends Seeder
                 'mei' => '永寛',
                 'sei_hira' => 'さど',
                 'mei_hira' => 'ながひろ',
-                'tel' => '09086719258',
+                'picture_url' => NULL,
+                'tel' => '090-8671-9258',
                 'email' => 'nagaric@gmail.com',
                 'level' => 10,
                 'password' => bcrypt('testtest'),
                 'created_at' => $date,
                 'updated_at' => $date
             ],
-        ]);
-        DB::table('users')->insert([
             [
                 'id' => 'Uaedd4989ae9462602187d6d65fb150e2',
                 'display_name' => 'Ryota',
@@ -52,15 +50,14 @@ class UsersTableSeeder extends Seeder
                 'mei' => '亮太',
                 'sei_hira' => 'ひらの',
                 'mei_hira' => 'りょうた',
-                'tel' => '09086719258',
+                'picture_url' => NULL,
+                'tel' => '090-8671-9258',
                 'email' => 'nobori-satuma@live.jp',
                 'level' => 10,
                 'password' => bcrypt('testtest'),
                 'created_at' => $date,
                 'updated_at' => $date
             ],
-        ]);
-        DB::table('users')->insert([
             [
                 'id' => 'U7fb49ca09c50b7d869f4c667eb3dcdc3',
                 'display_name' => '上田翔',
@@ -68,10 +65,10 @@ class UsersTableSeeder extends Seeder
                 'mei' => '翔',
                 'sei_hira' => 'うえだ',
                 'mei_hira' => 'しょう',
-                'tel' => '',
-                'email' => '',
-                'level' => 20,
                 'picture_url' => 'https://profile.line-scdn.net/0hIHA8wAcsFmd8QT3yIy5pMEAEGAoLbxAvBC4NVFlHSwcDJQIxF3dRVlwUHVVZcVU0QyJaVlAWHFVT',
+                'tel' => NULL,
+                'email' => NULL,
+                'level' => 20,
                 'password' => bcrypt('testtest'),
                 'created_at' => $date,
                 'updated_at' => $date
