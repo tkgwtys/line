@@ -123,13 +123,13 @@
                     @csrf
                     <div class="form-group">
                         <label>予約日</label>
-                        <input id="reservation_day" value="" class="selector form-control" type="text"/>
+                        <input id="reservation_day" value="" class="selector form-control form-control-lg" type="text"/>
                     </div>
                     <input type="hidden" value="" id="selected_date" name="selected_date">
                     <!-- 時間 -->
                     <div class="form-group">
                         <label>予約時間</label>
-                        <select class="form-control" id="selected_time" name="selected_time">
+                        <select class="form-control form-control-lg" id="selected_time" name="selected_time">
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
                                     @foreach($time as $hi)
@@ -143,7 +143,7 @@
                     <!-- トレーナ -->
                     <div class="form-group">
                         <label>担当トレーナ</label>
-                        <select class="form-control" id="player" name="player">
+                        <select class="form-control form-control-lg" id="player" name="player">
                             @foreach($player_array as $key => $player)
                                 <option value="{{$player->id}}">{{$player->sei}} {{$player->mei}}</option>
                             @endforeach
@@ -159,7 +159,7 @@
                                 <label class="col-form-label">お名前</label>
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    class="form-control form-control-lg"
                                     id="reservation_user"
                                     placeholder="予約した人の名前が入る予定"
                                     value="佐々木のぞみ">

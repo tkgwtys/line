@@ -12,3 +12,8 @@
 .scroll_div {
     box-sizing: initial;
 }
+
+input {
+    font-size: 20px;
+}
+
