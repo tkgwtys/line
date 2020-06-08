@@ -22,9 +22,12 @@
                     </div>
                 </div>
                 <br>
-                <button data-toggle="modal" data-target="#reservation" type="button"
-                        class="btn btn-primary btn-lg btn-block">予約する
-                </button
+                <button
+                    data-toggle="modal"
+                    data-target="#reservation"
+                    type="button"
+                    class="btn btn-primary btn-lg btn-block">予約する
+                </button>
             </div>
         </div>
     </div>
@@ -48,7 +51,7 @@
                     <form id="reservation_form" method="post" action="/reservation/store">
                         @csrf
                         <div class="form-group">
-                            <label>予約日</label>
+                            <label for="reservation_day">予約日</label>
                             <input id="reservation_day" value="{{$tomorrow}}" class="selector form-control"
                                    type="text"/>
                         </div>
@@ -57,7 +60,7 @@
                         <input type="hidden" value="{{$player->id}}" id="player_id" name="player_id">
                         <!-- 時間 -->
                         <div class="form-group">
-                            <label>予約時間</label>
+                            <label for="selected_time">予約時間</label>
                             <select class="form-control" id="selected_time" name="selected_time">
                                 @foreach($time_array as $key => $time)
                                     <optgroup label="{{$key}}">
@@ -81,7 +84,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label class="col-form-label">お名前</label>
-                                    <input
+                                    <label for="reservation_user"></label><input
                                         disabled
                                         type="text"
                                         class="form-control"
