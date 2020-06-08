@@ -13,7 +13,7 @@ class User extends Authenticatable
     protected $keyType = 'string';
     protected $table = 'users';
 
-    private $level = [
+    private static $level = [
         10 => '一般',
         20 => 'トレーナー',
     ];
@@ -36,14 +36,14 @@ class User extends Authenticatable
         'blocked_at',
     ];
 
-    public function getLevelAll()
+    public static function getLevelAll()
     {
-        return $this->level;
+        return self::$level;
     }
 
     public function getLevel($level = 10)
     {
-        return $this->level[$level];
+        return self::$level[$level];
     }
 
     /**

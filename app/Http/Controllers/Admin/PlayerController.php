@@ -107,10 +107,7 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        $user_level = [
-            10 => '一般',
-            20 => 'トレーナー',
-        ];
+        $user_level = User::getLevelAll();
         $player = User::find($id);
         return view('admin.player.edit', ['player' => $player, 'user_level' => $user_level]);
     }
