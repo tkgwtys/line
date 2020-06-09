@@ -40,6 +40,6 @@
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-primary btn-lg btn-block" href="#" role="button">編集</a>
+        <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/user/'.$user->id.'/edit')}}" role="button">編集</a>
     </div>
 @endsection
