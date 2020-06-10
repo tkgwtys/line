@@ -64,4 +64,39 @@ Breadcrumbs::for('admin.player.create', function ($trail) {
     $trail->push('トレーナ登録', url('/admin/player/create'));
 });
 
+/**
+ * コース一覧
+ * /admin/course
+ */
+Breadcrumbs::for('adminCourses', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('コース管理', url('/admin/course'));
+});
 
+/**
+ * コース詳細
+ * /admin/course/{course}
+ */
+Breadcrumbs::for('adminCourse', function ($trail, $course) {
+    $trail->parent('adminCourses');
+    $trail->push('コース詳細', url('/admin/course/' . $course->id));
+});
+
+/**
+ * コース編集
+ * /admin/user/{course}/edit
+ */
+Breadcrumbs::for('adminCourse.edit', function ($trail, $course){
+    $trail->parent('adminCourse', $course);
+    $trail->push('コース編集', url('/admin/course/'.$course->id.'/edit'));
+});
+
+/**
+ * コース作成
+ * /admin/course/create
+ */
+Breadcrumbs::for('admin.course.create', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('コース管理', url('/admin/course'));
+    $trail->push('コース登録', url('/admin/course/create'));
+});
