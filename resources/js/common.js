@@ -54,6 +54,7 @@ $('#reservation_form').on('submit', function (e) {
         console.log('ng');
     }).always(function (data) {
         // 通信が完了したとき
+        console.log('通る');
     });
 });
 
