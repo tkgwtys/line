@@ -69,10 +69,8 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user_level = [
-            10 => '一般',
-            20 => 'トレーナー',
-        ];
+        $user_level = User::getLevelAll();
+
         $user = User::find($id);
         return view('admin.user.edit', ['user' => $user, 'user_level' => $user_level]);
 
@@ -87,10 +85,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user_level = [
-            10 => '一般',
-            20 => 'トレーナー',
-        ];
+        $user_level = User::getLevelAll();
 
         //UserをDBで見つける
         $user = User::find($id);
@@ -101,6 +96,7 @@ class UserController extends Controller
         $user->mei_hira = $request->mei_hira;
         $user->tel = $request->tel;
         $user->email = $request->email;
+        $user->level = $request->level;
         $user->self_introduction = $request->self_introduction;
         //DBへ保存
         $user->save();
