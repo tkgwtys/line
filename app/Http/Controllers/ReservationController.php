@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
+use Carbon\Carbon;
+use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -31,14 +34,30 @@ class ReservationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return void
+     * @return array
      */
     public function store(Request $request)
     {
-        $selected_date = $request->get('selected_date');    // '2020-06-05',
-        $user_id = $request->get('user_id');                // U8299f8c45d021558f0d6e0355e5ccc6c',
-        $player_id = $request->get('player_id');            // 'U8299f8c45d021558f0d6e0355e5ccc6c',
-        $selected_time = $request->get('selected_time');    //  '07:00',
+        Log::debug($request);
+        // 予約者
+        $user_id = $request->get('user');
+        // トレーナ
+        $player_id = $request->get('player');
+        // 予約日
+        $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time') . ':00');
+        $status = 10;
+        $category = 10;
+        // 保存
+        $reservation = new Reservation();
+        $reservation->fill([
+            'user_id' => $user_id,
+            'player_id' => $player_id,
+            'status' => $status,
+            'category' => $category,
+            'reserved_at' => $reserved_at,
+        ]);
+        $result = $reservation->save();
+        return ['result' => $result];
     }
 
     /**

@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-
 @section('content')
     <div class="container">
         {{ Breadcrumbs::render('adminPlayers') }}
@@ -8,7 +7,7 @@
             @foreach($players as $player)
                 <tr>
                     <td>
-                        <a href="{{url('/admin/player/'. $player->id)}}">
+                        <a href="{{url('/admin/player/'. $player->id . '?start_date='. $today. '&day_count=7')}}">
                             {{$player->sei}}{{$player->mei}}
                         </a>
                         <img src="{{ asset('storage/images/users/'. $player->id .'/original.jpg'). '?' . time() }}"

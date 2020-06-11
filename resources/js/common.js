@@ -47,8 +47,10 @@ $('#reservation_form').on('submit', function (e) {
         url: form.prop('action'),
         data: form.serialize(),
     }).done(function (data) {
+        console.log(data);
         // 通信が成功したときの処理
         console.log('ok');
+        window.location.reload();
     }).fail(function () {
         // 通信が失敗したときの処理
         console.log('ng');
