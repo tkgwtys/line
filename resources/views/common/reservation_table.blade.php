@@ -17,18 +17,16 @@
             <tbody>
             @foreach($days_array as $day)
                 <tr>
-                    <th rowspan="{{count($player_array)}}">{{$day}}</th>
+                    <th rowspan="{{count($player_array)}}" class="viewDay">{{$day}}</th>
                     @foreach($player_array as $key => $player)
                         <th class="playerName">{{$player->sei}}</th>
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
-                                @foreach($reservations as $reservation)
-                                    <td data-day="{{$day}}"
-                                        data-time="{{$hi}}"
-                                        data-toggle="modal"
-                                        data-target="#modalLarge">
-                                    </td>
-                                @endforeach
+                                <td data-day="{{$day}}"
+                                    data-time="{{$hi}}"
+                                    data-toggle="modal"
+                                    data-target="#modalLarge">
+                                </td>
                             @endforeach
                         @endforeach
                 </tr>
