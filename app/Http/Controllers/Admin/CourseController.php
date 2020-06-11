@@ -39,8 +39,12 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
+        //Total_price取得
+        $total_price = $request->price * $request->month_count;
+        $request->request->add(['total_price' => $total_price]); //add
         //POSTデータ一括取得
         $course = Course::create($request->all());
+
         $course->save();
         return redirect('admin/course');
     }

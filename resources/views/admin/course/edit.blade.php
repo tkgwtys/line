@@ -58,14 +58,14 @@
                         {{Form::textarea('description', $course->description,['class' => 'form-control' ])}}
                     </div>
                 </div>
-             <div class="row">
+            </div>
+            <div class="row">
                 <div class="col-sm">
                     <div class="form-group">
-                    <input type="hidden" name="_method" value="patch">
-                    <input type="submit" class="btn btn-primary" value="更新">
+                        <input type="hidden" name="_method" value="patch">
+                        <input type="submit" class="btn btn-primary" value="更新">
                     </div>
                 </div>
-            </div>
         </form>
     </div>
 @endsection
