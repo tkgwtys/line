@@ -22,11 +22,21 @@
                         <th class="playerName">{{$player->sei}}</th>
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
-                                <td data-day="{{$day}}"
-                                    data-time="{{$hi}}"
-                                    data-toggle="modal"
-                                    data-target="#modalLarge">
-                                </td>
+                                @foreach($reservations as $reservation)
+                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
+                                        <td data-day="{{$day}}"
+                                            data-time="{{$hi}}"
+                                            data-toggle="modal"
+                                            data-target="#modalLarge">予約
+                                        </td>
+                                    @else
+                                        <td data-day="{{$day}}"
+                                            data-time="{{$hi}}"
+                                            data-toggle="modal"
+                                            data-target="#modalLarge">
+                                        </td>
+                                    @endif
+                                @endforeach
                             @endforeach
                         @endforeach
                 </tr>
