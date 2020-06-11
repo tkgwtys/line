@@ -15,6 +15,7 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('reservation_id', 64)->comment('予約ID')->nullable();
             $table->string('user_id', 64)->comment('予約者')->nullable();
             $table->string('player_id', 64)->comment('トレーナ')->nullable();
             $table->integer('status')->default(10)->comment('10=>仮予約、20=>却下,30=>確定');

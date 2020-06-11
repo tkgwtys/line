@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ReservationController extends Controller
 {
@@ -39,6 +40,7 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         Log::debug($request);
+        $reservation_id = Str::random(20);
         // 予約者
         $user_id = $request->get('user');
         // トレーナ
