@@ -33,7 +33,7 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>価格（円）</label>
-                        {{Form::input('int', 'price',$course->price,['class' => 'form-control', 'id' => 'price'])}}
+                        {{Form::input('int', 'price',$course->price,['class' => 'form-control', 'id' => 'price', 'onblur' => 'calculate();'])}}
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>コース回数/月</label>
-                        {{Form::input('int', 'month_count',$course->month_count,['class' => 'form-control', 'id' => 'month_count'])}}
+                        {{Form::input('int', 'month_count',$course->month_count,['class' => 'form-control', 'id' => 'month_count', 'onblur'=>'calculate();'])}}
                     </div>
                 </div>
                 <div class="col-sm">

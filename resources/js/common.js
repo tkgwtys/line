@@ -58,13 +58,9 @@ $('#reservation_form').on('submit', function (e) {
 });
 
 //course/edit.blade.php total_price表示
-$(".price,.month_count").on('keyup',function(){
-    var $_t = $(this).parent().parent();
-    console.log($_t);
-    var priceVal = $_t.find('.price');
-    var num01 = isNaN(priceVal.val()) ? 0 : priceVal.val();
-    var m_countVal = $_t.find('.month_count');
-    var num02 = isNaN(m_countVal.val()) ? 0 : m_countVal.val();
-    var sum = num01 * num02;
-    $_t.find('.total_price').html(sum);
-});
+calculate = function()
+{
+    var price = document.getElementById('price').value;
+    var month_count = document.getElementById('month_count').value;
+    document.getElementById('total_price').value = parseInt(price)*parseInt(month_count);
+}
