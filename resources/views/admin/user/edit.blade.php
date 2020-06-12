@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        {{Breadcrumbs::render('adminUser.edit', $user)}}
         <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
