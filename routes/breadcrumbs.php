@@ -6,6 +6,9 @@
  * トップ
  * /admin/home
  */
+
+use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
+
 Breadcrumbs::for('admin.home', function ($trail) {
     $trail->push('ホーム', url('/admin/home'));
 });
@@ -25,7 +28,16 @@ Breadcrumbs::for('adminUsers', function ($trail) {
  */
 Breadcrumbs::for('adminUser', function ($trail, $user) {
     $trail->parent('adminUsers');
-    $trail->push($user->display_name, url('/admin/user' . $user->id));
+    $trail->push('ユーザー詳細', url('/admin/user/' . $user->id));
+});
+
+/**
+ * ユーザー編集
+ * /admin/user/$user->id/edit
+ */
+Breadcrumbs::for('adminUser.edit', function ($trail, $user){
+    $trail->parent('adminUser', $user);
+    $trail->push('ユーザー編集', url('/admin/user/'.$user->id.'/edit'));
 });
 
 /**
@@ -50,4 +62,41 @@ Breadcrumbs::for('admin.player.create', function ($trail) {
     $trail->parent('admin.home');
     $trail->push('トレーナ管理', url('/admin/player'));
     $trail->push('トレーナ登録', url('/admin/player/create'));
+});
+
+/**
+ * コース一覧
+ * /admin/course
+ */
+Breadcrumbs::for('adminCourses', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('コース管理', url('/admin/course'));
+});
+
+/**
+ * コース詳細
+ * /admin/course/{course}
+ */
+Breadcrumbs::for('adminCourse', function ($trail, $course) {
+    $trail->parent('adminCourses');
+    $trail->push('コース詳細', url('/admin/course/' . $course->id));
+});
+
+/**
+ * コース編集
+ * /admin/user/{course}/edit
+ */
+Breadcrumbs::for('adminCourse.edit', function ($trail, $course){
+    $trail->parent('adminCourse', $course);
+    $trail->push('コース編集', url('/admin/course/'.$course->id.'/edit'));
+});
+
+/**
+ * コース作成
+ * /admin/course/create
+ */
+Breadcrumbs::for('admin.course.create', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('コース管理', url('/admin/course'));
+    $trail->push('コース登録', url('/admin/course/create'));
 });
