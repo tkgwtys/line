@@ -12,7 +12,6 @@
             <tr>
                 <th scope="col">コース名</th>
                 <th scope="col">価格</th>
-                <th scope="col">登録日</th>
             </tr>
             </thead>
             <tbody>
@@ -24,19 +23,17 @@
                         </a>
                     </td>
                     <td>
-                        {{$course->price}}円
+                        {{number_format($course->price)}}円
                     </td>
-                    <td>{{$course->created_at}}</td>
-                    <td>
+                    <td align="right">
                         <form action="{{url('/admin/course/'. $course->id)}}" method="post" style="display:inline">
                             @csrf
                             @method('DELETE')
                             <input type="submit" value="削除" class="btn btn-delete btn-danger" onclick="return confirm('削除しますか？')">
                         </form>
-                    </td>
-                    <td>
                         <a href="{{url('/admin/course/'.$course->id.'/edit')}}" class="btn btn-warning">編集</a>
                     </td>
+
                 </tr>
             @endforeach
             </tbody>

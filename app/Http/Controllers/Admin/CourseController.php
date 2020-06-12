@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CreateCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+
 
 
 class CourseController extends Controller
@@ -37,8 +40,9 @@ class CourseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateCourseRequest $request)
     {
+
         //Total_price取得
         $total_price = $request->price * $request->month_count;
         $request->request->add(['total_price' => $total_price]); //add
@@ -82,12 +86,15 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCourseRequest $request, $id)
     {
+        //Total_price取得
+        $total_price = $request->price * $request->month_count;
         $course = Course::find($id);
 
         $course->name = $request->name;
         $course->price = $request->price;
+        $course->total_price = $total_price;
         $course->month_count = $request->month_count;
         $course->course_time = $request->course_time;
         $course->description = $request->description;
