@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Course;
 use App\Models\Player;
+use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,15 +32,15 @@ class PlayerController extends Controller
      */
     public function index()
     {
+        $today = Carbon::now()->toDateString();
         $players = User::where('level', 20)->get();
-        return view('admin.player.index')
-            ->with('players', $players);
+        return view('admin.player.index', compact('players', 'today'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -57,8 +59,6 @@ class PlayerController extends Controller
         if (!(new Filesystem)->isDirectory($path)) {
             (new Filesystem)->makeDirectory($path, 0777, true);
         }
-
-
         // ファイル名ランダム作成
         $file_name = 'original.jpg';
         // POSTデーター取得
@@ -74,28 +74,42 @@ class PlayerController extends Controller
      * Display the specified resource.
      *
      * @param int $player_id
-     * @return void
+     * @return Application|Factory|View
      */
-    public function show($player_id)
+    public function show(Request $request, $player_id)
     {
+        // 開始日
+        $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
+        // 件数
+        $day_count = !empty($request->get('day_count')) ? $request->get('day_count') : 7;
         // 時間
-        $time_array = [];
-        for ($i = 7; $i <= 23; $i++) {
-            for ($j = 0; $j <= 55; $j += 15) {
-                $time_array[$i][$j] = sprintf("%02d:%02d", $i, $j);
-            }
-        }
+        $time_array = Reservation::getOpenTimeArray();
         // トレーナ全員
         $player_array = User::where('level', 20)->get();
-        // 日付
-        $days_array = [];
-        for ($i = 0; $i <= 6; $i++) {
-            $days_array[] = Carbon::today()->addDay($i)->format('Y-m-d');
+        // 件数
+        for ($i = 0; $i <= $day_count; $i++) {
+            $days_array[$i] = Carbon::parse($start_date)->addDay($i)->format('Y-m-d');
         }
-        // プレイヤー１件
+        // コース
+        $courses = Course::all();
+        // プレイヤー１件取得
         $player = User::find($player_id);
+        // 友達一覧
+        $users = User::where('level', 10)->get();
+        // 予約一覧
+        $reservation = new Reservation();
+        $reservations = $reservation->getReservation($start_date, last($days_array));
+        // view
         return view('admin.player.show',
-            compact('player', 'time_array', 'player_array', 'days_array', 'user_level')
+            compact(
+                'courses',
+                'player',
+                'time_array',
+                'player_array',
+                'days_array',
+                'user_level',
+                'reservations',
+                'users')
         );
     }
 
@@ -103,7 +117,7 @@ class PlayerController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return void
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
@@ -143,7 +157,7 @@ class PlayerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return void
+     * @return Application|RedirectResponse|Redirector
      */
     public function destroy($id)
     {

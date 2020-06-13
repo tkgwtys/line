@@ -1,3 +1,4 @@
+$('.spinner-border').css('display', 'none');
 $('#target-table td').on('click', function () {
     const day = $(this).data('day');
     const time = $(this).data('time');
@@ -36,24 +37,32 @@ flatpickr('.selector', {
  * @type {HTMLElement}
  */
 $('#reservation_form').on('submit', function (e) {
+    // ボタンを無効
+    $('button').attr('disabled', true);
+    // スピナー表示
+    $('.spinner-border').css('display', 'block');
     e.preventDefault();
     const form = $(this);
     console.log(form.serializeArray());
     console.log(form.prop('action'));
     console.log(form.prop('method'));
-
     $.ajax({
         type: form.prop('method'),
         url: form.prop('action'),
         data: form.serialize(),
     }).done(function (data) {
+        console.log(data);
         // 通信が成功したときの処理
         console.log('ok');
+        window.location.reload();
     }).fail(function () {
+        $('button').attr('disabled', false);
+        $('.spinner-border').css('display', 'none');
         // 通信が失敗したときの処理
         console.log('ng');
     }).always(function (data) {
         // 通信が完了したとき
+        console.log('通る');
     });
 });
 
