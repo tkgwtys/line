@@ -25,11 +25,11 @@
                                 <input type="hidden" value="{{$r = ''}}">
                                 @foreach($reservations as $reservation)
                                     @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                        {{$r = '予約'}}
+                                        <input type="hidden" value="{{$r = '予約'}}">
                                     @endif
                                 @endforeach
                                 <td data-day="{{$day}}"
-                                    data-time="{{$hi}}"
+                                    data-time="{{$hi}}:00"
                                     data-toggle="modal"
                                     data-target="#modalLarge">
                                     {{$r}}
@@ -68,7 +68,7 @@
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
                                     @foreach($time as $hi)
-                                        <option value="{{$hi}}">{{$hi}}</option>
+                                        <option value="{{$hi}}:00">{{$hi}}</option>
                                     @endforeach
                                 </optgroup>
                             @endforeach
@@ -84,6 +84,17 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- コース -->
+                    <div class="form-group">
+                        <label for="course">コース</label>
+                        <select class="form-control form-control-lg" id="course" name="course">
+                            @foreach($courses as $key => $course)
+                                <option value="{{$course->id}}">{{$course->name}}（{{$course->course_time}}分）
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!-- コース -->
                     <!-- トレーナ -->
                     <div class="form-group">
                         <div class="card">
@@ -102,6 +113,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- トレーナ -->
                     {{--                    <div class="modal-footer">--}}
                     {{--                        button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
                     {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}

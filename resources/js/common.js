@@ -41,7 +41,6 @@ $('#reservation_form').on('submit', function (e) {
     console.log(form.serializeArray());
     console.log(form.prop('action'));
     console.log(form.prop('method'));
-
     $.ajax({
         type: form.prop('method'),
         url: form.prop('action'),

@@ -20,6 +20,7 @@ class CreateReservationsTable extends Migration
             $table->string('player_id', 64)->comment('トレーナ')->nullable();
             $table->integer('status')->default(10)->comment('10=>仮予約、20=>却下,30=>確定');
             $table->integer('category')->default(10)->comment('10=>ライン、20=>WEB');
+            $table->integer('course_id')->comment('コースID');
             $table->dateTime('reserved_at')->comment('10=>ライン、20=>WEB');
             $table->timestamps();
             $table->index(['user_id', 'player_id']);

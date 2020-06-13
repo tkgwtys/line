@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Course;
 use App\Models\Player;
 use App\Models\Reservation;
 use App\Models\User;
@@ -89,6 +90,8 @@ class PlayerController extends Controller
         for ($i = 0; $i <= $day_count; $i++) {
             $days_array[$i] = Carbon::parse($start_date)->addDay($i)->format('Y-m-d');
         }
+        // コース
+        $courses = Course::all();
         // プレイヤー１件取得
         $player = User::find($player_id);
         // 友達一覧
@@ -99,6 +102,7 @@ class PlayerController extends Controller
         // view
         return view('admin.player.show',
             compact(
+                'courses',
                 'player',
                 'time_array',
                 'player_array',

@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'ハイパー管理画面') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ mix('js/app.js')}}?{{time()}}" defer></script>
 {{--    <script src="{{ asset('js/common.js') }}" defer></script>--}}
 
 <!-- Fonts -->

@@ -10,8 +10,10 @@ class Reservation extends Model
     protected $table = 'reservations';
 
     protected $fillable = [
+        'reservation_id',
         'user_id',
         'player_id',
+        'course_id',
         'status',
         'category',
         'reserved_at',

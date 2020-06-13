@@ -7,7 +7,8 @@
     'time_array' => $time_array,
     'users', $users,
     'days_array',$days_array,
-    'reservations', $reservations
+    'reservations', $reservations,
+    'courses', $courses,
     ])
     </div>
 @endsection
