@@ -23,16 +23,17 @@
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
                                 <input type="hidden" value="{{$r = ''}}">
-                                @foreach($reservations as $reservation)
+                                <input type="hidden" value="{{$count = 0}}">
+                                @foreach($reservations as $key => $reservation)
                                     @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
                                         <input type="hidden" value="{{$r = $reservation->sei}}">
+                                        {{$count = $key + 1}}
                                     @endif
                                 @endforeach
-                                <td data-day="{{$day}}"
+                                <td colspan="{{$count}}" data-day="{{$day}}"
                                     data-time="{{$hi}}:00"
                                     data-toggle="modal"
-                                    data-target="#modalLarge">
-                                    {{$r}}
+                                    data-target="#modalLarge">{{$r}}
                                 </td>
                             @endforeach
                         @endforeach
