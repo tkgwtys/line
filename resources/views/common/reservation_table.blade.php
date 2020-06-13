@@ -25,7 +25,7 @@
                                 <input type="hidden" value="{{$r = ''}}">
                                 @foreach($reservations as $reservation)
                                     @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                        <input type="hidden" value="{{$r = '予約'}}">
+                                        <input type="hidden" value="{{$r = $reservation->sei}}">
                                     @endif
                                 @endforeach
                                 <td data-day="{{$day}}"

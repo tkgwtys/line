@@ -46,6 +46,9 @@ class Reservation extends Model
      */
     public function getReservation($start, $end)
     {
-        return DB::table($this->table)->whereBetween('reserved_at', [$start, $end])->get();
+        return DB::table($this->table)
+            ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
+            ->whereBetween('reserved_at', [$start, $end])
+            ->get();
     }
 }
