@@ -24,6 +24,7 @@ class CreateReservationsTable extends Migration
             $table->dateTime('reserved_at')->comment('10=>ライン、20=>WEB');
             $table->timestamps();
             $table->index(['reservation_id', 'user_id', 'player_id']);
+            $table->index('reserved_at');
         });
     }
 
