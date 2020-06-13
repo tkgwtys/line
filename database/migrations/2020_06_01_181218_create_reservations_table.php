@@ -23,7 +23,7 @@ class CreateReservationsTable extends Migration
             $table->integer('course_id')->comment('コースID');
             $table->dateTime('reserved_at')->comment('10=>ライン、20=>WEB');
             $table->timestamps();
-            $table->index(['user_id', 'player_id']);
+            $table->index(['reservation_id', 'user_id', 'player_id']);
         });
     }
 

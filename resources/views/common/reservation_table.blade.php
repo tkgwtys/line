@@ -127,7 +127,14 @@
                     {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
                     {{--                    <span class="d-md-none">Save</span>--}}
                     {{--                </button>--}}
-                    <button type="submit" class="btn btn-success">予約確定する</button>
+                    <button type="submit" class="btn btn-success">
+                        <span
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true">
+                        </span>
+                        予約確定する
+                    </button>
                 </div>
             </form>
         </div>
