@@ -1,6 +1,6 @@
 <div class="scroll_div">
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-sm table-hover"
+        <table class="table table-bordered table-sm table-hover"
                id="target-table"
                _fixedhead="rows:1; cols:2">
             <thead>
@@ -15,50 +15,25 @@
             </tr>
             </thead>
             <tbody>
-            @php
-            $count = 0;
-            @endphp
             @foreach($days_array as $day)
                 <tr>
                     <th rowspan="{{count($player_array)}}" class="viewDay">{{$day}}</th>
                     @foreach($player_array as $key => $player)
                         <th class="playerName">{{$player->sei}}</th>
                         @foreach($time_array as $key => $time)
-                            @foreach($time as $k => $hi)
-                                <td colspan="{{$count}}" data-day="{{$day}}"
+                            @foreach($time as $hi)
+                                <input type="hidden" value="{{$r = ''}}">
+                                @foreach($reservations as $reservation)
+                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
+                                        <input type="hidden" value="{{$r = $reservation->sei}}">
+                                    @endif
+                                @endforeach
+                                <td data-day="{{$day}}"
                                     data-time="{{$hi}}:00"
                                     data-toggle="modal"
                                     data-target="#modalLarge">
+                                    {{$r}}
                                 </td>
-                                {{--                                @php--}}
-                                {{--                                    $r = '';--}}
-                                {{--                                    $count = 0;--}}
-                                {{--                                    $reservation_id = '';--}}
-                                {{--                                @endphp--}}
-                                {{--                                @foreach($reservations as $key => $reservation)--}}
-                                {{--                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)--}}
-                                {{--                                        @if($reservation->reservation_id)--}}
-                                {{--                                            @php--}}
-                                {{--                                                $count = $key + 1;--}}
-                                {{--                                            @endphp--}}
-                                {{--                                            @break--}}
-                                {{--                                        @endif--}}
-                                {{--                                    @else--}}
-                                {{--                                    @endif--}}
-                                {{--                                @endforeach--}}
-                                {{--                                @if($count > 0)--}}
-                                {{--                                    <td colspan="{{$count}}" data-day="{{$day}}"--}}
-                                {{--                                        data-time="{{$hi}}:00"--}}
-                                {{--                                        data-toggle="modal"--}}
-                                {{--                                        data-target="#modalLarge">{{$count}}--}}
-                                {{--                                    </td>--}}
-                                {{--                                @else--}}
-                                {{--                                    <td colspan="{{$count}}" data-day="{{$day}}"--}}
-                                {{--                                        data-time="{{$hi}}:00"--}}
-                                {{--                                        data-toggle="modal"--}}
-                                {{--                                        data-target="#modalLarge">--}}
-                                {{--                                    </td>--}}
-                                {{--                                @endif--}}
                             @endforeach
                         @endforeach
                 </tr>
