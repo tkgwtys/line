@@ -58,9 +58,26 @@ $('#reservation_form').on('submit', function (e) {
 });
 
 //course/edit.blade.php total_price表示
-calculate = function()
-{
+calculate = function() {
     var price = document.getElementById('price').value;
     var month_count = document.getElementById('month_count').value;
-    document.getElementById('total_price').value = parseInt(price)*parseInt(month_count);
+    var total_price = parseInt(price)*parseInt(month_count);
+    if(isNaN(total_price)) {
+        document.getElementById('total_price').value = 0;
+    }else{
+        document.getElementById('total_price').value = total_price;
+    }
 }
+//数字のみ入力
+$('#price').on('input', function() {
+    let value = $(this).val();
+    $(this).val(value.replace(/[^0-9]+/g, ''));
+});
+$('#month_count').on('input', function() {
+    let value = $(this).val();
+    $(this).val(value.replace(/[^0-9]+/g, ''));
+});
+$('#course_time').on('input', function() {
+    let value = $(this).val();
+    $(this).val(value.replace(/[^0-9]+/g, ''));
+});
