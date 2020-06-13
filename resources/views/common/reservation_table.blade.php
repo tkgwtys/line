@@ -15,26 +15,50 @@
             </tr>
             </thead>
             <tbody>
+            @php
+            $count = 0;
+            @endphp
             @foreach($days_array as $day)
                 <tr>
                     <th rowspan="{{count($player_array)}}" class="viewDay">{{$day}}</th>
                     @foreach($player_array as $key => $player)
                         <th class="playerName">{{$player->sei}}</th>
                         @foreach($time_array as $key => $time)
-                            @foreach($time as $hi)
-                                <input type="hidden" value="{{$r = ''}}">
-                                <input type="hidden" value="{{$count = 0}}">
-                                @foreach($reservations as $key => $reservation)
-                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                        <input type="hidden" value="{{$r = $reservation->sei}}">
-                                        {{$count = $key + 1}}
-                                    @endif
-                                @endforeach
+                            @foreach($time as $k => $hi)
                                 <td colspan="{{$count}}" data-day="{{$day}}"
                                     data-time="{{$hi}}:00"
                                     data-toggle="modal"
-                                    data-target="#modalLarge">{{$r}}
+                                    data-target="#modalLarge">
                                 </td>
+                                {{--                                @php--}}
+                                {{--                                    $r = '';--}}
+                                {{--                                    $count = 0;--}}
+                                {{--                                    $reservation_id = '';--}}
+                                {{--                                @endphp--}}
+                                {{--                                @foreach($reservations as $key => $reservation)--}}
+                                {{--                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)--}}
+                                {{--                                        @if($reservation->reservation_id)--}}
+                                {{--                                            @php--}}
+                                {{--                                                $count = $key + 1;--}}
+                                {{--                                            @endphp--}}
+                                {{--                                            @break--}}
+                                {{--                                        @endif--}}
+                                {{--                                    @else--}}
+                                {{--                                    @endif--}}
+                                {{--                                @endforeach--}}
+                                {{--                                @if($count > 0)--}}
+                                {{--                                    <td colspan="{{$count}}" data-day="{{$day}}"--}}
+                                {{--                                        data-time="{{$hi}}:00"--}}
+                                {{--                                        data-toggle="modal"--}}
+                                {{--                                        data-target="#modalLarge">{{$count}}--}}
+                                {{--                                    </td>--}}
+                                {{--                                @else--}}
+                                {{--                                    <td colspan="{{$count}}" data-day="{{$day}}"--}}
+                                {{--                                        data-time="{{$hi}}:00"--}}
+                                {{--                                        data-toggle="modal"--}}
+                                {{--                                        data-target="#modalLarge">--}}
+                                {{--                                    </td>--}}
+                                {{--                                @endif--}}
                             @endforeach
                         @endforeach
                 </tr>
