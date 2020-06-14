@@ -22,17 +22,23 @@
                         <th class="playerName">{{$player->sei}}</th>
                         @foreach($time_array as $key => $time)
                             @foreach($time as $hi)
-                                <input type="hidden" value="{{$r = ''}}">
-                                @foreach($reservations as $reservation)
-                                    @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                        <input type="hidden" value="{{$r = $reservation->sei}}">
-                                    @endif
-                                @endforeach
-                                <td data-day="{{$day}}"
+                                @php
+                                    $count = 0;
+                                @endphp
+                                <td colspan="{{$count}}"
+                                    data-day="{{$day}}"
+                                    data-player_id="{{$player->id}}"
                                     data-time="{{$hi}}:00"
                                     data-toggle="modal"
                                     data-target="#modalLarge">
-                                    {{$r}}
+                                    @foreach($reservations as $reservation)
+                                        @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
+                                            <div>
+                                                {{$reservation->sei}}{{$reservation->mei}}
+                                                【{{$reservation->name}}（{{$reservation->course_time}}分）】
+                                            </div>
+                                        @endif
+                                    @endforeach
                                 </td>
                             @endforeach
                         @endforeach

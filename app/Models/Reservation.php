@@ -48,6 +48,7 @@ class Reservation extends Model
     {
         return DB::table($this->table)
             ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
+            ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
             ->whereBetween('reserved_at', [$start, $end])
             ->get();
     }
