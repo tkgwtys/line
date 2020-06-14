@@ -3,8 +3,11 @@ $('#target-table td').on('click', function () {
     const day = $(this).data('day');
     const time = $(this).data('time');
     const playerId = $(this).data('player_id');
+    const user_id = $(this).children('div').data('user_id');
+    // トレーナのデフォルト値
     $('#player').val(playerId);
-
+    // 予約した人のデフォルト値
+    $('#user').val(user_id);
     $('.selector').val(day);
     $('#selected_date').val(day);
     $('#selected_time').val(time);
