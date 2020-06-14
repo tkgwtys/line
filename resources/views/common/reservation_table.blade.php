@@ -57,6 +57,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="reservation_form" method="post" action="/admin/reservation">
+                @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLargeLabel">
                         <span id="reservation_label"></span>
