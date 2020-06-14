@@ -34,6 +34,7 @@
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
                                             <div
+                                                data-course_id="{{$reservation->course_id}}"
                                                 data-user_id="{{$reservation->user_id}}">
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
@@ -81,6 +82,12 @@
                                 </optgroup>
                             @endforeach
                         </select>
+                        <div
+                            id="err_selected_time"
+                            class="alert alert-danger"
+                            role="alert"
+                            style="display: none">
+                        </div>
                     </div>
                     <!-- 時間 -->
                     <!-- トレーナ -->
@@ -92,6 +99,12 @@
                                 <option value="{{$player->id}}">{{$player->sei}} {{$player->mei}}</option>
                             @endforeach
                         </select>
+                        <div
+                            id="err_player"
+                            class="alert alert-danger"
+                            role="alert"
+                            style="display: none">
+                        </div>
                     </div>
                     <!-- コース -->
                     <div class="form-group">
@@ -99,10 +112,18 @@
                         <select class="form-control form-control-lg" id="course" name="course">
                             <option value="">選択してください</option>
                             @foreach($courses as $key => $course)
-                                <option value="{{$course->id}}">{{$course->name}}（{{$course->course_time}}分）
+                                <option
+                                    value="{{$course->id}}">
+                                    {{$course->name}}（{{$course->course_time}}分）
                                 </option>
                             @endforeach
                         </select>
+                        <div
+                            id="err_course"
+                            class="alert alert-danger"
+                            role="alert"
+                            style="display: none">
+                        </div>
                     </div>
                     <!-- コース -->
                     <!-- トレーナ -->
@@ -115,10 +136,16 @@
                                 <div class="form-group">
                                     <label for="user">お名前</label>
                                     <select class="form-control form-control-lg" id="user" name="user">
+                                        <option value="">選択してください</option>
                                         @foreach($users as $key => $user)
                                             <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
                                         @endforeach
                                     </select>
+                                    <div
+                                        id="err_user"
+                                        class="alert alert-danger"
+                                        role="alert"
+                                        style="display: none"></div>
                                 </div>
                             </div>
                         </div>
