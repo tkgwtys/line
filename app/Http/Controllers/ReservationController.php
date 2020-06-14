@@ -42,6 +42,7 @@ class ReservationController extends Controller
      */
     public function store(CreateReservationRequest $request)
     {
+
         $tick = 15;
         // ステータス
         $status = 10;
@@ -51,7 +52,6 @@ class ReservationController extends Controller
         $insert_array = [];
         DB::beginTransaction();
         try {
-            Log::debug($request);
             // 予約番号
             $reservation_id = Str::random(20);
             // 予約者
@@ -61,36 +61,21 @@ class ReservationController extends Controller
             // コース
             $course_id = (int)$request->get('course');
             // 予約日
-            $future_time_string = $request->get('selected_date') . ' ' . $request->get('selected_time');
             $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time'));
             // コースが存在するか
             $course = Course::find($course_id)->first();
             if (!$course) {
                 Log::debug('コースがない');
             }
-            // マックス時間
-            $future_time = Carbon::parse($reserved_at)->addMinutes($course->course_time)->format('Y-m-d h:i:s');
-            // １５分刻みに作成
-            for ($i = 0; $i < 10; $i++) {
-                $insert_array[] = $reserved_at->addMinutes($tick)->format('Y-m-d h:i:s');
-                if (last($insert_array) == $future_time) {
-                    array_pop($insert_array);
-                    break;
-                }
-            }
-            array_unshift($insert_array, $future_time_string);
-            $insert_date_times = [];
-            foreach ($insert_array as $key => $val) {
-                $insert_date_times[] = [
-                    'reservation_id' => $reservation_id,
-                    'user_id' => $user_id,
-                    'player_id' => $player_id,
-                    'status' => $status,
-                    'category' => $category,
-                    'course_id' => $course_id,
-                    'reserved_at' => $val];
-            }
-            $result = Reservation::insert($insert_date_times);
+            $insert_data = [
+                'reservation_id' => $reservation_id,
+                'user_id' => $user_id,
+                'player_id' => $player_id,
+                'status' => $status,
+                'category' => $category,
+                'course_id' => $course_id,
+                'reserved_at' => $reserved_at];
+            $result = Reservation::insert($insert_data);
             DB::commit();
             return ['result' => $result];
         } catch (\Exception $e) {
@@ -98,6 +83,64 @@ class ReservationController extends Controller
             print_r($e);
         }
     }
+
+//    public function store(CreateReservationRequest $request)
+//    {
+//        $tick = 15;
+//        // ステータス
+//        $status = 10;
+//        // カテゴリー
+//        $category = 10;
+//        //
+//        $insert_array = [];
+//        DB::beginTransaction();
+//        try {
+//            // 予約番号
+//            $reservation_id = Str::random(20);
+//            // 予約者
+//            $user_id = $request->get('user');
+//            // トレーナ
+//            $player_id = $request->get('player');
+//            // コース
+//            $course_id = (int)$request->get('course');
+//            // 予約日
+//            $future_time_string = $request->get('selected_date') . ' ' . $request->get('selected_time');
+//            $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time'));
+//            // コースが存在するか
+//            $course = Course::find($course_id)->first();
+//            if (!$course) {
+//                Log::debug('コースがない');
+//            }
+//            // マックス時間
+//            $future_time = Carbon::parse($reserved_at)->addMinutes($course->course_time)->format('Y-m-d h:i:s');
+//            // １５分刻みに作成
+//            for ($i = 0; $i < 10; $i++) {
+//                $insert_array[] = $reserved_at->addMinutes($tick)->format('Y-m-d h:i:s');
+//                if (last($insert_array) == $future_time) {
+//                    array_pop($insert_array);
+//                    break;
+//                }
+//            }
+//            array_unshift($insert_array, $future_time_string);
+//            $insert_date_times = [];
+//            foreach ($insert_array as $key => $val) {
+//                $insert_date_times[] = [
+//                    'reservation_id' => $reservation_id,
+//                    'user_id' => $user_id,
+//                    'player_id' => $player_id,
+//                    'status' => $status,
+//                    'category' => $category,
+//                    'course_id' => $course_id,
+//                    'reserved_at' => $val];
+//            }
+//            $result = Reservation::insert($insert_date_times);
+//            DB::commit();
+//            return ['result' => $result];
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            print_r($e);
+//        }
+//    }
 
     /**
      * Display the specified resource.
