@@ -9,6 +9,7 @@
     'days_array',$days_array,
     'reservations', $reservations,
     'courses', $courses,
+    'today_link', $today_link,
     ])
     </div>
 @endsection

@@ -82,6 +82,9 @@ class PlayerController extends Controller
         $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
         // 件数
         $day_count = !empty($request->get('day_count')) ? $request->get('day_count') : 7;
+        // 本日リンク
+        $today_link = '/admin/player/' . $player_id . '?start_date=' . Carbon::now()->toDateString() . '&day_count=' . $day_count;
+        $next_week = '/admin/player/' . $player_id . '?start_date=' . Carbon::now()->toDateString() . '&day_count=' . $day_count;
         // 時間
         $time_array = Reservation::getOpenTimeArray();
         // トレーナ全員
@@ -103,6 +106,7 @@ class PlayerController extends Controller
         return view('admin.player.show',
             compact(
                 'courses',
+                'today_link',
                 'player',
                 'time_array',
                 'player_array',

@@ -1,5 +1,8 @@
 <div class="scroll_div">
     <div class="table-responsive">
+        <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
+        <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
+        <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
         <table class="table table-bordered table-sm table-hover"
                id="target-table"
                _fixedhead="rows:1; cols:2">
