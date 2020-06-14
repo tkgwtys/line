@@ -159,9 +159,9 @@
                             </div>
                         </div>
                     </div>
-                    <!-- トレーナ -->
+                    {{--                    <!-- トレーナ -->--}}
                     {{--                    <div class="modal-footer">--}}
-                    {{--                        button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
+                    {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
                     {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
                     {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
                     {{--                    </div>--}}
@@ -179,7 +179,7 @@
                             role="status"
                             aria-hidden="true">
                         </span>
-                        予約確定する
+                        予約確定
                     </button>
                 </div>
             </form>
