@@ -33,7 +33,7 @@
                                     data-target="#modalLarge">
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                            <div>
+                                            <div data-user_id="{{$reservation->user_id}}">
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
                                             </div>
