@@ -11,6 +11,16 @@ $('#target-table td').on('click', function () {
     const user_id = $(this).children('div').data('user_id');
     // コースID
     const course_id = $(this).children('div').data('course_id');
+    // 予約ID
+    const reservation_id = $(this).children('div').data('reservation_id');
+    // 予約フォームラベル
+    $('#reservation_label').text('予約フォーム');
+    if (typeof reservation_id === "undefined") {
+        $('#reservation_label').html('<span class="badge badge-primary">新規予約</span>');
+    } else {
+        $('#reservation_label').html('<span class="badge badge-warning">予約申請</span>');
+    }
+    console.log(reservation_id);
     // トレーナのデフォルト値
     $('#player').val(playerId);
     // 予約した人のデフォルト値

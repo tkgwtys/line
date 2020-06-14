@@ -35,7 +35,8 @@
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
                                             <div
                                                 data-course_id="{{$reservation->course_id}}"
-                                                data-user_id="{{$reservation->user_id}}">
+                                                data-user_id="{{$reservation->user_id}}"
+                                                data-reservation_id="{{$reservation->reservation_id}}">
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
                                             </div>
@@ -57,39 +58,46 @@
         <div class="modal-content">
             <form id="reservation_form" method="post" action="/admin/reservation">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLargeLabel">予約フォーム</h5>
+                    <h5 class="modal-title" id="modalLargeLabel">
+                        <span id="reservation_label"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    @csrf
-                    <div class="form-group">
-                        <label for="reservation_day">予約日</label>
-                        <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
-                    </div>
-                    <input type="hidden" value="" id="selected_date" name="selected_date">
-                    <!-- 時間 -->
-                    <div class="form-group">
-                        <label for="selected_time">予約時間</label>
-                        <select class="form-control form-control-lg" id="selected_time" name="selected_time">
-                            <option value="">選択してください</option>
-                            @foreach($time_array as $key => $time)
-                                <optgroup label="{{$key}}">
-                                    @foreach($time as $hi)
-                                        <option value="{{$hi}}:00">{{$hi}}</option>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="reservation_day">予約日</label>
+                                <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
+                            </div>
+                            <input type="hidden" value="" id="selected_date" name="selected_date">
+                        </div>
+                        <div class="col">
+                            <!-- 時間 -->
+                            <div class="form-group">
+                                <label for="selected_time">予約時間</label>
+                                <select class="form-control form-control-lg" id="selected_time" name="selected_time">
+                                    <option value="">選択してください</option>
+                                    @foreach($time_array as $key => $time)
+                                        <optgroup label="{{$key}}">
+                                            @foreach($time as $hi)
+                                                <option value="{{$hi}}:00">{{$hi}}</option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
-                                </optgroup>
-                            @endforeach
-                        </select>
-                        <div
-                            id="err_selected_time"
-                            class="alert alert-danger"
-                            role="alert"
-                            style="display: none">
+                                </select>
+                                <div
+                                    id="err_selected_time"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    style="display: none">
+                                </div>
+                            </div>
+                            <!-- 時間 -->
                         </div>
                     </div>
-                    <!-- 時間 -->
                     <!-- トレーナ -->
                     <div class="form-group">
                         <label for="player">担当トレーナ</label>
