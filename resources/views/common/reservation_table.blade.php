@@ -33,7 +33,8 @@
                                     data-target="#modalLarge">
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                            <div>
+                                            <div
+                                                data-user_id="{{$reservation->user_id}}">
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
                                             </div>
@@ -71,6 +72,7 @@
                     <div class="form-group">
                         <label for="selected_time">予約時間</label>
                         <select class="form-control form-control-lg" id="selected_time" name="selected_time">
+                            <option value="">選択してください</option>
                             @foreach($time_array as $key => $time)
                                 <optgroup label="{{$key}}">
                                     @foreach($time as $hi)
@@ -85,6 +87,7 @@
                     <div class="form-group">
                         <label for="player">担当トレーナ</label>
                         <select class="form-control form-control-lg" id="player" name="player">
+                            <option value="">選択してください</option>
                             @foreach($player_array as $key => $player)
                                 <option value="{{$player->id}}">{{$player->sei}} {{$player->mei}}</option>
                             @endforeach
@@ -94,6 +97,7 @@
                     <div class="form-group">
                         <label for="course">コース</label>
                         <select class="form-control form-control-lg" id="course" name="course">
+                            <option value="">選択してください</option>
                             @foreach($courses as $key => $course)
                                 <option value="{{$course->id}}">{{$course->name}}（{{$course->course_time}}分）
                                 </option>
