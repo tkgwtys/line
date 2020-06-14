@@ -19,6 +19,7 @@ class Store extends Model
         'tel',
         'url',
         'business_hours',
+        'color_code',
         'created_at',
         'updated_at',
     ];

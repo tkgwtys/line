@@ -79,7 +79,20 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $store = Store::find($id);
+
+        $store->name = $request->name;
+        $store->address = $request->address;
+        $store->tel = $request->tel;
+        $store->url = $request->url;
+        $store->business_hours = $request->business_hours;
+        $store->color_code = $request->color_code;
+
+        $store->save();
+        session()->flash('flash_message', '登録が完了しました');
+        return view('admin.store.edit',['store' => $store]);
+
+
     }
 
     /**

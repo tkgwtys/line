@@ -1,17 +1,13 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
-        {{Breadcrumbs::render('adminCourse.edit', $course)}}
+        {{Breadcrumbs::render('adminStore.edit', $store)}}
         <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
                 {{ session('flash_message') }}
             </div>
         @endif
-        <div class="card-header">{{ __('Register') }}</div>
-        <div class="card-body">
-        <h1>コース編集</h1>
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -21,41 +17,47 @@
                 </ul>
             </div>
         @endif
-        <form action="{{route('course.update',$course->id)}}" enctype="multipart/form-data" method="post">
+        <form action="{{route('store.update', $store->id)}}" enctype="multipart/form-data" method="post">
             @csrf
             <div class="row">
                 <div class="col-sm">
                     <div class="form-group">
                         <label>コース名</label>
-                        {{Form::input('text', 'name',$course->name,['class' => 'form-control'])}}
+                        {{Form::input('text', 'name',$store->name,['class' => 'form-control'])}}
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
-                        <label>価格（円）</label>
-                        {{Form::input('int', 'price',$course->price,['class' => 'form-control'])}}
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm">
-                    <div class="form-group">
-                        <label>コース回数/月</label>
-                        {{Form::input('int', 'month_count',$course->month_count,['class' => 'form-control'])}}
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <div class="form-group">
-                        <label>コース時間</label>
-                        {{Form::input('int', 'course_time',$course->course_time,['class' => 'form-control'])}}
+                        <label>住所</label>
+                        {{Form::input('text', 'address',$store->address,['class' => 'form-control'])}}
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm">
                     <div class="form-group">
-                        <label>コース説明</label>
-                        {{Form::textarea('description', $course->description,['class' => 'form-control' ])}}
+                        <label>電話番号</label>
+                        {{Form::input('int', 'tel',$store->tel,['class' => 'form-control'])}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label>URL</label>
+                        {{Form::input('text', 'url',$store->url,['class' => 'form-control'])}}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label>営業時間</label>
+                        {{Form::input('text','business_hours', $store->business_hours,['class' => 'form-control' ])}}
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label>カラーコード</label>
+                        {{Form::input('text','color_code', $store->color_code,['class' => 'form-control' ])}}
                     </div>
                 </div>
             </div>
@@ -66,6 +68,6 @@
                         <input type="submit" class="btn btn-primary" value="更新">
                     </div>
                 </div>
+            </div>
         </form>
-    </div>
 @endsection

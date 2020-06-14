@@ -3,39 +3,39 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminCourse', $course) }}
+        {{ Breadcrumbs::render('adminCourse', $store) }}
         <table class="table table-bordered">
             <tbody>
             <tr>
                 <th style="width: 35%;">コース名</th>
-                <td>{{$course->name}}</td>
+                <td>{{$store->name}}</td>
             </tr>
             <tr>
-                <th>価格</th>
-                <td>{{$course->price}}</td>
+                <th>住所</th>
+                <td>{{$store->address}}</td>
             </tr>
             <tr>
-                <th>コース回数/月</th>
-                <td>{{$course->month_count}}</td>
+                <th>電話番号</th>
+                <td>{{$store->tel}}</td>
             </tr>
             <tr>
-                <th>合計価格</th>
-                <td>{{$course->total_price}}</td>
+                <th>URL</th>
+                <td>
+                    <a href="{{$store->url}}">
+                        {{$store->url}}
+                    </a>
+                </td>
             </tr>
             <tr>
-                <th>コース時間</th>
-                <td>{{$course->course_time}}</td>
+                <th>営業時間</th>
+                <td>{{$store->business_hours}}</td>
             </tr>
             <tr>
-                <th>コース説明</th>
-                <td>{{$course->description}}</td>
-            </tr>
-            <tr>
-                <th>登録日</th>
-                <td>{{$course->created_at}}</td>
+                <th>カラーコード</th>
+                <td>{{$store->color_code}}</td>
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/course/'.$course->id.'/edit')}}" role="button">編集</a>
+        <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/store/'.$store->id.'/edit')}}" role="button">編集</a>
     </div>
 @endsection

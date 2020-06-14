@@ -20,6 +20,7 @@ class CreateStoresTable extends Migration
             $table->string('tel')->comment('電話番号')->nullable();
             $table->string('url')->comment('HP')->nullable();
             $table->string('business_hours')->comment('営業事案')->nullable();
+            $table->string('color_code')->comment('カラーコード')->nullable();
             $table->timestamps();
         });
     }

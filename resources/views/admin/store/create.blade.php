@@ -3,7 +3,6 @@
 @section('content')
     <div class="container">
         {{ Breadcrumbs::render('admin.store.create') }}
-        <h1>ストア登録</h1>
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -44,10 +43,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-sm">
                 <div class="form-group">
                     <label>営業時間</label>
                     {{Form::input('text','business_hours',old('business_horus'), ['class' => 'form-control','placeholder' => '営業時間を入力してください'])}}
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label>カラーコード</label>
+                    {{Form::input('text','color_code',old('color_code'), ['class' => 'form-control','placeholder' => 'カラーコードを入力してください'])}}
                 </div>
             </div>
         </div>
