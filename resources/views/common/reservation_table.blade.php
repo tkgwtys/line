@@ -1,5 +1,8 @@
 <div class="scroll_div">
     <div class="table-responsive">
+        <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
+        <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
+        <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
         <table class="table table-bordered table-sm table-hover"
                id="target-table"
                _fixedhead="rows:1; cols:2">
@@ -34,7 +37,9 @@
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
                                             <div
-                                                data-user_id="{{$reservation->user_id}}">
+                                                data-course_id="{{$reservation->course_id}}"
+                                                data-user_id="{{$reservation->user_id}}"
+                                                data-reservation_id="{{$reservation->reservation_id}}">
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
                                             </div>
@@ -55,34 +60,48 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="reservation_form" method="post" action="/admin/reservation">
+                @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLargeLabel">予約フォーム</h5>
+                    <h5 class="modal-title" id="modalLargeLabel">
+                        <span id="reservation_label"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    @csrf
-                    <div class="form-group">
-                        <label for="reservation_day">予約日</label>
-                        <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
-                    </div>
-                    <input type="hidden" value="" id="selected_date" name="selected_date">
-                    <!-- 時間 -->
-                    <div class="form-group">
-                        <label for="selected_time">予約時間</label>
-                        <select class="form-control form-control-lg" id="selected_time" name="selected_time">
-                            <option value="">選択してください</option>
-                            @foreach($time_array as $key => $time)
-                                <optgroup label="{{$key}}">
-                                    @foreach($time as $hi)
-                                        <option value="{{$hi}}:00">{{$hi}}</option>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="reservation_day">予約日</label>
+                                <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
+                            </div>
+                            <input type="hidden" value="" id="selected_date" name="selected_date">
+                        </div>
+                        <div class="col">
+                            <!-- 時間 -->
+                            <div class="form-group">
+                                <label for="selected_time">予約時間</label>
+                                <select class="form-control form-control-lg" id="selected_time" name="selected_time">
+                                    <option value="">選択してください</option>
+                                    @foreach($time_array as $key => $time)
+                                        <optgroup label="{{$key}}">
+                                            @foreach($time as $hi)
+                                                <option value="{{$hi}}:00">{{$hi}}</option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
-                                </optgroup>
-                            @endforeach
-                        </select>
+                                </select>
+                                <div
+                                    id="err_selected_time"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    style="display: none">
+                                </div>
+                            </div>
+                            <!-- 時間 -->
+                        </div>
                     </div>
-                    <!-- 時間 -->
                     <!-- トレーナ -->
                     <div class="form-group">
                         <label for="player">担当トレーナ</label>
@@ -92,6 +111,12 @@
                                 <option value="{{$player->id}}">{{$player->sei}} {{$player->mei}}</option>
                             @endforeach
                         </select>
+                        <div
+                            id="err_player"
+                            class="alert alert-danger"
+                            role="alert"
+                            style="display: none">
+                        </div>
                     </div>
                     <!-- コース -->
                     <div class="form-group">
@@ -99,10 +124,18 @@
                         <select class="form-control form-control-lg" id="course" name="course">
                             <option value="">選択してください</option>
                             @foreach($courses as $key => $course)
-                                <option value="{{$course->id}}">{{$course->name}}（{{$course->course_time}}分）
+                                <option
+                                    value="{{$course->id}}">
+                                    {{$course->name}}（{{$course->course_time}}分）
                                 </option>
                             @endforeach
                         </select>
+                        <div
+                            id="err_course"
+                            class="alert alert-danger"
+                            role="alert"
+                            style="display: none">
+                        </div>
                     </div>
                     <!-- コース -->
                     <!-- トレーナ -->
@@ -115,17 +148,23 @@
                                 <div class="form-group">
                                     <label for="user">お名前</label>
                                     <select class="form-control form-control-lg" id="user" name="user">
+                                        <option value="">選択してください</option>
                                         @foreach($users as $key => $user)
                                             <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
                                         @endforeach
                                     </select>
+                                    <div
+                                        id="err_user"
+                                        class="alert alert-danger"
+                                        role="alert"
+                                        style="display: none"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- トレーナ -->
+                    {{--                    <!-- トレーナ -->--}}
                     {{--                    <div class="modal-footer">--}}
-                    {{--                        button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
+                    {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
                     {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
                     {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
                     {{--                    </div>--}}
@@ -143,7 +182,7 @@
                             role="status"
                             aria-hidden="true">
                         </span>
-                        予約確定する
+                        予約確定
                     </button>
                 </div>
             </form>
