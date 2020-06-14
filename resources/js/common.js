@@ -2,6 +2,9 @@ $('.spinner-border').css('display', 'none');
 $('#target-table td').on('click', function () {
     const day = $(this).data('day');
     const time = $(this).data('time');
+    const playerId = $(this).data('player_id');
+    $('#player').val(playerId);
+
     $('.selector').val(day);
     $('#selected_date').val(day);
     $('#selected_time').val(time);
@@ -43,9 +46,6 @@ $('#reservation_form').on('submit', function (e) {
     $('.spinner-border').css('display', 'block');
     e.preventDefault();
     const form = $(this);
-    console.log(form.serializeArray());
-    console.log(form.prop('action'));
-    console.log(form.prop('method'));
     $.ajax({
         type: form.prop('method'),
         url: form.prop('action'),

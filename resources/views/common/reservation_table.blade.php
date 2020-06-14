@@ -25,14 +25,18 @@
                                 @php
                                     $count = 0;
                                 @endphp
-                                <td colspan="{{$count}}" data-day="{{$day}}"
+                                <td colspan="{{$count}}"
+                                    data-day="{{$day}}"
+                                    data-player_id="{{$player->id}}"
                                     data-time="{{$hi}}:00"
                                     data-toggle="modal"
                                     data-target="#modalLarge">
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                            {{$reservation->sei}}{{$reservation->mei}}
-                                            {{$reservation->name}}（{{$reservation->course_time}}分）
+                                            <div>
+                                                {{$reservation->sei}}{{$reservation->mei}}
+                                                【{{$reservation->name}}（{{$reservation->course_time}}分）】
+                                            </div>
                                         @endif
                                     @endforeach
                                 </td>
