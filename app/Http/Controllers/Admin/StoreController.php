@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\CreateStoreRequest;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,7 +38,7 @@ class StoreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateStoreRequest $request)
     {
         $store = Store::create($request->all());
         $store->save();

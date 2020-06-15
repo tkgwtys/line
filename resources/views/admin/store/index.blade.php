@@ -19,17 +19,6 @@
                             {{$store->name}}
                         </a>
                     </td>
-                    <td>
-                        {{$store->address}}
-                    </td>
-                    <td>
-                        {{$store->tel}}
-                    </td>
-                    <td>
-                        <a href="{{$store->url}}">
-                        {{$store->url}}
-                        </a>
-                    </td>
                     <td align="right">
                         <a href="{{url('/admin/store/'.$store->id.'/edit')}}" class="btn btn-warning">編集</a>
                         <form action="{{url('/admin/store/'. $store->id)}}" method="post" style="display:inline">

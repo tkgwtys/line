@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+    <div class="container">
         {{Breadcrumbs::render('adminStore.edit', $store)}}
         <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
@@ -70,4 +71,5 @@
                 </div>
             </div>
         </form>
+    </div>
 @endsection

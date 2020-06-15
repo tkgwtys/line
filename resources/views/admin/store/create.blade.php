@@ -52,7 +52,8 @@
             <div class="col-sm">
                 <div class="form-group">
                     <label>カラーコード</label>
-                    {{Form::input('text','color_code',old('color_code'), ['class' => 'form-control','placeholder' => 'カラーコードを入力してください'])}}
+                    {{Form::select('color_code',['#cce5ff','#e2e3e5','#d4edda','#f8d7da','#fff3cd','#d1ecf1'] ,null, ['class' => 'form-control color-select','onblur'=>'color','placeholder' => 'カラーコードを選択してください'])}}
+
                 </div>
             </div>
         </div>
