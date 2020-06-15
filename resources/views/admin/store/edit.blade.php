@@ -24,13 +24,13 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>コース名</label>
-                        {{Form::input('text', 'name',$store->name,['class' => 'form-control'])}}
+                        {{Form::input('text', 'name',$store->name,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label>住所</label>
-                        {{Form::input('text', 'address',$store->address,['class' => 'form-control'])}}
+                        {{Form::input('text', 'address',$store->address,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
             </div>
@@ -38,13 +38,13 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>電話番号</label>
-                        {{Form::input('int', 'tel',$store->tel,['class' => 'form-control'])}}
+                        {{Form::input('int', 'tel',$store->tel,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group">
                         <label>URL</label>
-                        {{Form::input('text', 'url',$store->url,['class' => 'form-control'])}}
+                        {{Form::input('text', 'url',$store->url,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
             </div>
@@ -52,13 +52,13 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>営業時間</label>
-                        {{Form::input('text','business_hours', $store->business_hours,['class' => 'form-control' ])}}
+                        {{Form::input('text','business_hours', $store->business_hours,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
                 <div class="col-sm">
                     <div class="form-group" id="color_code">
                         <label>カラーコード</label>
-                        {{Form::select('color_code', ['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'],$store->color_code,['class' => 'form-control','id'=>'select-color','onblur'=>'changeColor();'])}}
+                        {{Form::select('color_code', ['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'],$store->color_code,['class' => 'form-control form-control-lg','id'=>'select-color','onblur'=>'changeColor();'])}}
                     </div>
                 </div>
             </div>
