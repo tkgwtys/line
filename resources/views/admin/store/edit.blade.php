@@ -56,9 +56,9 @@
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="form-group" id="color_code">
                         <label>カラーコード</label>
-                        {{Form::input('text','color_code', $store->color_code,['class' => 'form-control' ])}}
+                        {{Form::select('color_code', ['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'],$store->color_code,['class' => 'form-control','id'=>'select-color','onblur'=>'changeColor();'])}}
                     </div>
                 </div>
             </div>

@@ -50,10 +50,9 @@
                 </div>
             </div>
             <div class="col-sm">
-                <div class="form-group">
+                <div class="form-group" id="color_code">
                     <label>カラーコード</label>
-                    {{Form::select('color_code',['#cce5ff','#e2e3e5','#d4edda','#f8d7da','#fff3cd','#d1ecf1'] ,null, ['class' => 'form-control color-select','onblur'=>'color','placeholder' => 'カラーコードを選択してください'])}}
-
+                    {{Form::select('color_code',['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'] ,null, ['class' => 'form-control','id'=>'select-color','onblur'=>'changeColor();','placeholder' => 'カラーコードを選択してください'])}}
                 </div>
             </div>
         </div>
