@@ -20,6 +20,7 @@ class StoresTableSeeder extends Seeder
                 'tel' => '03-6413-9139',
                 'url' => 'http://ramius-pt.com/',
                 'business_hours' => '営業時間 7:00 〜 23:00（不定休）',
+                'color_code' => '0',
                 'created_at' => $date,
                 'updated_at' => $date
             ],
@@ -30,6 +31,7 @@ class StoresTableSeeder extends Seeder
                 'tel' => '03-6413-1540',
                 'url' => 'http://ramius-pt.com/',
                 'business_hours' => '営業時間 7:00 〜 23:00（不定休）',
+                'color_code' => '0',
                 'created_at' => $date,
                 'updated_at' => $date
             ],
