@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Reservation;
+use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,7 +49,7 @@ class PlayerController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $player_id)
     {
         try {
             // 予約者
@@ -61,16 +63,26 @@ class PlayerController extends Controller
             // 時間
             $time_array = Reservation::getOpenTimeArray();
             // トレーナ全員
-            $player = User::where('id', $id)->where('level', 20)->first();
+            $player = User::where('id', $player_id)->where('level', 20)->first();
             if ($player) {
                 $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
                 $player['image'] = $image;
             }
+            // トレーナ全員
+            $player_array = User::where('level', 20)->get();
+            // コース
+            $courses = Course::all();
+            // 店舗一覧
+            $stores = Store::all();
             return view('player.show', compact(
                     'player',
+                    'player_id',
                     'time_array',
+                    'courses',
+                    'stores',
                     'tomorrow',
                     'user',
+                    'player_array',
                     'user_id')
             );
         } catch (\Exception $e) {

@@ -116,6 +116,7 @@ $('#reservation_form').on('submit', function (e) {
     let errorFlg = true;
     const form = $(this);
     const formData = form.serializeArray();
+    console.log(formData);
     // バリデーション
     for (let key in formData) {
         if (formData[key]['name'] === 'selected_date') {

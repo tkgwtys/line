@@ -48,38 +48,99 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="reservation_form" method="post" action="/reservation/store">
+                    <form id="reservation_form" method="post" action="/reservation">
                         @csrf
-                        <div class="form-group">
-                            <label for="reservation_day">予約日</label>
-                            <input id="reservation_day" value="{{$tomorrow}}" class="selector form-control"
-                                   type="text"/>
-                        </div>
-                        <input type="hidden" value="{{$tomorrow}}" id="selected_date" name="selected_date">
-                        <input type="hidden" value="{{$user_id}}" id="user_id" name="user_id">
-                        <input type="hidden" value="{{$player->id}}" id="player_id" name="player_id">
-                        <!-- 時間 -->
-                        <div class="form-group">
-                            <label for="selected_time">予約時間</label>
-                            <select class="form-control" id="selected_time" name="selected_time">
-                                @foreach($time_array as $key => $time)
-                                    <optgroup label="{{$key}}">
-                                        @foreach($time as $hi)
-                                            <option value="{{$hi}}">{{$hi}}</option>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="reservation_day">予約日</label>
+                                    <input
+                                        id="reservation_day"
+                                        value="{{$tomorrow}}"
+                                        class="selector form-control form-control-lg"
+                                        type="text"/>
+                                </div>
+                                <input type="hidden" value="{{$tomorrow}}" id="selected_date" name="selected_date">
+                                <input type="hidden" value="{{$user_id}}" id="user" name="user">
+                                <input type="hidden" value="{{$player->id}}" id="player" name="player">
+                            </div>
+                            <div class="col">
+                                <!-- 時間 -->
+                                <div class="form-group">
+                                    <label for="selected_time">予約時間</label>
+                                    <select class="form-control form-control-lg" id="selected_time"
+                                            name="selected_time">
+                                        @foreach($time_array as $key => $time)
+                                            <optgroup label="{{$key}}">
+                                                @foreach($time as $hi)
+                                                    <option value="{{$hi}}:00">{{$hi}}</option>
+                                                @endforeach
+                                            </optgroup>
                                         @endforeach
-                                    </optgroup>
-                                @endforeach
-                            </select>
+                                    </select>
+                                </div>
+                                <!-- 時間 -->
+                            </div>
                         </div>
-                        <!-- 時間 -->
                         <!-- トレーナ -->
                         <div class="form-group">
-                            <label>担当トレーナ</label>
+                            <label for="player">担当トレーナ</label>
+                            <select class="form-control form-control-lg" id="player" name="player">
+                                <option value="">選択してください</option>
+                                @foreach($player_array as $key => $player)
+                                    <option value="{{$player->id}}"
+                                            @if($player_id == $player->id) selected @endif>{{$player->sei}} {{$player->mei}}</option>
+                                @endforeach
+                            </select>
+                            <div
+                                id="err_player"
+                                class="alert alert-danger"
+                                role="alert"
+                                style="display: none">
+                            </div>
                         </div>
+                        <!-- トレーナ -->
+                        <!-- 店舗 -->
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="store">店舗</label>
+                                <select class="form-control form-control-lg" id="store" name="store">
+                                    <option value="">選択してください</option>
+                                    @foreach($stores as $key => $store)
+                                        <option value="{{$store->id}}">{{$store->name}}</option>
+                                    @endforeach
+                                </select>
+                                <div
+                                    id="err_store"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    style="display: none"></div>
+                            </div>
+                        </div>
+                        <!-- コース -->
+                        <div class="form-group">
+                            <label for="course">コース</label>
+                            <select class="form-control form-control-lg" id="course" name="course">
+                                <option value="">選択してください</option>
+                                @foreach($courses as $key => $course)
+                                    <option
+                                        value="{{$course->id}}">
+                                        {{$course->name}}（{{$course->course_time}}分）
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div
+                                id="err_course"
+                                class="alert alert-danger"
+                                role="alert"
+                                style="display: none">
+                            </div>
+                        </div>
+                        <!-- コース -->
                         <!-- トレーナ -->
                         <div class="card">
                             <div class="card-header">
-                                お客様
+                                お客様情報
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -87,7 +148,7 @@
                                     <label for="reservation_user"></label><input
                                         disabled
                                         type="text"
-                                        class="form-control"
+                                        class="form-control form-control-lg"
                                         id="reservation_user"
                                         placeholder="予約者"
                                         value="{{$user->sei}}{{$user->mei}}">
@@ -95,8 +156,15 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                            <button type="submit" class="btn btn-success">予約申請する</button>
+                            <button
+                                type="submit"
+                                class="btn btn-success btn-block btn-lg">
+                                <span
+                                    class="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"></span>
+                                予約申請する
+                            </button>
                         </div>
                     </form>
                 </div>

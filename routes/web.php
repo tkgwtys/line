@@ -20,7 +20,7 @@ Route::group(['middleware' => 'basicauth'], function () {
         return view('welcome');
     });
     // 予約
-    Route::post('/reservation/store', 'ReservationController@store');
+    Route::resource('/reservation', 'ReservationController');
     Route::get('/user/{user_id}/edit', 'UserController@edit')->name('line-user.edit');
     Route::put('/user/{user_id}', 'UserController@update')->name('line-user.update');
     Route::resource('player', 'PlayerController');
@@ -54,7 +54,7 @@ Route::group(['middleware' => 'basicauth'], function () {
         Route::resource('user', 'Admin\UserController');
         Route::resource('player', 'Admin\PlayerController');
         Route::resource('reservation', 'ReservationController');
-        Route::resource('course','Admin\CourseController');
-        Route::resource('store','Admin\StoreController');
+        Route::resource('course', 'Admin\CourseController');
+        Route::resource('store', 'Admin\StoreController');
     });
 });
