@@ -39,9 +39,12 @@
                                             <div
                                                 data-course_id="{{$reservation->course_id}}"
                                                 data-user_id="{{$reservation->user_id}}"
-                                                data-reservation_id="{{$reservation->reservation_id}}">
+                                                data-reservation_id="{{$reservation->reservation_id}}"
+                                                data-store_id="{{$reservation->store_id}}">
+
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
+                                                
                                             </div>
                                         @endif
                                     @endforeach
@@ -161,6 +164,29 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- 店舗 -->
+                        <div class="form-group">
+                            <div class="card">
+                                <div class="card-header">
+                                    店舗情報
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="store">店舗</label>
+                                        <select class="form-control form-control-lg" id="store" name="store">
+                                            <option value="">選択してください</option>
+                                            @foreach($stores as $key => $store)
+                                                <option value="{{$store->id}}">{{$store->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <div
+                                            id="err_store"
+                                            class="alert alert-danger"
+                                            role="alert"
+                                            style="display: none"></div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                     {{--                    <!-- トレーナ -->--}}
                     {{--                    <div class="modal-footer">--}}

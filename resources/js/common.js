@@ -13,6 +13,8 @@ $('#target-table td').on('click', function () {
     const course_id = $(this).children('div').data('course_id');
     // 予約ID
     const reservation_id = $(this).children('div').data('reservation_id');
+    // 店舗ID
+    const store_id = $(this).children('div').data('store_id');
     // 削除用
     $('#reservation_id_delete').val(reservation_id);
     // 予約フォームラベル
@@ -32,6 +34,7 @@ $('#target-table td').on('click', function () {
     $('#selected_date').val(day);
     $('#selected_time').val(time);
     $('#course').val(course_id);
+    $('#store').val(store_id);
 });
 
 /**
@@ -167,6 +170,17 @@ $('#reservation_form').on('submit', function (e) {
             } else {
                 $('#err_user').css('display', 'none');//.text('選択してください');
                 $('#err_user').text('');
+                errorFlg = true;
+            }
+        }
+        if (formData[key]['name'] === 'store') {
+            if (!formData[key]['value']) {
+                $('#err_store').css('display', 'block');//.text('選択してください');
+                $('#err_store').text('店舗を選択してください');
+                errorFlg = false;
+            } else {
+                $('#err_store').css('display', 'none');//.text('選択してください');
+                $('#err_store').text('');
                 errorFlg = true;
             }
         }

@@ -17,6 +17,7 @@ class Reservation extends Model
         'user_id',
         'player_id',
         'course_id',
+        'store_id',
         'status',
         'category',
         'reserved_at',

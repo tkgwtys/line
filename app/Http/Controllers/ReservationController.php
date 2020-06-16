@@ -61,6 +61,8 @@ class ReservationController extends Controller
             $player_id = $request->get('player');
             // コース
             $course_id = (int)$request->get('course');
+            // 店舗
+            $store_id = (int)$request->get('store');
             // 予約日
             $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time'));
             // コースが存在するか
@@ -75,6 +77,7 @@ class ReservationController extends Controller
                 'status' => $status,
                 'category' => $category,
                 'course_id' => $course_id,
+                'store_id' => $store_id,
                 'reserved_at' => $reserved_at,
                 'created_at' => $now,
                 'updated_at' => $now,
