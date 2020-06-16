@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -58,18 +59,20 @@ class PlayerController extends Controller
             // 明日
             $tomorrow = Carbon::tomorrow()->format('Y-m-d');
             // 時間
-            $time_array = [];
-            for ($i = 7; $i <= 23; $i++) {
-                for ($j = 0; $j <= 55; $j += 15) {
-                    $time_array[$i][$j] = sprintf("%02d:%02d", $i, $j);
-                }
-            }
+            $time_array = Reservation::getOpenTimeArray();
+            // トレーナ全員
             $player = User::where('id', $id)->where('level', 20)->first();
             if ($player) {
                 $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
                 $player['image'] = $image;
             }
-            return view('player.show', compact('player', 'time_array', 'tomorrow', 'user', 'user_id'));
+            return view('player.show', compact(
+                    'player',
+                    'time_array',
+                    'tomorrow',
+                    'user',
+                    'user_id')
+            );
         } catch (\Exception $e) {
             print_r($e);
         }
