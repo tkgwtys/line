@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\Course;
 use App\Models\Player;
 use App\Models\Reservation;
+use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -99,6 +100,8 @@ class PlayerController extends Controller
         $player = User::find($player_id);
         // 友達一覧
         $users = User::where('level', 10)->get();
+        // 店舗一覧
+        $stores = Store::all();
         // 予約一覧
         $reservation = new Reservation();
         $reservations = $reservation->getReservation($start_date, last($days_array));
@@ -113,7 +116,8 @@ class PlayerController extends Controller
                 'days_array',
                 'user_level',
                 'reservations',
-                'users')
+                'users',
+                'stores')
         );
     }
 

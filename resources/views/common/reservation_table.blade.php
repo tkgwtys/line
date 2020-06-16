@@ -39,9 +39,12 @@
                                             <div
                                                 data-course_id="{{$reservation->course_id}}"
                                                 data-user_id="{{$reservation->user_id}}"
-                                                data-reservation_id="{{$reservation->reservation_id}}">
+                                                data-reservation_id="{{$reservation->reservation_id}}"
+                                                data-store_id="{{$reservation->store_id}}">
+
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
+
                                             </div>
                                         @endif
                                     @endforeach
@@ -118,6 +121,23 @@
                             style="display: none">
                         </div>
                     </div>
+                    <!-- 店舗 -->
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="store">店舗</label>
+                            <select class="form-control form-control-lg" id="store" name="store">
+                                <option value="">選択してください</option>
+                                @foreach($stores as $key => $store)
+                                    <option value="{{$store->id}}">{{$store->name}}</option>
+                                @endforeach
+                            </select>
+                            <div
+                                id="err_store"
+                                class="alert alert-danger"
+                                role="alert"
+                                style="display: none"></div>
+                        </div>
+                    </div>
                     <!-- コース -->
                     <div class="form-group">
                         <label for="course">コース</label>
@@ -161,7 +181,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                     {{--                    <!-- トレーナ -->--}}
                     {{--                    <div class="modal-footer">--}}
                     {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
