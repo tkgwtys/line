@@ -44,7 +44,7 @@ class PlayerController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Request $request, $id)
     {
@@ -66,7 +66,7 @@ class PlayerController extends Controller
             }
             $player = User::where('id', $id)->where('level', 20)->first();
             if ($player) {
-                $image = asset('storage/images/players/' . $player['id'] . '/300x300.jpg');
+                $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
                 $player['image'] = $image;
             }
             return view('player.show', compact('player', 'time_array', 'tomorrow', 'user', 'user_id'));

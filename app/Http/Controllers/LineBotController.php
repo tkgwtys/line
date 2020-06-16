@@ -148,6 +148,7 @@ class LineBotController extends Controller
     {
         //データの取得
         $players = User::where('level', 20)->get();
+        Log::debug($players);
         //データ用配列作成
         $players_data = [];
         //Player::all()のデータを$players_multi_dataに代入
@@ -156,9 +157,9 @@ class LineBotController extends Controller
             $players_data[$key]['player_id'] = $player['id'];
             $players_data[$key]['name'] = $player['sei'] . $player['mei'];
             //'self_introduction'キー -> self_introduction
-            $players_data[$key]['self_introduction'] = $player['self_introduction'];
+            $players_data[$key]['self_introduction'] = $player['self_introduction'] || '';
             //image取得
-            $image = asset('storage/images/players/' . $player['id'] . '/300x300.jpg?' . time());
+            $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg?' . time());
             $players_data[$key]['image'] = $image;
         }
         return $players_data;
