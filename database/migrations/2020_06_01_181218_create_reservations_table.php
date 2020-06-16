@@ -25,6 +25,7 @@ class CreateReservationsTable extends Migration
             $table->timestamps();
             $table->index(['reservation_id', 'user_id', 'player_id']);
             $table->index('reserved_at');
+            $table->softDeletes();
         });
     }
 

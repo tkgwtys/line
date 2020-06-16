@@ -171,7 +171,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    <button type="button" class="btn btn-danger">却下</button>
+                    <button
+                        type="button"
+                        class="btn btn-danger"
+                        id="reservation_delete_button">削除
+                    </button>
+                    <input type="hidden" id="reservation_id_delete" value="">
                     {{--                <button type="button" id="btnTestSaveLarge" class="btn btn-default">--}}
                     {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
                     {{--                    <span class="d-md-none">Save</span>--}}
