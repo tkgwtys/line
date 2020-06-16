@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/hello', 'LineBotController@hello');
 Route::post('/callback', 'LineBotController@callback');
 Route::post('/reservation/store', 'ReservationController@store');
+Route::post('/reservation/destroy/{id}', 'ReservationController@destroy');

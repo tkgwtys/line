@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <th>価格</th>
-                <td>{{$course->price}}</td>
+                <td>{{number_format($course->price)}}</td>
             </tr>
             <tr>
                 <th>コース回数/月</th>
@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <th>合計価格</th>
-                <td>{{$course->total_price}}</td>
+                <td>{{number_format($course->total_price)}}</td>
             </tr>
             <tr>
                 <th>コース時間</th>

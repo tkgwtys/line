@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Reservation extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'reservations';
 
     protected $fillable = [
@@ -17,7 +20,11 @@ class Reservation extends Model
         'status',
         'category',
         'reserved_at',
+        'created_at',
+        'updated_at',
     ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * 時間の配列を返す
@@ -48,7 +55,9 @@ class Reservation extends Model
     {
         return DB::table($this->table)
             ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
+            ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
             ->whereBetween('reserved_at', [$start, $end])
+            ->whereNull('reservations.deleted_at')
             ->get();
     }
 }
