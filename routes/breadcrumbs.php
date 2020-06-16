@@ -100,3 +100,40 @@ Breadcrumbs::for('admin.course.create', function ($trail) {
     $trail->push('コース管理', url('/admin/course'));
     $trail->push('コース登録', url('/admin/course/create'));
 });
+
+/**
+ * ストア一覧
+ * /admin/store
+ */
+Breadcrumbs::for('adminStores', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('ストア管理', url('/admin/store'));
+});
+
+/**
+ * ストア詳細
+ * /admin/store/{store}
+ */
+Breadcrumbs::for('adminStore', function ($trail, $store) {
+    $trail->parent('adminStores');
+    $trail->push('ストア詳細', url('/admin/store/' . $store->id));
+});
+
+/**
+ * コース編集
+ * /admin/store/{store}/edit
+ */
+Breadcrumbs::for('adminStore.edit', function ($trail, $store){
+    $trail->parent('adminStore', $store);
+    $trail->push('ストア編集', url('/admin/store/'.$store->id.'/edit'));
+});
+
+/**
+ * コース作成
+ * /admin/store/create
+ */
+Breadcrumbs::for('admin.store.create', function ($trail) {
+    $trail->parent('admin.home');
+    $trail->push('ストア管理', url('/admin/store'));
+    $trail->push('ストア登録', url('/admin/store/create'));
+});
