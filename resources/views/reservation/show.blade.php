@@ -141,15 +141,41 @@
                                 お客様情報
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label class="col-form-label">お名前</label>
-                                    <label for="reservation_user"></label><input
-                                        disabled
-                                        type="text"
-                                        class="form-control form-control-lg"
-                                        id="reservation_user"
-                                        placeholder="予約者"
-                                        value="{{$user->sei}}{{$user->mei}}">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="sei"></label>姓
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                id="sei"
+                                                name="sei"
+                                                placeholder="姓を入力してください"
+                                                value="{{$user->sei}}">
+                                            <div
+                                                id="err_sei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="mei"></label>名
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                name="mei"
+                                                id="mei"
+                                                placeholder="名を入力してください"
+                                                value="{{$user->mei}}">
+                                            <div
+                                                id="err_mei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -193,6 +193,28 @@ $('#reservation_form').on('submit', function (e) {
                 errorFlg = true;
             }
         }
+        if (formData[key]['name'] === 'sei') {
+            if (!formData[key]['value']) {
+                $('#err_sei').css('display', 'block');//.text('選択してください');
+                $('#err_sei').text('姓を選択してください');
+                errorFlg = false;
+            } else {
+                $('#err_sei').css('display', 'none');//.text('選択してください');
+                $('#err_sei').text('');
+                errorFlg = true;
+            }
+        }
+        if (formData[key]['name'] === 'mei') {
+            if (!formData[key]['value']) {
+                $('#err_mei').css('display', 'block');//.text('選択してください');
+                $('#err_mei').text('名を選択してください');
+                errorFlg = false;
+            } else {
+                $('#err_mei').css('display', 'none');//.text('選択してください');
+                $('#err_mei').text('');
+                errorFlg = true;
+            }
+        }
     }
     if (errorFlg) {
         // ボタンを無効

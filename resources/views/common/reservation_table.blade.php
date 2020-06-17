@@ -165,21 +165,41 @@
                                 お客様情報
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="user">お名前</label>
-                                    <select class="form-control form-control-lg" id="user" name="user">
-                                        <option value="">選択してください</option>
-                                        @foreach($users as $key => $user)
-                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}
-                                                （{{$user->display_name}}）
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <div
-                                        id="err_user"
-                                        class="alert alert-danger"
-                                        role="alert"
-                                        style="display: none"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="sei"></label>姓
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                id="sei"
+                                                name="sei"
+                                                placeholder="姓を入力してください"
+                                                value="">
+                                            <div
+                                                id="err_sei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="mei"></label>名
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                name="mei"
+                                                id="mei"
+                                                placeholder="名を入力してください"
+                                                value="">
+                                            <div
+                                                id="err_mei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
