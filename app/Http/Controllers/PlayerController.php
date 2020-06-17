@@ -54,6 +54,7 @@ class PlayerController extends Controller
         try {
             // 予約者
             $user_id = $request->get('uid');
+            $type = $request->get('type') ? $request->get('type') : 'p';
             $user = User::where('id', $user_id)->first();
             if (!$user) {
                 throw new Exception("ユーザーがみつかりません");
@@ -78,6 +79,7 @@ class PlayerController extends Controller
                     'player',
                     'player_id',
                     'time_array',
+                    'type',
                     'courses',
                     'stores',
                     'tomorrow',

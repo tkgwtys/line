@@ -38,6 +38,14 @@ $('#target-table td').on('click', function () {
 });
 
 /**
+ * 直接予約フォームに来た場合
+ */
+$(window).on('load', function () {
+    $('#reservationDirectly').modal('show');
+});
+
+
+/**
  * 予約削除処理
  */
 $('#reservation_delete_button').on('click', function () {

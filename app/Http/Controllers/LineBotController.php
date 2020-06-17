@@ -57,7 +57,7 @@ class LineBotController extends Controller
                         // カルーセルに付与するボタンを作る
                         $action = new UriTemplateActionBuilder(
                             "予約する",
-                            config('app.url') . 'reservation/' . $event->getUserId());
+                            config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
                         // カルーセルのカラムを作成する
                         $action2 = new UriTemplateActionBuilder(
                             "プロフィール",
@@ -90,7 +90,7 @@ class LineBotController extends Controller
                             // カルーセルに付与するボタンを作る
                             $action = new UriTemplateActionBuilder(
                                 "予約する",
-                                config('app.url') . 'reservation/' . $event->getUserId());
+                                config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
                             $action2 = new UriTemplateActionBuilder(
                                 "プロフィール",
                                 config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
