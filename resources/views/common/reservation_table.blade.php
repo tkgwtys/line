@@ -170,7 +170,9 @@
                                     <select class="form-control form-control-lg" id="user" name="user">
                                         <option value="">選択してください</option>
                                         @foreach($users as $key => $user)
-                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
+                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}
+                                                （{{$user->display_name}}）
+                                            </option>
                                         @endforeach
                                     </select>
                                     <div
@@ -182,34 +184,34 @@
                             </div>
                         </div>
 
-                    {{--                    <!-- トレーナ -->--}}
-                    {{--                    <div class="modal-footer">--}}
-                    {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
-                    {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
-                    {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
-                    {{--                    </div>--}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        id="reservation_delete_button">削除
-                    </button>
-                    <input type="hidden" id="reservation_id_delete" value="">
-                    {{--                <button type="button" id="btnTestSaveLarge" class="btn btn-default">--}}
-                    {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
-                    {{--                    <span class="d-md-none">Save</span>--}}
-                    {{--                </button>--}}
-                    <button type="submit" class="btn btn-success">
+                        {{--                    <!-- トレーナ -->--}}
+                        {{--                    <div class="modal-footer">--}}
+                        {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
+                        {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
+                        {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
+                        {{--                    </div>--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            id="reservation_delete_button">削除
+                        </button>
+                        <input type="hidden" id="reservation_id_delete" value="">
+                        {{--                <button type="button" id="btnTestSaveLarge" class="btn btn-default">--}}
+                        {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
+                        {{--                    <span class="d-md-none">Save</span>--}}
+                        {{--                </button>--}}
+                        <button type="submit" class="btn btn-success">
                         <span
                             class="spinner-border spinner-border-sm"
                             role="status"
                             aria-hidden="true">
                         </span>
-                        予約確定
-                    </button>
-                </div>
+                            予約確定
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
