@@ -20,7 +20,8 @@
         "linecorp/line-bot-sdk": "4.2.*",
         "moontoast/math": "^1.2",
         "nesbot/carbon": "^2.34",
-        "webpatser/laravel-uuid": "^3.0"
+        "webpatser/laravel-uuid": "^3.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

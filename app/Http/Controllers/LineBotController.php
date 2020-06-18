@@ -17,6 +17,11 @@ use LINE\LINEBot\Event\PostbackEvent;
 use LINE\LINEBot\Event\FollowEvent;
 use LINE\LINEBot\Event\UnfollowEvent;
 use LINE\LINEBot\Event\MessageEvent;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
@@ -106,6 +111,25 @@ class LineBotController extends Controller
                         // カルーセルを追加してメッセージを作る
                         $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
                         $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                    } else if ($event->getText() == '設定') {
+
+//                        // 「はい」ボタン
+//                        $yes_post = new PostbackTemplateActionBuilder("はい", "page=1");
+//                        // 「いいえ」ボタン
+//                        $no_post = new PostbackTemplateActionBuilder("いいえ", "page=-1");
+//                        // Confirmテンプレートを作る
+//                        $confirm = new ConfirmTemplateBuilder("メッセージ", [$yes_post, $no_post]);
+//                        // Confirmメッセージを作る
+//                        $confirm_message = new TemplateMessageBuilder("メッセージのタイトル", $confirm);
+//                        $bot->replyMessage($event->getReplyToken(), $confirm_message);
+
+//                        $text = new TextMessageBuilder('https://www.yahoo.co.jp');
+//                        $button = new LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder()
+//                        $bot->replyMessage($reply_token, $text);
+
+                        $this->userInfo($bot, $reply_token, $event->getUserId());
+                    } else if ($event->getText() == '予約確認') {
+
                     } else {
                         $bot->replyText($reply_token, $reply_message);
                     }
@@ -123,6 +147,8 @@ class LineBotController extends Controller
                  */
                 case $event instanceof PostbackEvent:
                     Log::debug('PostBackEvent処理');
+                    $query = $event->getPostbackData();
+                    Log::debug($query);
                     break;
                 /**
                  * ブロック
@@ -141,6 +167,49 @@ class LineBotController extends Controller
     }
 
     /**
+     * ユーザー情報入力
+     * @param $bot
+     * @param $reply_token
+     * @param $event
+     */
+    private function userInfo($bot, $reply_token, $user_id)
+    {
+        $actions = [
+            new UriTemplateActionBuilder("入力フォームへ",
+                config('app.url') . 'user/' . $user_id . '/edit'
+            ),
+        ];
+        $button = new ButtonTemplateBuilder('設定', 'お客様情報を入力してください', null, $actions);
+        $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
+        $bot->replyMessage($reply_token, $msg);
+    }
+
+    /**
+     * @param $bot
+     * @param $replyToken
+     * @param $alertNativeText
+     * @param $text
+     * @param mixed ...$actions
+     */
+    private function replyConfirmTemplate($bot, $replyToken, $alertNativeText, $text, ...$actions)
+    {
+        $actionArray = [];
+        if (count($actions) > 1) {
+            foreach ($actions as $value) {
+                array_push($actionArray, $value);
+            }
+            $builder = new TemplateMessageBuilder($alertNativeText, new ConfirmTemplateBuilder($text, $actionArray));
+        } else {
+            $builder = new TemplateMessageBuilder($alertNativeText, new ConfirmTemplateBuilder($text, $actions));
+        }
+        $response = $bot->replyMessage($replyToken, $builder);
+        if (!$response->isSucceeded()) {
+            Log::debug(json_encode($response));
+//            error_log('## Failed! ' . $response->getHTTPStatus . ' ' . $response->getRawBody());
+        }
+    }
+
+    /**
      * トレーナ取得
      * @return array
      */
@@ -148,7 +217,6 @@ class LineBotController extends Controller
     {
         //データの取得
         $players = User::where('level', 20)->get();
-        Log::debug($players);
         //データ用配列作成
         $players_data = [];
         //Player::all()のデータを$players_multi_dataに代入
