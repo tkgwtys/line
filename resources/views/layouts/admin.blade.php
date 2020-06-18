@@ -26,6 +26,7 @@
     <script src="https://unpkg.com/flatpickr"></script>
     <script src="{{ asset('js/fixed_midashi.js') }}" defer></script>
     <link href="{{ asset('css/bootstrap-fs-modal.min.css') }}" rel="stylesheet">
+    <meta name=”robots” content=”noindex” />
 </head>
 <body onLoad="FixedMidashi.create();">
 <div id="app">

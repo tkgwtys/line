@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Reservation;
+use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -44,13 +47,14 @@ class PlayerController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $player_id)
     {
         try {
             // 予約者
             $user_id = $request->get('uid');
+            $type = $request->get('type') ? $request->get('type') : 'p';
             $user = User::where('id', $user_id)->first();
             if (!$user) {
                 throw new Exception("ユーザーがみつかりません");
@@ -58,18 +62,31 @@ class PlayerController extends Controller
             // 明日
             $tomorrow = Carbon::tomorrow()->format('Y-m-d');
             // 時間
-            $time_array = [];
-            for ($i = 7; $i <= 23; $i++) {
-                for ($j = 0; $j <= 55; $j += 15) {
-                    $time_array[$i][$j] = sprintf("%02d:%02d", $i, $j);
-                }
-            }
-            $player = User::where('id', $id)->where('level', 20)->first();
+            $time_array = Reservation::getOpenTimeArray();
+            // トレーナ全員
+            $player = User::where('id', $player_id)->where('level', 20)->first();
             if ($player) {
-                $image = asset('storage/images/players/' . $player['id'] . '/300x300.jpg');
+                $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
                 $player['image'] = $image;
             }
-            return view('player.show', compact('player', 'time_array', 'tomorrow', 'user', 'user_id'));
+            // トレーナ全員
+            $player_array = User::where('level', 20)->get();
+            // コース
+            $courses = Course::all();
+            // 店舗一覧
+            $stores = Store::all();
+            return view('player.show', compact(
+                    'player',
+                    'player_id',
+                    'time_array',
+                    'type',
+                    'courses',
+                    'stores',
+                    'tomorrow',
+                    'user',
+                    'player_array',
+                    'user_id')
+            );
         } catch (\Exception $e) {
             print_r($e);
         }

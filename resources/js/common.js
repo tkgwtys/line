@@ -38,6 +38,14 @@ $('#target-table td').on('click', function () {
 });
 
 /**
+ * 直接予約フォームに来た場合
+ */
+$(window).on('load', function () {
+    $('#reservationDirectly').modal('show');
+});
+
+
+/**
  * 予約削除処理
  */
 $('#reservation_delete_button').on('click', function () {
@@ -116,6 +124,7 @@ $('#reservation_form').on('submit', function (e) {
     let errorFlg = true;
     const form = $(this);
     const formData = form.serializeArray();
+    console.log(formData);
     // バリデーション
     for (let key in formData) {
         if (formData[key]['name'] === 'selected_date') {
@@ -181,6 +190,28 @@ $('#reservation_form').on('submit', function (e) {
             } else {
                 $('#err_store').css('display', 'none');//.text('選択してください');
                 $('#err_store').text('');
+                errorFlg = true;
+            }
+        }
+        if (formData[key]['name'] === 'sei') {
+            if (!formData[key]['value']) {
+                $('#err_sei').css('display', 'block');//.text('選択してください');
+                $('#err_sei').text('姓を選択してください');
+                errorFlg = false;
+            } else {
+                $('#err_sei').css('display', 'none');//.text('選択してください');
+                $('#err_sei').text('');
+                errorFlg = true;
+            }
+        }
+        if (formData[key]['name'] === 'mei') {
+            if (!formData[key]['value']) {
+                $('#err_mei').css('display', 'block');//.text('選択してください');
+                $('#err_mei').text('名を選択してください');
+                errorFlg = false;
+            } else {
+                $('#err_mei').css('display', 'none');//.text('選択してください');
+                $('#err_mei').text('');
                 errorFlg = true;
             }
         }

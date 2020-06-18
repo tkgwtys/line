@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <button data-toggle="modal" data-target="#reservation" type="button"
+                <button data-toggle="modal" data-target="#reservationDirectly" type="button"
                         class="btn btn-primary btn-lg btn-block">予約する
                 </button>
                 <br>
@@ -23,7 +23,7 @@
                 <br>
                 <button
                     data-toggle="modal"
-                    data-target="#reservation"
+                    data-target="#reservationDirectly"
                     type="button"
                     class="btn btn-primary btn-lg btn-block">予約する
                 </button>
@@ -33,7 +33,7 @@
     <!-- Modal -->
     <div
         class="modal"
-        id="reservation"
+        id="reservationDirectly"
         tabindex="-1"
         role="dialog"
         aria-labelledby="exampleModalLongTitle"

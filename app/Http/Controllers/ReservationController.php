@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateReservationRequest;
 use App\Models\Course;
 use App\Models\Reservation;
+use App\Models\Store;
+use App\Models\User;
 use Carbon\Carbon;
 use http\Client\Response;
 use Illuminate\Http\Request;
@@ -95,11 +97,49 @@ class ReservationController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
+    public function show(Request $request, $player_id)
     {
-        //
+        try {
+            // 予約者
+            $user_id = $request->get('uid');
+            $type = $request->get('type') ? $request->get('type') : 'p';
+            $user = User::where('id', $user_id)->first();
+            if (!$user) {
+                throw new Exception("ユーザーがみつかりません");
+            }
+            // 明日
+            $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+            // 時間
+            $time_array = Reservation::getOpenTimeArray();
+            // トレーナ全員
+            $player = User::where('id', $player_id)->where('level', 20)->first();
+            if ($player) {
+                $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
+                $player['image'] = $image;
+            }
+            // トレーナ全員
+            $player_array = User::where('level', 20)->get();
+            // コース
+            $courses = Course::all();
+            // 店舗一覧
+            $stores = Store::all();
+            return view('reservation.show', compact(
+                    'player',
+                    'player_id',
+                    'time_array',
+                    'type',
+                    'courses',
+                    'stores',
+                    'tomorrow',
+                    'user',
+                    'player_array',
+                    'user_id')
+            );
+        } catch (\Exception $e) {
+            print_r($e);
+        }
     }
 
     /**

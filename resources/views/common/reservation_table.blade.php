@@ -165,51 +165,73 @@
                                 お客様情報
                             </div>
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="user">お名前</label>
-                                    <select class="form-control form-control-lg" id="user" name="user">
-                                        <option value="">選択してください</option>
-                                        @foreach($users as $key => $user)
-                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
-                                        @endforeach
-                                    </select>
-                                    <div
-                                        id="err_user"
-                                        class="alert alert-danger"
-                                        role="alert"
-                                        style="display: none"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="sei"></label>姓
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                id="sei"
+                                                name="sei"
+                                                placeholder="姓を入力してください"
+                                                value="">
+                                            <div
+                                                id="err_sei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="mei"></label>名
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg"
+                                                name="mei"
+                                                id="mei"
+                                                placeholder="名を入力してください"
+                                                value="">
+                                            <div
+                                                id="err_mei"
+                                                class="alert alert-danger"
+                                                role="alert"
+                                                style="display: none"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                    {{--                    <!-- トレーナ -->--}}
-                    {{--                    <div class="modal-footer">--}}
-                    {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
-                    {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
-                    {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
-                    {{--                    </div>--}}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    <button
-                        type="button"
-                        class="btn btn-danger"
-                        id="reservation_delete_button">削除
-                    </button>
-                    <input type="hidden" id="reservation_id_delete" value="">
-                    {{--                <button type="button" id="btnTestSaveLarge" class="btn btn-default">--}}
-                    {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
-                    {{--                    <span class="d-md-none">Save</span>--}}
-                    {{--                </button>--}}
-                    <button type="submit" class="btn btn-success">
+                        {{--                    <!-- トレーナ -->--}}
+                        {{--                    <div class="modal-footer">--}}
+                        {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
+                        {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
+                        {{--                        <button type="submit" class="btn btn-success">予約確定する</button>--}}
+                        {{--                    </div>--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            id="reservation_delete_button">削除
+                        </button>
+                        <input type="hidden" id="reservation_id_delete" value="">
+                        {{--                <button type="button" id="btnTestSaveLarge" class="btn btn-default">--}}
+                        {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
+                        {{--                    <span class="d-md-none">Save</span>--}}
+                        {{--                </button>--}}
+                        <button type="submit" class="btn btn-success">
                         <span
                             class="spinner-border spinner-border-sm"
                             role="status"
                             aria-hidden="true">
                         </span>
-                        予約確定
-                    </button>
-                </div>
+                            予約確定
+                        </button>
+                    </div>
             </form>
         </div>
     </div>

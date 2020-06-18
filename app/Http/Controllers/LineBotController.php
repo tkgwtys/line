@@ -17,6 +17,11 @@ use LINE\LINEBot\Event\PostbackEvent;
 use LINE\LINEBot\Event\FollowEvent;
 use LINE\LINEBot\Event\UnfollowEvent;
 use LINE\LINEBot\Event\MessageEvent;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
@@ -57,7 +62,7 @@ class LineBotController extends Controller
                         // カルーセルに付与するボタンを作る
                         $action = new UriTemplateActionBuilder(
                             "予約する",
-                            config('app.url') . 'reservation/' . $event->getUserId());
+                            config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
                         // カルーセルのカラムを作成する
                         $action2 = new UriTemplateActionBuilder(
                             "プロフィール",
@@ -90,7 +95,7 @@ class LineBotController extends Controller
                             // カルーセルに付与するボタンを作る
                             $action = new UriTemplateActionBuilder(
                                 "予約する",
-                                config('app.url') . 'reservation/' . $event->getUserId());
+                                config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
                             $action2 = new UriTemplateActionBuilder(
                                 "プロフィール",
                                 config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
@@ -106,6 +111,25 @@ class LineBotController extends Controller
                         // カルーセルを追加してメッセージを作る
                         $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
                         $bot->replyMessage($event->getReplyToken(), $carousel_message);
+                    } else if ($event->getText() == '設定') {
+
+//                        // 「はい」ボタン
+//                        $yes_post = new PostbackTemplateActionBuilder("はい", "page=1");
+//                        // 「いいえ」ボタン
+//                        $no_post = new PostbackTemplateActionBuilder("いいえ", "page=-1");
+//                        // Confirmテンプレートを作る
+//                        $confirm = new ConfirmTemplateBuilder("メッセージ", [$yes_post, $no_post]);
+//                        // Confirmメッセージを作る
+//                        $confirm_message = new TemplateMessageBuilder("メッセージのタイトル", $confirm);
+//                        $bot->replyMessage($event->getReplyToken(), $confirm_message);
+
+//                        $text = new TextMessageBuilder('https://www.yahoo.co.jp');
+//                        $button = new LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder()
+//                        $bot->replyMessage($reply_token, $text);
+
+                        $this->userInfo($bot, $reply_token, $event->getUserId());
+                    } else if ($event->getText() == '予約確認') {
+
                     } else {
                         $bot->replyText($reply_token, $reply_message);
                     }
@@ -123,6 +147,8 @@ class LineBotController extends Controller
                  */
                 case $event instanceof PostbackEvent:
                     Log::debug('PostBackEvent処理');
+                    $query = $event->getPostbackData();
+                    Log::debug($query);
                     break;
                 /**
                  * ブロック
@@ -137,6 +163,49 @@ class LineBotController extends Controller
                     // $body = $event->getEventBody();
                     // logger()->warning('Unknown event. [' . get_class($event) . ']', compact('body'));
             }
+        }
+    }
+
+    /**
+     * ユーザー情報入力
+     * @param $bot
+     * @param $reply_token
+     * @param $event
+     */
+    private function userInfo($bot, $reply_token, $user_id)
+    {
+        $actions = [
+            new UriTemplateActionBuilder("入力フォームへ",
+                config('app.url') . 'user/' . $user_id . '/edit'
+            ),
+        ];
+        $button = new ButtonTemplateBuilder('設定', 'お客様情報を入力してください', null, $actions);
+        $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
+        $bot->replyMessage($reply_token, $msg);
+    }
+
+    /**
+     * @param $bot
+     * @param $replyToken
+     * @param $alertNativeText
+     * @param $text
+     * @param mixed ...$actions
+     */
+    private function replyConfirmTemplate($bot, $replyToken, $alertNativeText, $text, ...$actions)
+    {
+        $actionArray = [];
+        if (count($actions) > 1) {
+            foreach ($actions as $value) {
+                array_push($actionArray, $value);
+            }
+            $builder = new TemplateMessageBuilder($alertNativeText, new ConfirmTemplateBuilder($text, $actionArray));
+        } else {
+            $builder = new TemplateMessageBuilder($alertNativeText, new ConfirmTemplateBuilder($text, $actions));
+        }
+        $response = $bot->replyMessage($replyToken, $builder);
+        if (!$response->isSucceeded()) {
+            Log::debug(json_encode($response));
+//            error_log('## Failed! ' . $response->getHTTPStatus . ' ' . $response->getRawBody());
         }
     }
 
@@ -156,9 +225,9 @@ class LineBotController extends Controller
             $players_data[$key]['player_id'] = $player['id'];
             $players_data[$key]['name'] = $player['sei'] . $player['mei'];
             //'self_introduction'キー -> self_introduction
-            $players_data[$key]['self_introduction'] = $player['self_introduction'];
+            $players_data[$key]['self_introduction'] = $player['self_introduction'] || '';
             //image取得
-            $image = asset('storage/images/players/' . $player['id'] . '/300x300.jpg?' . time());
+            $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg?' . time());
             $players_data[$key]['image'] = $image;
         }
         return $players_data;
