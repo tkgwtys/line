@@ -199,7 +199,7 @@
                         </form>
                         @else
                             <div class="modal-body">
-                                <h3>予約するには最初に「お客様情報」を登録する必要があります。</h3>
+                                <h3>ご予約するには「お客様情報」を登録する必要があります。</h3>
                                 <a class="btn btn-primary btn-lg btn-block" href="/user/edit">入力フォームへ</a>
                             </div>
                         @endif
