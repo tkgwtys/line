@@ -54,9 +54,7 @@ Route::group(['middleware' => 'basicauth'], function () {
      * ログイン後
      */
     Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
-        Route::get('/', function () {
-            return view('admin.welcome');
-        });
+        Route::get('/', 'Admin\HomeController@index')->name('admin.home');
         Route::post('logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
         Route::get('home', 'Admin\HomeController@index')->name('admin.home');
         Route::resource('user', 'Admin\UserController')->names([
