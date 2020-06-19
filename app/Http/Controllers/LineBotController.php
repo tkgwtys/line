@@ -176,7 +176,7 @@ class LineBotController extends Controller
     {
         $actions = [
             new UriTemplateActionBuilder("入力フォームへ",
-                config('app.url') . 'user/' . $user_id . '/edit'
+                config('app.url') . 'user/edit'
             ),
         ];
         $button = new ButtonTemplateBuilder('設定', 'お客様情報を入力してください', null, $actions);

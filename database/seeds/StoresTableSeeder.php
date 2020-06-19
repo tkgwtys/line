@@ -15,7 +15,7 @@ class StoresTableSeeder extends Seeder
         DB::table('stores')->insert([
             [
                 'id' => 1,
-                'name' => '軽堂店',
+                'name' => '経堂店',
                 'address' => '東京都世田谷区軽堂2-7-14 スズランスタジオ101',
                 'tel' => '03-6413-9139',
                 'url' => 'http://ramius-pt.com/',
