@@ -191,7 +191,7 @@ class LineBotController extends Controller
                 config('app.url') . 'user/edit'
             ),
         ];
-        $button = new ButtonTemplateBuilder('設定', 'お客様情報を入力してください', null, $actions);
+        $button = new ButtonTemplateBuilder('設定', '予約するためにはお客様情報を入力してください', null, $actions);
         $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
         $bot->replyMessage($reply_token, $msg);
     }
