@@ -139,9 +139,9 @@ class LineBotController extends Controller
 //                        $button = new LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder()
 //                        $bot->replyMessage($reply_token, $text);
 
-                        $this->userInfo($bot, $reply_token, $event->getUserId());
+                        $this->userInfo($bot, $reply_token);
                     } else if ($event->getText() == '予約確認') {
-
+                        $this->getReservation($bot, $reply_token);
                     } else {
                         $bot->replyText($reply_token, $reply_message);
                     }
@@ -179,12 +179,28 @@ class LineBotController extends Controller
     }
 
     /**
+     * 予約確認
+     * @param $bot
+     * @param $reply_token
+     */
+    private function getReservation($bot, $reply_token)
+    {
+        return $bot->replyText($reply_token, '現在予約はございません');
+//        $actions = [
+//            new PostbackTemplateActionBuilder("トレーナを選択する", 'aaaaa'),
+//        ];
+//        $button = new ButtonTemplateBuilder('予約確認', '現在予約はございません', null, $actions);
+//        $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
+//        $bot->replyMessage($reply_token, $msg);
+    }
+
+    /**
      * ユーザー情報入力
      * @param $bot
      * @param $reply_token
      * @param $event
      */
-    private function userInfo($bot, $reply_token, $user_id)
+    private function userInfo($bot, $reply_token)
     {
         $actions = [
             new UriTemplateActionBuilder("入力フォームへ",
