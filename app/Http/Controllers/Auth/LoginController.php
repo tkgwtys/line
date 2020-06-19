@@ -55,8 +55,20 @@ class LoginController extends Controller
         $userSocial = Socialite::driver('line')->stateless()->user();
         $user = \App\Models\User::where(['id' => $userSocial->id])->first();
         if ($user) {
-            \App\Models\User::where('id', $user->id)
-                ->update(['display_name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'picture_url' => $userSocial->avatar]);
+            // メールアドレスチェック
+            $email_user = \App\Models\User::where(['email' => $userSocial->getEmail()])->first();
+            if (!$email_user) {
+                \App\Models\User::where('id', $user->id)
+                    ->update(['display_name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'picture_url' => $userSocial->avatar]);
+            } else {
+                if ($email_user->id === $userSocial->id) {
+                    \App\Models\User::where('id', $user->id)
+                        ->update(['display_name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'picture_url' => $userSocial->avatar]);
+                } else {
+                    \App\Models\User::where('id', $user->id)
+                        ->update(['display_name' => $userSocial->getName(), 'picture_url' => $userSocial->avatar]);
+                }
+            }
             Auth::login($user);
         } else {
             $newUser = new \App\Models\User();
