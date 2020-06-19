@@ -80,7 +80,10 @@
     <div class="content">
         <div class="title m-b-md">
             {{ config('app.name', 'RAMiUS') }}<br>
-            <img src="{{asset('img/qr.png')}}">
+            @if(config('app.env') === 'prdevelopmentoduction')
+            @else
+                <img src="{{asset('img/qr.png')}}">
+            @endif
         </div>
     </div>
 </div>
