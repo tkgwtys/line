@@ -3,18 +3,23 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <button data-toggle="modal" data-target="#reservationDirectly" type="button"
-                        class="btn btn-primary btn-lg btn-block">予約する
+                <button
+                    data-toggle="modal"
+                    data-target="#reservationDirectly"
+                    type="button"
+                    class="btn btn-primary btn-lg btn-block">予約する
                 </button>
                 <br>
-                <div class="card">
-                    <span class="card-avatar-back"></span>
-                    <img class="card-img-top card-header-img"
+                <div style="text-align: center; ">
+                    <img width="200"
+                         style="border-radius: 50%;width: 180px;height: 180px;"
                          src="{{$player->image . '?' . time()}}"
                          alt="Card image cap">
+                </div>
+                <br>
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
-                            {{$player->id}}
                             {{$player->sei}}{{$player->mei}}（{{$player->sei_hira}}{{$player->mei_hira}}）
                         </h5>
                         <p class="card-text">{{$player->self_introduction}}</p>
