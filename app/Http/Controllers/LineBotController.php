@@ -29,11 +29,50 @@ use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 
 class LineBotController extends Controller
 {
-    public function hello()
+    /**
+     * カルーセル作成
+     * @param $player_id
+     * @param $user_id
+     * @param $name
+     * @param $self_introduction
+     * @param $image
+     * @return CarouselColumnTemplateBuilder
+     */
+    private function createCarousel($player_id, $user_id, $name, $self_introduction, $image)
     {
-        Log::debug('成功');
+//        $user = User::where('id', $user_id)->first();
+//        Log::debug($user);
+        // カルーセルに付与するボタンを作る
+        $action = new UriTemplateActionBuilder(
+            "予約する",
+            config('app.url') . 'reservation/' . $player_id . '?uid=' . $user_id);
+        // カルーセルのカラムを作成する
+        $action2 = new UriTemplateActionBuilder(
+            "プロフィール",
+            config('app.url') . 'player/' . $player_id . '?uid=' . $user_id);
+        $column = new CarouselColumnTemplateBuilder(
+            $name,
+            $self_introduction,
+            $image, [$action, $action2]);
+        return $column;
     }
 
+    /**
+     * 個人情報チェック
+     * @param $user_id
+     * @return bool
+     */
+    private function userInfoCheck($user_id)
+    {
+        $user = User::where('id', $user_id)->first();
+        return $user->sei && $user->mei;
+    }
+
+    /**
+     * コールバック
+     * @param Request $request
+     * @throws LINEBot\Exception\InvalidSignatureException
+     */
     public function callback(Request $request)
     {
         Log::debug('1');
@@ -49,6 +88,7 @@ class LineBotController extends Controller
             $reply_token = $event->getReplyToken();
             // $reply_message = 'その操作はサポートしてません。.[' . get_class($event) . '][' . $event->getType() . ']';
             Log::debug('4');
+            $columns = []; // カルーセル型カラムを3つ追加する配列
             switch (true) {
                 /**
                  * 登録
@@ -57,21 +97,9 @@ class LineBotController extends Controller
                     Log::debug('FollowEvent');
                     $service = new FollowService($bot);
                     $service->execute($event);// ? '友だち追加ありがとうございます(happy) 気になるトレーナーを見つけて予定をいれちゃおう！' : '友達登録されたけど処理に失敗したから何もしないよ';
-                    $columns = []; // カルーセル型カラムを3つ追加する配列
+
                     foreach ($this->trainerArray() as $val) {
-                        // カルーセルに付与するボタンを作る
-                        $action = new UriTemplateActionBuilder(
-                            "予約する",
-                            config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
-                        // カルーセルのカラムを作成する
-                        $action2 = new UriTemplateActionBuilder(
-                            "プロフィール",
-                            config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
-                        $column = new CarouselColumnTemplateBuilder(
-                            $val['name'],
-                            $val['self_introduction'],
-                            $val['image'], [$action, $action2]);
-                        $columns[] = $column;
+                        $columns[] = $this->createCarousel($val['player_id'], $event->getUserId(), $val['name'], $val['self_introduction'], $val['image']);
                     }
                     // カラムの配列を組み合わせてカルーセルを作成する
                     $carousel = new CarouselTemplateBuilder($columns);
@@ -86,25 +114,9 @@ class LineBotController extends Controller
                     Log::debug('TextMessage');
                     $service = new ReceiveTextService($bot);
                     $reply_message = $service->execute($event);
-                    /**
-                     * トレーナ
-                     */
                     if ($event->getText() == 'トレーナー') {
-                        $columns = []; // カルーセル型カラムを3つ追加する配列
                         foreach ($this->trainerArray() as $val) {
-                            // カルーセルに付与するボタンを作る
-                            $action = new UriTemplateActionBuilder(
-                                "予約する",
-                                config('app.url') . 'reservation/' . $val['player_id'] . '?uid=' . $event->getUserId());
-                            $action2 = new UriTemplateActionBuilder(
-                                "プロフィール",
-                                config('app.url') . 'player/' . $val['player_id'] . '?uid=' . $event->getUserId());
-                            // カルーセルのカラムを作成する
-                            $column = new CarouselColumnTemplateBuilder(
-                                $val['name'],
-                                $val['self_introduction'],
-                                $val['image'], [$action, $action2]);
-                            $columns[] = $column;
+                            $columns[] = $this->createCarousel($val['player_id'], $event->getUserId(), $val['name'], $val['self_introduction'], $val['image']);
                         }
                         // カラムの配列を組み合わせてカルーセルを作成する
                         $carousel = new CarouselTemplateBuilder($columns);
