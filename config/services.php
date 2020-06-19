@@ -34,4 +34,10 @@ return [
         'secret' => env('SPARKPOST_SECRET'),
     ],
 
+    'line' => [
+        'client_id'     => env('LINE_LOGIN_CHANNEL_ID'),
+        'client_secret' => env('LINE_LOGIN_CHANNEL_SECRET'),
+        'redirect'      => env('LINE_LOGIN_CALLBACK_URL'),
+    ]
+
 ];

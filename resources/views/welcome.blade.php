@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Laravel</title>
+    <title>{{config('app.name')}}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -64,7 +63,6 @@
     </style>
 </head>
 <body>
-Test10
 <div class="flex-center position-ref full-height">
     @if (Route::has('login'))
         <div class="top-right links">
@@ -73,16 +71,16 @@ Test10
             @else
                 <a href="{{ route('login') }}">ログイン</a>
 
-                @if (Route::has('register'))
-                    <a href="{{ route('register') }}">新規登録</a>
-                @endif
+                {{--                @if (Route::has('register'))--}}
+                {{--                    <a href="{{ route('register') }}">新規登録</a>--}}
+                {{--                @endif--}}
             @endauth
         </div>
     @endif
     <div class="content">
         <div class="title m-b-md">
-            {{ config('app.name', 'ハイパー管理画面') }}<br>
-            こちらは一般ユーザ画面です。管理画面は<a href="/admin/home">こちら</a>
+            {{ config('app.name', 'RAMiUS') }}<br>
+            <img src="{{asset('img/qr.png')}}">
         </div>
     </div>
 </div>

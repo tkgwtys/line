@@ -6,10 +6,22 @@ use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,10 +40,10 @@ class UserController extends Controller
      *
      * @return void
      */
-    public function create()
-    {
-        //
-    }
+//    public function create()
+//    {
+//        //
+//    }
 
     /**
      * Store a newly created resource in storage.
@@ -58,31 +70,12 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|Factory|View
      */
-    public function edit($id)
+    public function edit()
     {
-        $user = User::find($id);
-
-        if ($user) {
-            return view('edit', ['user' => $user]);
-
-        } else {
-            $test = config('app.env');
-            if ($test === 'development') {
-                $qr_code = asset('storage/images/dev.png');
-                return view('qrcode')->with('qr_code', $qr_code);
-            } elseif ($test === 'production') {
-                $qr_code = asset('storage/images/test.png');
-                return view('qrcode')->with('qr_code', $qr_code);
-            } else {
-                echo 'Please check env file';
-            }
-        }
-
+        $user = User::find(Auth::id());
+        return view('user.edit', ['user' => $user]);
     }
 
     /**
@@ -90,26 +83,25 @@ class UserController extends Controller
      *
      * @param Request $request
      * @param int $id
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //UserをDBで見つける
-        $user = User::find($id);
-        //データ代入
-        $user->sei = $request->sei;
-        $user->mei = $request->mei;
-        $user->sei_hira = $request->sei_hira;
-        $user->mei_hira = $request->mei_hira;
-        $user->tel = $request->tel;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        //DBへ保存
-        $user->save();
-        session()->flash('flash_message', '登録が完了しました');
-        return view('edit', ['user' => $user]);
-
-
+        $user = User::find(Auth::id());
+        if ($user) {
+            //データ代入
+            $user->sei = $request->sei;
+            $user->mei = $request->mei;
+            $user->sei_hira = $request->sei_hira;
+            $user->mei_hira = $request->mei_hira;
+            $user->tel = $request->tel;
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->save();
+            session()->flash('flash_message', '保存しました');
+        }
+        return redirect('/user/edit');
     }
 
     /**
@@ -118,8 +110,8 @@ class UserController extends Controller
      * @param int $id
      * @return void
      */
-    public function destroy($id)
-    {
-        //
-    }
+//    public function destroy($id)
+//    {
+//        //
+//    }
 }

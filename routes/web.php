@@ -19,14 +19,22 @@ Route::group(['middleware' => 'basicauth'], function () {
     Route::get('/', function () {
         return view('welcome');
     });
+    Route::get('login/line', 'Auth\LoginController@socialLogin');
+    Route::get('login/line/loginCallback', 'Auth\LoginController@handleProviderCallback');
     // 予約
     Route::resource('/reservation', 'ReservationController');
-    Route::get('/user/{user_id}/edit', 'UserController@edit')->name('line-user.edit');
-    Route::put('/user/{user_id}', 'UserController@update')->name('line-user.update');
+//    Route::get('/user/{user_id}/edit', 'UserController@edit')->name('line-user.edit');
+//    Route::put('/user/{user_id}', 'UserController@update')->name('line-user.update');
     Route::resource('player', 'PlayerController');
-    Auth::routes();
 
+    /**
+     * ログイン後
+     */
+    Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
+    // ユーザー
+    Route::get('/user/edit', 'UserController@edit')->name('user.edit');
+    Route::put('/user/update', 'UserController@update')->name('user.update');
 
     /**
      * ログイン前
@@ -51,7 +59,7 @@ Route::group(['middleware' => 'basicauth'], function () {
         });
         Route::post('logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
         Route::get('home', 'Admin\HomeController@index')->name('admin.home');
-        Route::resource('user', 'Admin\UserController');
+        // Route::resource('user', 'Admin\UserController');
         Route::resource('player', 'Admin\PlayerController');
         Route::resource('reservation', 'ReservationController');
         Route::resource('course', 'Admin\CourseController');
