@@ -55,12 +55,14 @@ class LoginController extends Controller
         $userSocial = Socialite::driver('line')->stateless()->user();
         $user = \App\Models\User::where(['id' => $userSocial->id])->first();
         if ($user) {
-            // メールアドレスチェック
+            // メアドがかぶってないかチェック
             $email_user = \App\Models\User::where(['email' => $userSocial->getEmail()])->first();
             if (!$email_user) {
+                // 登録
                 \App\Models\User::where('id', $user->id)
                     ->update(['display_name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'picture_url' => $userSocial->avatar]);
             } else {
+                // 同じだったらそのままアップデート
                 if ($email_user->id === $userSocial->id) {
                     \App\Models\User::where('id', $user->id)
                         ->update(['display_name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'picture_url' => $userSocial->avatar]);
@@ -71,6 +73,7 @@ class LoginController extends Controller
             }
             Auth::login($user);
         } else {
+            // 新規登録
             $newUser = new \App\Models\User();
             $newUser->id = $userSocial->id;
             $newUser->display_name = $userSocial->getName();
