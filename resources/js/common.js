@@ -1,5 +1,6 @@
 $('.spinner-border').css('display', 'none');
-$('#target-table td').on('click', function () {
+//$('#target-table td').on('click', function () {
+$('.reservationButton').on('click', function () {
     $('.alert').css('display', 'none');
     // 予約日
     const day = $(this).data('day');
@@ -8,15 +9,21 @@ $('#target-table td').on('click', function () {
     // トレーナーID
     const playerId = $(this).data('player_id');
     // ユーザーID
-    const user_id = $(this).children('div').data('user_id');
+    //const user_id = $(this).children('div').data('user_id');
+    const user_id = $(this).data('user_id');
     // コースID
-    const course_id = $(this).children('div').data('course_id');
+    //const course_id = $(this).children('div').data('course_id');
+    const course_id = $(this).data('course_id');
     // 予約ID
-    const reservation_id = $(this).children('div').data('reservation_id');
+    // const reservation_id = $(this).children('div').data('reservation_id');
+    const reservation_id = $(this).data('reservation_id');
     // 店舗ID
-    const store_id = $(this).children('div').data('store_id');
-    // 削除用
-    $('#reservation_id_delete').val(reservation_id);
+    // const store_id = $(this).children('div').data('store_id');
+    const store_id = $(this).data('store_id');
+    // 姓
+    const sei = $(this).data('sei');
+    // 名
+    const mei = $(this).data('mei');
     // 予約フォームラベル
     $('#reservation_label').text('予約フォーム');
     if (typeof reservation_id === "undefined") {
@@ -35,6 +42,10 @@ $('#target-table td').on('click', function () {
     $('#selected_time').val(time);
     $('#course').val(course_id);
     $('#store').val(store_id);
+    $('#sei').val(sei);
+    $('#mei').val(mei);
+    // 削除用
+    $('#reservation_id_delete').val(reservation_id);
 });
 
 /**
@@ -43,7 +54,6 @@ $('#target-table td').on('click', function () {
 $(window).on('load', function () {
     $('#reservationDirectly').modal('show');
 });
-
 
 /**
  * 予約削除処理
@@ -86,8 +96,6 @@ $('#reservation_delete_button').on('click', function () {
         // 通信が完了したとき
         console.log('通る');
     });
-
-
 });
 
 /**
