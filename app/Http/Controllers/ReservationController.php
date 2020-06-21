@@ -46,13 +46,11 @@ class ReservationController extends Controller
      */
     public function store(CreateReservationRequest $request)
     {
-        $tick = 15;
+        $reservation_newly = false;
         // ステータス
         $status = 10;
         // カテゴリー
         $category = 10;
-        //
-        $insert_array = [];
         // 予約者
         $user_id = $request->get('user');
         // トレーナ
@@ -74,6 +72,7 @@ class ReservationController extends Controller
             if (!$course) {
                 Log::debug('コースがない');
             }
+            $user = User::where('id', $user_id)->first();
             if ($reservation_id) {
                 $update_date = [
                     'user_id' => $user_id,
@@ -86,6 +85,7 @@ class ReservationController extends Controller
                 ];
                 $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
             } else {
+                $reservation_newly = true;
                 // 予約番号
                 $reservation_id = Str::random(20);
                 $insert_data = [
@@ -105,9 +105,18 @@ class ReservationController extends Controller
             DB::commit();
 
             $bot = app('line-bot');
-            $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
-            $textMessageBuilder = new TextMessageBuilder($message);
-            $bot->pushMessage($user_id, $textMessageBuilder);
+            if ($reservation_newly) {
+                $message = "予約申請\n";
+                $message .= $user->sei . $user->mei . "様\n";
+                $message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $message .= config('app.url') . 'admin/player/' . $player_id . '?start_date=' . $request->get('selected_date') . '&day_count=7';
+                $textMessageBuilder = new TextMessageBuilder($message);
+                $bot->pushMessage($player_id, $textMessageBuilder);
+            } else {
+                $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
+                $textMessageBuilder = new TextMessageBuilder($message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
+            }
             return ['result' => $result];
         } catch (\Exception $e) {
             DB::rollBack();

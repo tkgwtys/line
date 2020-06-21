@@ -59,7 +59,11 @@ Route::group(['middleware' => 'basicauth'], function () {
         });
         Route::post('logout', 'Admin\Auth\LoginController@logout')->name('admin.logout');
         Route::get('home', 'Admin\HomeController@index')->name('admin.home');
-        // Route::resource('user', 'Admin\UserController');
+        Route::resource('user', 'Admin\UserController')->names([
+            'edit' => 'admin.user.edit',
+            'show' => 'admin.user.show',
+            'update' => 'admin.user.update',
+        ]);
         Route::resource('player', 'Admin\PlayerController');
         Route::resource('reservation', 'ReservationController');
         Route::resource('course', 'Admin\CourseController');

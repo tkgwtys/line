@@ -2,16 +2,13 @@
 
 @section('content')
     <div class="container">
-        {{Breadcrumbs::render('adminUser.edit', $user)}}
-        <!-- フラッシュメッセージ -->
+    {{Breadcrumbs::render('adminUser.edit', $user)}}
+    <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
                 {{ session('flash_message') }}
             </div>
         @endif
-        <div class="card-header">{{ __('Register') }}</div>
-        <div class="card-body">
-        <h1>ユーザー編集</h1>
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -21,7 +18,7 @@
                 </ul>
             </div>
         @endif
-        <form action="{{route('user.update',$user->id)}}" enctype="multipart/form-data" method="post">
+        <form action="{{route('admin.user.update',$user->id)}}" enctype="multipart/form-data" method="post">
             @csrf
             <div class="row">
                 <div class="col-sm">
