@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class ReservationController extends Controller
 {
@@ -64,7 +66,7 @@ class ReservationController extends Controller
         DB::beginTransaction();
         try {
             // 時間
-            $now = Carbon::now()->format('Y-m-d H:m:i');
+            $now = Carbon::today()->format('Y-m-d H:m:i');
             // 予約日
             $reserved_at = $request->get('selected_date') . ' ' . $request->get('selected_time');
             // コースが存在するか
@@ -100,8 +102,12 @@ class ReservationController extends Controller
                 ];
                 $result = Reservation::insert($insert_data);
             }
-
             DB::commit();
+
+            $bot = app('line-bot');
+            $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
+            $textMessageBuilder = new TextMessageBuilder($message);
+            $bot->pushMessage($user_id, $textMessageBuilder);
             return ['result' => $result];
         } catch (\Exception $e) {
             DB::rollBack();
