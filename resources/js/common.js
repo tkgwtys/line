@@ -44,6 +44,7 @@ $('.reservationButton').on('click', function () {
     $('#store').val(store_id);
     $('#sei').val(sei);
     $('#mei').val(mei);
+    $('#reservation_id').val(reservation_id);
     // 削除用
     $('#reservation_id_delete').val(reservation_id);
 });
@@ -132,7 +133,6 @@ $('#reservation_form').on('submit', function (e) {
     let errorFlg = true;
     const form = $(this);
     const formData = form.serializeArray();
-    console.log(formData);
     // バリデーション
     for (let key in formData) {
         if (formData[key]['name'] === 'selected_date') {

@@ -80,6 +80,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="reservation_form" method="post" action="/admin/reservation">
+                <input type="hidden" name="reservation_id" id="reservation_id" value="">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLargeLabel">

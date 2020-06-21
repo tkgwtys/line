@@ -51,40 +51,56 @@ class ReservationController extends Controller
         $category = 10;
         //
         $insert_array = [];
+        // 予約者
+        $user_id = $request->get('user');
+        // トレーナ
+        $player_id = $request->get('player');
+        // コース
+        $course_id = (int)$request->get('course');
+        // 店舗
+        $store_id = (int)$request->get('store');
+        // 予約番号
+        $reservation_id = $request->get('reservation_id');
         DB::beginTransaction();
-        // 時間
-        $now = Carbon::now();
         try {
-            // 予約番号
-            $reservation_id = Str::random(20);
-            // 予約者
-            $user_id = $request->get('user');
-            // トレーナ
-            $player_id = $request->get('player');
-            // コース
-            $course_id = (int)$request->get('course');
-            // 店舗
-            $store_id = (int)$request->get('store');
+            // 時間
+            $now = Carbon::now()->format('Y-m-d H:m:i');
             // 予約日
-            $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time'));
+            $reserved_at = $request->get('selected_date') . ' ' . $request->get('selected_time');
             // コースが存在するか
             $course = Course::find($course_id)->first();
             if (!$course) {
                 Log::debug('コースがない');
             }
-            $insert_data = [
-                'reservation_id' => $reservation_id,
-                'user_id' => $user_id,
-                'player_id' => $player_id,
-                'status' => $status,
-                'category' => $category,
-                'course_id' => $course_id,
-                'store_id' => $store_id,
-                'reserved_at' => $reserved_at,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-            $result = Reservation::insert($insert_data);
+            if ($reservation_id) {
+                $update_date = [
+                    'user_id' => $user_id,
+                    'status' => $status,
+                    'category' => $category,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'reserved_at' => $reserved_at,
+                    'updated_at' => $now,
+                ];
+                $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
+            } else {
+                // 予約番号
+                $reservation_id = Str::random(20);
+                $insert_data = [
+                    'reservation_id' => $reservation_id,
+                    'user_id' => $user_id,
+                    'player_id' => $player_id,
+                    'status' => $status,
+                    'category' => $category,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'reserved_at' => $reserved_at,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+                $result = Reservation::insert($insert_data);
+            }
+
             DB::commit();
             return ['result' => $result];
         } catch (\Exception $e) {
