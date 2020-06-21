@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Service\Line\ReceiveTextService;
+use App\Services\Line\ReceiveTextService;
+use App\Services\Line\ReservationService;
 use App\Services\Line\ReceiveLocationService;
 use App\Services\Line\FollowService;
 use App\Services\Line\UnFollowService;
@@ -124,7 +125,6 @@ class LineBotController extends Controller
                         $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
                         $bot->replyMessage($event->getReplyToken(), $carousel_message);
                     } else if ($event->getText() == '設定') {
-
 //                        // 「はい」ボタン
 //                        $yes_post = new PostbackTemplateActionBuilder("はい", "page=1");
 //                        // 「いいえ」ボタン
@@ -141,9 +141,12 @@ class LineBotController extends Controller
 
                         $this->userInfo($bot, $reply_token);
                     } else if ($event->getText() == '予約確認') {
-                        $this->getReservation($bot, $reply_token);
+                        Log::debug('予約確認');
+                        $service = new ReservationService($bot);
+                        $result = $service->getReservation($event);
+                        $bot->replyMessage($reply_token, new TextMessageBuilder($result));
                     } else {
-                        $bot->replyText($reply_token, $reply_message);
+                        $bot->replyMessage($reply_token, $reply_message);
                     }
                     break;
                 /**
@@ -176,22 +179,6 @@ class LineBotController extends Controller
                     // logger()->warning('Unknown event. [' . get_class($event) . ']', compact('body'));
             }
         }
-    }
-
-    /**
-     * 予約確認
-     * @param $bot
-     * @param $reply_token
-     */
-    private function getReservation($bot, $reply_token)
-    {
-        return $bot->replyText($reply_token, '現在予約はございません');
-//        $actions = [
-//            new PostbackTemplateActionBuilder("トレーナを選択する", 'aaaaa'),
-//        ];
-//        $button = new ButtonTemplateBuilder('予約確認', '現在予約はございません', null, $actions);
-//        $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
-//        $bot->replyMessage($reply_token, $msg);
     }
 
     /**
