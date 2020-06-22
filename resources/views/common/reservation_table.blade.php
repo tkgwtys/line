@@ -28,26 +28,43 @@
                                 @php
                                     $count = 0;
                                 @endphp
-                                <td colspan="{{$count}}"
-                                    data-day="{{$day}}"
-                                    data-player_id="{{$player->id}}"
-                                    data-time="{{$hi}}:00"
-                                    data-toggle="modal"
-                                    data-target="#modalLarge">
+                                <td colspan="{{$count}}">
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                            <div
+                                            <button
+                                                type="button"
+                                                class="btn btn-info reservationButton"
+                                                data-toggle="modal"
+                                                data-day="{{$day}}"
+                                                data-player_id="{{$player->id}}"
+                                                data-time="{{$hi}}:00"
+                                                data-target="#modalLarge"
                                                 data-course_id="{{$reservation->course_id}}"
                                                 data-user_id="{{$reservation->user_id}}"
                                                 data-reservation_id="{{$reservation->reservation_id}}"
+                                                data-sei="{{$reservation->sei}}"
+                                                data-mei="{{$reservation->mei}}"
                                                 data-store_id="{{$reservation->store_id}}">
-
                                                 {{$reservation->sei}}{{$reservation->mei}}
                                                 【{{$reservation->name}}（{{$reservation->course_time}}分）】
-
-                                            </div>
+                                            </button>
                                         @endif
                                     @endforeach
+                                    <button type="button"
+                                            class="btn btn-link reservationButton"
+                                            data-toggle="modal"
+                                            data-day="{{$day}}"
+                                            data-player_id="{{$player->id}}"
+                                            data-time="{{$hi}}:00"
+                                            data-target="#modalLarge">
+                                        <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                                            <path fill-rule="evenodd"
+                                                  d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+                                        </svg>
+                                    </button>
                                 </td>
                             @endforeach
                         @endforeach
@@ -63,6 +80,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="reservation_form" method="post" action="/admin/reservation">
+                <input type="hidden" name="reservation_id" id="reservation_id" value="">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLargeLabel">
@@ -165,45 +183,22 @@
                                 お客様情報
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="sei"></label>姓
-                                            <input
-                                                type="text"
-                                                class="form-control form-control-lg"
-                                                id="sei"
-                                                name="sei"
-                                                placeholder="姓を入力してください"
-                                                value="">
-                                            <div
-                                                id="err_sei"
-                                                class="alert alert-danger"
-                                                role="alert"
-                                                style="display: none"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label for="mei"></label>名
-                                            <input
-                                                type="text"
-                                                class="form-control form-control-lg"
-                                                name="mei"
-                                                id="mei"
-                                                placeholder="名を入力してください"
-                                                value="">
-                                            <div
-                                                id="err_mei"
-                                                class="alert alert-danger"
-                                                role="alert"
-                                                style="display: none"></div>
-                                        </div>
+                                <div class="form-group">
+                                    <select class="form-control form-control-lg" id="user" name="user">
+                                        <option value="">選択してください</option>
+                                        @foreach($users as $key => $user)
+                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div
+                                        id="err_player"
+                                        class="alert alert-danger"
+                                        role="alert"
+                                        style="display: none">
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         {{--                    <!-- トレーナ -->--}}
                         {{--                    <div class="modal-footer">--}}
                         {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}

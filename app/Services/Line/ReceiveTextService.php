@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Line;
+namespace App\Services\Line;
 
 use App\Models\TalkWord;
 use Illuminate\Support\Facades\DB;
