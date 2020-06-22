@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class ReservationController extends Controller
 {
@@ -44,48 +46,77 @@ class ReservationController extends Controller
      */
     public function store(CreateReservationRequest $request)
     {
-        $tick = 15;
+        $reservation_newly = false;
         // ステータス
         $status = 10;
         // カテゴリー
         $category = 10;
-        //
-        $insert_array = [];
+        // 予約者
+        $user_id = $request->get('user');
+        // トレーナ
+        $player_id = $request->get('player');
+        // コース
+        $course_id = (int)$request->get('course');
+        // 店舗
+        $store_id = (int)$request->get('store');
+        // 予約番号
+        $reservation_id = $request->get('reservation_id');
         DB::beginTransaction();
-        // 時間
-        $now = Carbon::now();
         try {
-            // 予約番号
-            $reservation_id = Str::random(20);
-            // 予約者
-            $user_id = $request->get('user');
-            // トレーナ
-            $player_id = $request->get('player');
-            // コース
-            $course_id = (int)$request->get('course');
-            // 店舗
-            $store_id = (int)$request->get('store');
+            // 時間
+            $now = Carbon::today()->format('Y-m-d H:m:i');
             // 予約日
-            $reserved_at = Carbon::parse($request->get('selected_date') . ' ' . $request->get('selected_time'));
+            $reserved_at = $request->get('selected_date') . ' ' . $request->get('selected_time');
             // コースが存在するか
             $course = Course::find($course_id)->first();
             if (!$course) {
                 Log::debug('コースがない');
             }
-            $insert_data = [
-                'reservation_id' => $reservation_id,
-                'user_id' => $user_id,
-                'player_id' => $player_id,
-                'status' => $status,
-                'category' => $category,
-                'course_id' => $course_id,
-                'store_id' => $store_id,
-                'reserved_at' => $reserved_at,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-            $result = Reservation::insert($insert_data);
+            $user = User::where('id', $user_id)->first();
+            if ($reservation_id) {
+                $update_date = [
+                    'user_id' => $user_id,
+                    'status' => $status,
+                    'category' => $category,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'reserved_at' => $reserved_at,
+                    'updated_at' => $now,
+                ];
+                $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
+            } else {
+                $reservation_newly = true;
+                // 予約番号
+                $reservation_id = Str::random(20);
+                $insert_data = [
+                    'reservation_id' => $reservation_id,
+                    'user_id' => $user_id,
+                    'player_id' => $player_id,
+                    'status' => $status,
+                    'category' => $category,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'reserved_at' => $reserved_at,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+                $result = Reservation::insert($insert_data);
+            }
             DB::commit();
+
+            $bot = app('line-bot');
+            if ($reservation_newly) {
+                $message = "予約申請\n";
+                $message .= $user->sei . $user->mei . "様\n";
+                $message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $message .= config('app.url') . 'admin/player/' . $player_id . '?start_date=' . $request->get('selected_date') . '&day_count=7';
+                $textMessageBuilder = new TextMessageBuilder($message);
+                $bot->pushMessage($player_id, $textMessageBuilder);
+            } else {
+                $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
+                $textMessageBuilder = new TextMessageBuilder($message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
+            }
             return ['result' => $result];
         } catch (\Exception $e) {
             DB::rollBack();
