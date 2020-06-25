@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@inject('reservationModel', 'App\Models\Reservation')
 @section('content')
     <div class="container">
         {{ Breadcrumbs::render('userReservation') }}
@@ -9,7 +10,10 @@
                 @foreach($reservations as $reservation)
                     <tr data-tr_{{$reservation->reservation_id}}>
                         <td>
-                            {{$reservation->reservations_reserved_at}}
+                            日時：{{$reservation->reservations_reserved_at}}<br>
+                            トレーナー：{{$reservation->player_sei}}<br>
+                            店舗：{{$reservation->stores_name}}<br>
+                            ステータス：{{$reservationModel->getStatus($reservation->reservations_status)}}
                         </td>
                         <td align="right">
                             <button

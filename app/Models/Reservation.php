@@ -35,6 +35,14 @@ class Reservation extends Model
     protected $dates = ['deleted_at'];
 
     /**
+     * @param int $status
+     * @return string
+     */
+    public function getStatus($status = 10) {
+        return self::$status[$status];
+    }
+
+    /**
      * 時間の配列を返す
      * @param int $start_h
      * @param int $end_h
