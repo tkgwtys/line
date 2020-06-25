@@ -153,12 +153,5 @@ Breadcrumbs::for('userHome', function ($trail) {
  */
 Breadcrumbs::for('userReservation', function ($trail) {
     $trail->parent('userHome');
-    $trail->push('予約一覧', url('/reservation/'));
-});
-/**
- * 予約編集
- */
-Breadcrumbs::for('userReservationEdit', function ($trail, $reservation) {
-    $trail->parent('userHome');
-    $trail->push('予約一覧', url('/reservation/' . $reservation->reservation_id . '/edit'));
+    $trail->push('予約', url('/reservation/'));
 });

@@ -57,6 +57,50 @@ $(window).on('load', function () {
 });
 
 /**
+ * ユーザー側でキャンセル処理
+ */
+$('#user_reservation_list').on('click', 'button', function () {
+    // 確認
+    if (!confirm('予約をキャンセルしますか？')) {
+        return false;
+    }
+    // 予約番号
+    const reservation_id = $(this).data('reservation_id');
+    if (!reservation_id) {
+        alert('予約番号が取得できませんでした');
+        return;
+    }
+    // トークン取得
+    const _token = $('meta[name="csrf-token"]').attr('content');
+    if (!_token) {
+        alert('トークンが取得できませんでした');
+        return;
+    }
+    // ボタンを無効
+    $('button').attr('disabled', true);
+    // 削除対象
+    const removeTr = $(this).closest('tr');
+    $.ajax({
+        type: 'DELETE',
+        url: `/reservation/${reservation_id}`,
+        data: {
+            _token,
+            reservation_id,
+        },
+    }).done(function (data) {
+        $('button').attr('disabled', false);
+        if (data.result) {
+            removeTr.remove();
+            $('#alert_message').html('<div class="alert alert-success" role="alert">' + 'キャンセルしました' + '</div>');
+        }
+    }).fail(function () {
+        $('#alert_message').html('<div class="alert alert-danger" role="alert">' + 'キャンセル失敗' + '</div>');
+        $('button').attr('disabled', false);
+        $('.spinner-border').css('display', 'none');
+    }).always(function (data) {
+    });
+});
+/**
  * 予約削除処理
  */
 $('#reservation_delete_button').on('click', function () {

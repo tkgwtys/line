@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -21,11 +22,14 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         //
+        $reservations = Reservation::getUserReservations(Auth::id());
+        return view('reservation.index', compact('reservations')
+        );
     }
 
     /**
@@ -203,10 +207,9 @@ class ReservationController extends Controller
      * @param int $id
      * @return array
      */
-    public function destroy($id)
+    public function destroy($player_id)
     {
-        $result = Reservation::where('reservation_id', $id)->whereNull('deleted_at')->delete();
-        Log::debug($result);
+        $result = Reservation::where('reservation_id', $player_id)->whereNull('deleted_at')->delete();
         return ['result' => $result];
     }
 }
