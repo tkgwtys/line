@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot;
 
 class ReservationService
@@ -45,6 +49,7 @@ class ReservationService
                 'reservations.category as reservations_category',
                 'reservations.course_id as reservations_course_id',
                 'reservations.store_id as reservations_store_id',
+                'reservations.status as reservations_status',
                 DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
                 'courses.name as courses_name',
                 'courses.price as courses_price',
@@ -65,15 +70,38 @@ class ReservationService
             ])->whereNull('reservations.deleted_at')
             ->orderBy('reservations_reserved_at', 'ASC')
             ->get();
-        if ($reservations) {
+
+        if (count($reservations) > 0) {
             foreach ($reservations as $key => $reservation) {
-                $message .= $reservation->reservations_reserved_at;
+                $message .= $reservation->reservations_reserved_at . ' ' . Reservation::$status[$reservation->reservations_status];
                 if (count($reservations) != $key + 1) {
                     $message .= "\n";
                 }
             }
+            $message .= "\n\n変更・キャンセルはこちら";
+            $message .= "<a href=''>あああ</a>";
+            return $message;
         }
-        Log::debug($message);
-        return $message ? $message : '現在、お客様のご予約はございません。';
+        return '現在、お客様のご予約はございません。';
+
+
+//        if (count($reservations) > 0) {
+//            foreach ($reservations as $key => $reservation) {
+//                $message .= $reservation->reservations_reserved_at . ' ' . Reservation::$status[$reservation->reservations_status];
+//                Log::debug($message);
+//                if (count($reservations) != $key + 1) {
+//                    $message .= "\n";
+//                }
+//            }
+//            $actions = [
+//                new UriTemplateActionBuilder("変更・キャンセル",
+//                    config('app.url') . 'user/edit'
+//                ),
+//            ];
+//            $button = new ButtonTemplateBuilder('予約確認', $message, null, $actions);
+//            $resultMessage = new TemplateMessageBuilder('Finish generate playlist', $button);
+//            $bot->replyMessage($reply_token, $resultMessage);
+//        }
+//        $bot->replyMessage($reply_token, new TextMessageBuilder('現在、お客様のご予約はございません。'));
     }
 }

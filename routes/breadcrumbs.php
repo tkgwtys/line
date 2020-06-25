@@ -2,6 +2,7 @@
 /////////////////////////////////////////////
 // 管理画面
 /////////////////////////////////////////////
+
 /**
  * トップ
  * /admin/home
@@ -35,9 +36,9 @@ Breadcrumbs::for('adminUser', function ($trail, $user) {
  * ユーザー編集
  * /admin/user/$user->id/edit
  */
-Breadcrumbs::for('adminUser.edit', function ($trail, $user){
+Breadcrumbs::for('adminUser.edit', function ($trail, $user) {
     $trail->parent('adminUser', $user);
-    $trail->push('ユーザー編集', url('/admin/user/'.$user->id.'/edit'));
+    $trail->push('ユーザー編集', url('/admin/user/' . $user->id . '/edit'));
 });
 
 /**
@@ -86,9 +87,9 @@ Breadcrumbs::for('adminCourse', function ($trail, $course) {
  * コース編集
  * /admin/user/{course}/edit
  */
-Breadcrumbs::for('adminCourse.edit', function ($trail, $course){
+Breadcrumbs::for('adminCourse.edit', function ($trail, $course) {
     $trail->parent('adminCourse', $course);
-    $trail->push('コース編集', url('/admin/course/'.$course->id.'/edit'));
+    $trail->push('コース編集', url('/admin/course/' . $course->id . '/edit'));
 });
 
 /**
@@ -123,9 +124,9 @@ Breadcrumbs::for('adminStore', function ($trail, $store) {
  * コース編集
  * /admin/store/{store}/edit
  */
-Breadcrumbs::for('adminStore.edit', function ($trail, $store){
+Breadcrumbs::for('adminStore.edit', function ($trail, $store) {
     $trail->parent('adminStore', $store);
-    $trail->push('ストア編集', url('/admin/store/'.$store->id.'/edit'));
+    $trail->push('ストア編集', url('/admin/store/' . $store->id . '/edit'));
 });
 
 /**
@@ -136,4 +137,28 @@ Breadcrumbs::for('admin.store.create', function ($trail) {
     $trail->parent('admin.home');
     $trail->push('ストア管理', url('/admin/store'));
     $trail->push('ストア登録', url('/admin/store/create'));
+});
+
+/////////////////////////////////////////////////////////////////////////
+///
+/// ユーザ側
+///
+/////////////////////////////////////////////////////////////////////////
+// ホーム
+Breadcrumbs::for('userHome', function ($trail) {
+    $trail->push('ホーム', url('/home'));
+});
+/**
+ * 予約一覧
+ */
+Breadcrumbs::for('userReservation', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('予約一覧', url('/reservation/'));
+});
+/**
+ * 予約編集
+ */
+Breadcrumbs::for('userReservationEdit', function ($trail, $reservation) {
+    $trail->parent('userHome');
+    $trail->push('予約一覧', url('/reservation/' . $reservation->reservation_id . '/edit'));
 });

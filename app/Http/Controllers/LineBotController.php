@@ -143,8 +143,8 @@ class LineBotController extends Controller
                     } else if ($event->getText() == '予約確認') {
                         Log::debug('予約確認');
                         $service = new ReservationService($bot);
-                        $result = $service->getReservation($event);
-                        $bot->replyMessage($reply_token, new TextMessageBuilder($result));
+                        $result_message = $service->getReservation($event);
+                        $bot->replyMessage($reply_token, new TextMessageBuilder($result_message));
                     } else {
                         $bot->replyMessage($reply_token, $reply_message);
                     }
