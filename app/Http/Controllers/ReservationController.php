@@ -202,14 +202,51 @@ class ReservationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return array
+     * 予約キャンセル
+     * @param $reservation_id
+     * @return array|string
      */
-    public function destroy($player_id)
+    public function destroy($reservation_id)
     {
-        $result = Reservation::where('reservation_id', $player_id)->whereNull('deleted_at')->delete();
-        return ['result' => $result];
+        $data = [
+            'result' => false,
+            'message' => 'キャンセル失敗',
+        ];
+        // ユーザーがいるか
+        $user = User::where('id', Auth::id())->whereNull('blocked_at')->first();
+        if (!$user) {
+            return $data;
+        }
+        $reservation = Reservation::findByReservationId($reservation_id);
+        if (!$reservation) {
+            return $data['message'] = '予約がみつかりません';
+        }
+        $result = Reservation::where('reservation_id', $reservation_id)->whereNull('deleted_at')->delete();
+        if ($result) {
+            // お客様にプッシュ通知
+            $bot = app('line-bot');
+            ////////////////////////////////////
+            /// ユーザー
+            ////////////////////////////////////
+            $user_message = "キャンセルしました。\n\n";
+            $user_message .= '日時：' . $reservation->reservations_reserved_at . "\n";
+            $user_message .= 'トレーナ：' . $reservation->player_sei . $reservation->player_mei . "\n";
+            $user_message .= '店舗：' . $reservation->stores_name . "\n";
+            $user_messageBuilder = new TextMessageBuilder($user_message);
+            $bot->pushMessage($reservation->reservations_user_id, $user_messageBuilder);
+            ////////////////////////////////////
+            /// プレイヤー
+            ////////////////////////////////////
+            $player_message = "予約がキャンセルされました。\n\n";
+            $player_message .= '名前：' . $reservation->user_sei . $reservation->user_mei . "様\n";
+            $player_message .= '日時：' . $reservation->reservations_reserved_at . "\n";
+            $player_message .= '店舗：' . $reservation->stores_name . "\n";
+            $player_messageBuilder = new TextMessageBuilder($player_message);
+            $bot->pushMessage($reservation->reservations_player_id, $player_messageBuilder);
+            // 結果
+            $data['result'] = true;
+            $data['message'] = 'キャンセルしました';
+            return $data;
+        }
     }
 }

@@ -38,7 +38,8 @@ class ReservationService
         Log::debug($user_id);
         $now = Carbon::today();
         $reservations = DB::table('reservations')
-            ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
+            ->leftJoin('users', 'reservations.player_id', '=', 'users.id')
+            ->leftJoin('users as players', 'reservations.user_id', '=', 'players.id')
             ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
             ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
             ->select(
@@ -63,23 +64,27 @@ class ReservationService
                 'stores.url as stores_url',
                 'stores.business_hours as stores_business_hours',
                 'users.sei as users_sei',
-                'users.mei as users_mei'
+                'users.mei as users_mei',
+                'users.sei as players_sei',
+                'users.mei as players_mei'
             )->where([
                 ['user_id', '=', $user_id],
                 ['reserved_at', '>=', $now]
             ])->whereNull('reservations.deleted_at')
             ->orderBy('reservations_reserved_at', 'ASC')
             ->get();
+        Log::debug($reservations);
 
         if (count($reservations) > 0) {
             foreach ($reservations as $key => $reservation) {
-                $message .= $reservation->reservations_reserved_at . ' ' . Reservation::$status[$reservation->reservations_status];
+                $message .= '日時：' . $reservation->reservations_reserved_at . "\n";
+                $message .= 'トレーナ：' . $reservation->users_sei . $reservation->users_mei . "\n";
+                $message .= '店舗：' . $reservation->stores_name . "\n";
+                $message .= 'ステータス：' . Reservation::$status[$reservation->reservations_status] . "\n";
                 if (count($reservations) != $key + 1) {
-                    $message .= "\n";
+                    $message .= "-------------------\n";
                 }
             }
-            $message .= "\n\n変更・キャンセルはこちら";
-            $message .= "<a href=''>あああ</a>";
             return $message;
         }
         return '現在、お客様のご予約はございません。';

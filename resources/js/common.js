@@ -88,13 +88,14 @@ $('#user_reservation_list').on('click', 'button', function () {
             reservation_id,
         },
     }).done(function (data) {
+        console.log(data);
         $('button').attr('disabled', false);
         if (data.result) {
             removeTr.remove();
-            $('#alert_message').html('<div class="alert alert-success" role="alert">' + 'キャンセルしました' + '</div>');
+            $('#alert_message').html('<div class="alert alert-success" role="alert">' + data.message + '</div>');
         }
-    }).fail(function () {
-        $('#alert_message').html('<div class="alert alert-danger" role="alert">' + 'キャンセル失敗' + '</div>');
+    }).fail(function (data) {
+        $('#alert_message').html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
         $('button').attr('disabled', false);
         $('.spinner-border').css('display', 'none');
     }).always(function (data) {
