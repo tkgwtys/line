@@ -25,6 +25,12 @@ class Reservation extends Model
         'updated_at',
     ];
 
+    public static $status = [
+        10 => '申請中',
+        20 => 'キャンセル',
+        30 => '確定',
+    ];
+
     protected $dates = ['deleted_at'];
 
     /**
