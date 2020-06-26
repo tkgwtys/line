@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <label for="player">担当トレーナ</label>
                                 <select class="form-control form-control-lg" id="player" name="player">
-                                    <option value="">選択してください</option>
+                                    <option value="0">選択してください</option>
                                     @foreach($player_array as $key => $player)
                                         <option value="{{$player->id}}"
                                                 @if($player_id == $player->id) selected @endif>{{$player->sei}} {{$player->mei}}</option>
@@ -188,12 +188,13 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success btn-block btn-lg">
-                                        <span
-                                            class="spinner-border spinner-border-sm"
-                                            role="status"
-                                            aria-hidden="true">
-                                        </span>
+                                <button
+                                    type="submit"
+                                    class="btn btn-success btn-block btn-lg">
+                                <span
+                                    class="spinner-border spinner-border-sm"
+                                    role="status"
+                                    aria-hidden="true"></span>
                                     予約申請する
                                 </button>
                                 <br>
@@ -201,13 +202,13 @@
                                 <br>
                             </div>
                         </form>
-                        @else
-                            <div class="modal-body">
-                                <h3>ご予約するには「お客様情報」を登録する必要があります。</h3>
-                                <a class="btn btn-primary btn-lg btn-block" href="/user/edit">入力フォームへ</a>
-                            </div>
-                        @endif
                     </div>
+                @else
+                    <div class="modal-body">
+                        <h3>ご予約するには「お客様情報」を登録する必要があります。</h3>
+                        <a class="btn btn-primary btn-lg btn-block" href="/user/edit">入力フォームへ</a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
