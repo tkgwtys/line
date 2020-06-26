@@ -38,7 +38,8 @@ class Reservation extends Model
      * @param int $status
      * @return string
      */
-    public function getStatus($status = 10) {
+    public static function getStatus($status = 10)
+    {
         return self::$status[$status];
     }
 

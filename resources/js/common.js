@@ -175,101 +175,94 @@ flatpickr('.selector', {
  */
 $('#reservation_form').on('submit', function (e) {
     e.preventDefault();
-    let errorFlg = true;
     const form = $(this);
+    let errorFlgs = true;
     const formData = form.serializeArray();
+    console.log(formData);
     // バリデーション
     for (let key in formData) {
         if (formData[key]['name'] === 'selected_date') {
             if (!formData[key]['value']) {
                 $('#err_selected_date').css('display', 'block');//.text('選択してください');
                 $('#err_selected_date').text('予約日を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_selected_date').css('display', 'none');//.text('選択してください');
                 $('#err_selected_date').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'selected_time') {
             if (!formData[key]['value']) {
                 $('#err_selected_time').css('display', 'block');//.text('選択してください');
                 $('#err_selected_time').text('予約時間を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_selected_time').css('display', 'none');//.text('選択してください');
                 $('#err_selected_time').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'player') {
             if (!formData[key]['value']) {
                 $('#err_player').css('display', 'block');//.text('選択してください');
                 $('#err_player').text('トレーナーを選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_player').css('display', 'none');//.text('選択してください');
                 $('#err_player').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'course') {
-            if (!formData[key]['value']) {
+            if (formData[key]['value'] == '0') {
                 $('#err_course').css('display', 'block');//.text('選択してください');
                 $('#err_course').text('コースを選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_course').css('display', 'none');//.text('選択してください');
                 $('#err_course').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'user') {
             if (!formData[key]['value']) {
                 $('#err_user').css('display', 'block');//.text('選択してください');
                 $('#err_user').text('お名前を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_user').css('display', 'none');//.text('選択してください');
                 $('#err_user').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'store') {
-            if (!formData[key]['value']) {
+            if (formData[key]['value'] == '0') {
                 $('#err_store').css('display', 'block');//.text('選択してください');
                 $('#err_store').text('店舗を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_store').css('display', 'none');//.text('選択してください');
                 $('#err_store').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'sei') {
             if (!formData[key]['value']) {
                 $('#err_sei').css('display', 'block');//.text('選択してください');
                 $('#err_sei').text('姓を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_sei').css('display', 'none');//.text('選択してください');
                 $('#err_sei').text('');
-                errorFlg = true;
             }
         }
         if (formData[key]['name'] === 'mei') {
             if (!formData[key]['value']) {
                 $('#err_mei').css('display', 'block');//.text('選択してください');
                 $('#err_mei').text('名を選択してください');
-                errorFlg = false;
+                errorFlgs = false;
             } else {
                 $('#err_mei').css('display', 'none');//.text('選択してください');
                 $('#err_mei').text('');
-                errorFlg = true;
             }
         }
     }
-    if (errorFlg) {
+    if (errorFlgs) {
         // ボタンを無効
         $('button').attr('disabled', true);
         // スピナー表示
@@ -280,17 +273,21 @@ $('#reservation_form').on('submit', function (e) {
             data: form.serialize(),
         }).done(function (data) {
             console.log(data);
-            // 通信が成功したときの処理
-            console.log('ok');
-            window.location.reload();
+            if (data.result) {
+                $('#reservation').modal('hide');
+                $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+            }
+            //window.location.reload();
         }).fail(function () {
             $('button').attr('disabled', false);
             $('.spinner-border').css('display', 'none');
             // 通信が失敗したときの処理
             console.log('ng');
-        }).always(function (data) {
-            // 通信が完了したとき
-            console.log('通る');
+        }).always(function () {
+            console.log('aaaaaaaaaaaaa');
+            $("#course option[value='0']").prop('selected', true);
+            $('button').attr('disabled', false);
+            $('.spinner-border').css('display', 'none');
         });
     }
 });

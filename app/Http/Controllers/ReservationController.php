@@ -50,9 +50,10 @@ class ReservationController extends Controller
      */
     public function store(CreateReservationRequest $request)
     {
-        $reservation_newly = false;
-        // ステータス
-        $status = 10;
+        $data = [
+            'result' => true,
+            'message' => '',
+        ];
         // カテゴリー
         $category = 10;
         // 予約者
@@ -65,6 +66,10 @@ class ReservationController extends Controller
         $store_id = (int)$request->get('store');
         // 予約番号
         $reservation_id = $request->get('reservation_id');
+        // ステータス
+        $status = $request->get('status');
+        // タイプ（userかadminか）
+        $type = $request->get('type');
         DB::beginTransaction();
         try {
             // 時間
@@ -76,8 +81,15 @@ class ReservationController extends Controller
             if (!$course) {
                 Log::debug('コースがない');
             }
+            // 予約者
             $user = User::where('id', $user_id)->first();
+            // トレーナー
+            $player = User::where('id', $player_id)->where('level', 20)->first();
+            // 店舗
+            $store = Store::where('id', $store_id)->first();
+            // 予約があるか
             if ($reservation_id) {
+                // 更新
                 $update_date = [
                     'user_id' => $user_id,
                     'status' => $status,
@@ -89,7 +101,6 @@ class ReservationController extends Controller
                 ];
                 $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
             } else {
-                $reservation_newly = true;
                 // 予約番号
                 $reservation_id = Str::random(20);
                 $insert_data = [
@@ -107,24 +118,42 @@ class ReservationController extends Controller
                 $result = Reservation::insert($insert_data);
             }
             DB::commit();
-
             $bot = app('line-bot');
-            if ($reservation_newly) {
-                $message = "予約申請\n";
-                $message .= $user->sei . $user->mei . "様\n";
-                $message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
-                $message .= config('app.url') . 'admin/player/' . $player_id . '?start_date=' . $request->get('selected_date') . '&day_count=7';
-                $textMessageBuilder = new TextMessageBuilder($message);
+            if ($status == 10) {
+                ////////////////////////////
+                // トレーナー
+                $player_message = "予約申請\n";
+                $player_message .= $user->sei . $user->mei . "様\n";
+                $player_message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $player_message .= config('app.url') . 'admin';
+                $textMessageBuilder = new TextMessageBuilder($player_message);
                 $bot->pushMessage($player_id, $textMessageBuilder);
-            } else {
+
+                ////////////////////////////
+                // 自分
+                $user_message = "予約申請しました\n\n";
+                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
+                $user_message .= '店舗：' . $store->name . "\n";
+                $user_message .= 'ステータス：' . Reservation::getStatus($status);
+                $textMessageBuilder = new TextMessageBuilder($user_message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
+
+                $data['result'] = true;
+                $data['message'] = '予約申請しました';
+            } else if ($status == 20) {
                 $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
                 $textMessageBuilder = new TextMessageBuilder($message);
                 $bot->pushMessage($user_id, $textMessageBuilder);
+                $data['result'] = true;
+                $data['message'] = '予約がキャンセルされました';
+            } else if ($status == 30) {
+
             }
-            return ['result' => $result];
+            return $data;
         } catch (\Exception $e) {
             DB::rollBack();
-            print_r($e);
+            Log::debug($e);
         }
     }
 

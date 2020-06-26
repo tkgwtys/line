@@ -3,6 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div id="alert_message"></div>
                 <button
                     data-toggle="modal"
                     data-target="#reservation"
@@ -55,6 +56,7 @@
                     <div class="modal-body">
                         <form id="reservation_form" method="post" action="/reservation">
                             @csrf
+                            <input type="hidden" name="status" value="10">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -109,7 +111,7 @@
                                 <div class="form-group">
                                     <label for="store">店舗</label>
                                     <select class="form-control form-control-lg" id="store" name="store">
-                                        <option value="">選択してください</option>
+                                        <option value="0">選択してください</option>
                                         @foreach($stores as $key => $store)
                                             <option value="{{$store->id}}">{{$store->name}}</option>
                                         @endforeach
@@ -125,7 +127,7 @@
                             <div class="form-group">
                                 <label for="course">コース</label>
                                 <select class="form-control form-control-lg" id="course" name="course">
-                                    <option value="">選択してください</option>
+                                    <option value="0">選択してください</option>
                                     @foreach($courses as $key => $course)
                                         <option
                                             value="{{$course->id}}">
@@ -186,15 +188,17 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button
-                                    type="submit"
-                                    class="btn btn-success btn-block btn-lg">
-                                <span
-                                    class="spinner-border spinner-border-sm"
-                                    role="status"
-                                    aria-hidden="true"></span>
+                                <button type="submit" class="btn btn-success btn-block btn-lg">
+                                        <span
+                                            class="spinner-border spinner-border-sm"
+                                            role="status"
+                                            aria-hidden="true">
+                                        </span>
                                     予約申請する
                                 </button>
+                                <br>
+                                <br>
+                                <br>
                             </div>
                         </form>
                         @else
