@@ -197,6 +197,9 @@
                                     aria-hidden="true"></span>
                                     予約申請する
                                 </button>
+                                <br>
+                                <br>
+                                <br>
                             </div>
                         </form>
                     </div>
