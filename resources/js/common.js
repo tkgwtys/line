@@ -275,6 +275,7 @@ $('#reservation_form').on('submit', function (e) {
             console.log(data);
             if (data.result) {
                 $('#reservation').modal('hide');
+                $('#reservationDirectly').modal('hide');
                 $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
             }
             //window.location.reload();

@@ -3,6 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <div id="alert_message"></div>
                 <button
                     data-toggle="modal"
                     data-target="#reservationDirectly"
@@ -55,6 +56,7 @@
                     <div class="modal-body">
                         <form id="reservation_form" method="post" action="/reservation">
                             @csrf
+                            <input type="hidden" name="status" value="10">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -90,7 +92,7 @@
                             <div class="form-group">
                                 <label for="player">担当トレーナ</label>
                                 <select class="form-control form-control-lg" id="player" name="player">
-                                    <option value="">選択してください</option>
+                                    <option value="0">選択してください</option>
                                     @foreach($player_array as $key => $player)
                                         <option value="{{$player->id}}"
                                                 @if($player_id == $player->id) selected @endif>{{$player->sei}} {{$player->mei}}</option>
@@ -109,7 +111,7 @@
                                 <div class="form-group">
                                     <label for="store">店舗</label>
                                     <select class="form-control form-control-lg" id="store" name="store">
-                                        <option value="">選択してください</option>
+                                        <option value="0">選択してください</option>
                                         @foreach($stores as $key => $store)
                                             <option value="{{$store->id}}">{{$store->name}}</option>
                                         @endforeach
@@ -125,7 +127,7 @@
                             <div class="form-group">
                                 <label for="course">コース</label>
                                 <select class="form-control form-control-lg" id="course" name="course">
-                                    <option value="">選択してください</option>
+                                    <option value="0">選択してください</option>
                                     @foreach($courses as $key => $course)
                                         <option
                                             value="{{$course->id}}">
