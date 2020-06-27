@@ -148,7 +148,19 @@ class ReservationController extends Controller
                 $data['result'] = true;
                 $data['message'] = '予約がキャンセルされました';
             } else if ($status == 30) {
+                ////////////////////////////
+                // 自分
+                $user_message = "予約確定\n\n";
+                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
+                $user_message .= '店舗：' . $store->name . "\n";
+                $user_message .= 'ステータス：' . Reservation::getStatus($status);
+                $textMessageBuilder = new TextMessageBuilder($user_message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
 
+                $data['result'] = true;
+                $data['message'] = '予約申請しました';
+                $data['status'] = $status;
             }
             return $data;
         } catch (\Exception $e) {
@@ -241,11 +253,6 @@ class ReservationController extends Controller
             'result' => false,
             'message' => 'キャンセル失敗',
         ];
-        // ユーザーがいるか
-        $user = User::where('id', Auth::id())->whereNull('blocked_at')->first();
-        if (!$user) {
-            return $data;
-        }
         $reservation = Reservation::findByReservationId($reservation_id);
         if (!$reservation) {
             return $data['message'] = '予約がみつかりません';
@@ -275,7 +282,7 @@ class ReservationController extends Controller
             // 結果
             $data['result'] = true;
             $data['message'] = 'キャンセルしました';
-            return $data;
         }
+        return $data;
     }
 }

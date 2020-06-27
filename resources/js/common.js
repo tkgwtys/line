@@ -24,14 +24,19 @@ $('.reservationButton').on('click', function () {
     const sei = $(this).data('sei');
     // 名
     const mei = $(this).data('mei');
+    // ステータス
+    const status = $(this).data('status');
     // 予約フォームラベル
     $('#reservation_label').text('予約フォーム');
     if (typeof reservation_id === "undefined") {
         $('#reservation_delete_button').css('display', 'none');//.text('選択してください');
         $('#reservation_label').html('<span class="badge badge-primary">新規予約</span>');
-    } else {
+    } else if (status === 10) {
         $('#reservation_delete_button').css('display', 'block');//.text('選択してください');
         $('#reservation_label').html('<span class="badge badge-warning">予約申請</span>');
+    } else if (status === 30) {
+        $('#reservation_delete_button').css('display', 'block');//.text('選択してください');
+        $('#reservation_label').html('<span class="badge badge-success">予約確定</span>');
     }
     // トレーナのデフォルト値
     $('#player').val(playerId);
@@ -170,7 +175,7 @@ flatpickr('.selector', {
 });
 
 /**
- *
+ * 予約
  * @type {HTMLElement}
  */
 $('#reservation_form').on('submit', function (e) {
@@ -277,6 +282,13 @@ $('#reservation_form').on('submit', function (e) {
                 $('#reservation').modal('hide');
                 $('#reservationDirectly').modal('hide');
                 $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+            }
+            if (data.status === '30') {
+                $('#modalLarge').modal('hide');
+                $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 700);
             }
             //window.location.reload();
         }).fail(function () {

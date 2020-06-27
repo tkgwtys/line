@@ -1,4 +1,5 @@
 <div class="scroll_div">
+    <div id="alert_message"></div>
     <div class="table-responsive">
         <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
         <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
@@ -40,6 +41,7 @@
                                                 data-time="{{$hi}}:00"
                                                 data-target="#modalLarge"
                                                 data-course_id="{{$reservation->course_id}}"
+                                                data-status="{{$reservation->status}}"
                                                 data-user_id="{{$reservation->user_id}}"
                                                 data-reservation_id="{{$reservation->reservation_id}}"
                                                 data-sei="{{$reservation->sei}}"
@@ -82,6 +84,7 @@
             <form id="reservation_form" method="post" action="/admin/reservation">
                 <input type="hidden" name="reservation_id" id="reservation_id" value="">
                 @csrf
+                <input type="hidden" name="status" value="30">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalLargeLabel">
                         <span id="reservation_label"></span>
