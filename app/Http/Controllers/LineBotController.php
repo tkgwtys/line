@@ -193,6 +193,9 @@ class LineBotController extends Controller
             new UriTemplateActionBuilder("入力フォームへ",
                 config('app.url') . 'user/edit'
             ),
+            new UriTemplateActionBuilder("管理画面（一時的）",
+                config('app.url') . 'admin'
+            ),
         ];
         $button = new ButtonTemplateBuilder('設定', '予約するためにはお客様情報を入力してください', null, $actions);
         $msg = new TemplateMessageBuilder('Finish generate playlist', $button);
