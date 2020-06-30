@@ -143,8 +143,8 @@ class LineBotController extends Controller
                     } else if ($event->getText() == '予約確認') {
                         Log::debug('予約確認');
                         $service = new ReservationService($bot);
-                        $result = $service->getReservation($event);
-                        $bot->replyMessage($reply_token, new TextMessageBuilder($result));
+                        $result_message = $service->getReservation($event);
+                        $bot->replyMessage($reply_token, new TextMessageBuilder($result_message));
                     } else {
                         $bot->replyMessage($reply_token, $reply_message);
                     }
@@ -192,6 +192,9 @@ class LineBotController extends Controller
         $actions = [
             new UriTemplateActionBuilder("入力フォームへ",
                 config('app.url') . 'user/edit'
+            ),
+            new UriTemplateActionBuilder("管理画面（一時的）",
+                config('app.url') . 'admin'
             ),
         ];
         $button = new ButtonTemplateBuilder('設定', '予約するためにはお客様情報を入力してください', null, $actions);
