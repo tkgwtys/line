@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -21,11 +22,14 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         //
+        $reservations = Reservation::getUserReservations(Auth::id());
+        return view('reservation.index', compact('reservations')
+        );
     }
 
     /**
@@ -46,9 +50,10 @@ class ReservationController extends Controller
      */
     public function store(CreateReservationRequest $request)
     {
-        $reservation_newly = false;
-        // ステータス
-        $status = 10;
+        $data = [
+            'result' => true,
+            'message' => '',
+        ];
         // カテゴリー
         $category = 10;
         // 予約者
@@ -61,6 +66,10 @@ class ReservationController extends Controller
         $store_id = (int)$request->get('store');
         // 予約番号
         $reservation_id = $request->get('reservation_id');
+        // ステータス
+        $status = $request->get('status');
+        // タイプ（userかadminか）
+        $type = $request->get('type');
         DB::beginTransaction();
         try {
             // 時間
@@ -72,8 +81,15 @@ class ReservationController extends Controller
             if (!$course) {
                 Log::debug('コースがない');
             }
+            // 予約者
             $user = User::where('id', $user_id)->first();
+            // トレーナー
+            $player = User::where('id', $player_id)->where('level', 20)->first();
+            // 店舗
+            $store = Store::where('id', $store_id)->first();
+            // 予約があるか
             if ($reservation_id) {
+                // 更新
                 $update_date = [
                     'user_id' => $user_id,
                     'status' => $status,
@@ -85,7 +101,6 @@ class ReservationController extends Controller
                 ];
                 $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
             } else {
-                $reservation_newly = true;
                 // 予約番号
                 $reservation_id = Str::random(20);
                 $insert_data = [
@@ -103,24 +118,54 @@ class ReservationController extends Controller
                 $result = Reservation::insert($insert_data);
             }
             DB::commit();
-
             $bot = app('line-bot');
-            if ($reservation_newly) {
-                $message = "予約申請\n";
-                $message .= $user->sei . $user->mei . "様\n";
-                $message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
-                $message .= config('app.url') . 'admin/player/' . $player_id . '?start_date=' . $request->get('selected_date') . '&day_count=7';
-                $textMessageBuilder = new TextMessageBuilder($message);
+            if ($status == 10) {
+                ////////////////////////////
+                // トレーナー
+                $player_message = "予約申請\n";
+                $player_message .= $user->sei . $user->mei . "様\n";
+                $player_message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $player_message .= config('app.url') . 'admin';
+                $textMessageBuilder = new TextMessageBuilder($player_message);
                 $bot->pushMessage($player_id, $textMessageBuilder);
-            } else {
+
+                ////////////////////////////
+                // 自分
+                $user_message = "予約申請しました\n\n";
+                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
+                $user_message .= '店舗：' . $store->name . "\n";
+                $user_message .= 'ステータス：' . Reservation::getStatus($status);
+                $textMessageBuilder = new TextMessageBuilder($user_message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
+
+                $data['result'] = true;
+                $data['message'] = '予約申請しました';
+            } else if ($status == 20) {
                 $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
                 $textMessageBuilder = new TextMessageBuilder($message);
                 $bot->pushMessage($user_id, $textMessageBuilder);
+                $data['result'] = true;
+                $data['message'] = '予約がキャンセルされました';
+            } else if ($status == 30) {
+                ////////////////////////////
+                // 自分
+                $user_message = "予約確定\n\n";
+                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
+                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
+                $user_message .= '店舗：' . $store->name . "\n";
+                $user_message .= 'ステータス：' . Reservation::getStatus($status);
+                $textMessageBuilder = new TextMessageBuilder($user_message);
+                $bot->pushMessage($user_id, $textMessageBuilder);
+
+                $data['result'] = true;
+                $data['message'] = '予約申請しました';
+                $data['status'] = $status;
             }
-            return ['result' => $result];
+            return $data;
         } catch (\Exception $e) {
             DB::rollBack();
-            print_r($e);
+            Log::debug($e);
         }
     }
 
@@ -198,15 +243,46 @@ class ReservationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return array
+     * 予約キャンセル
+     * @param $reservation_id
+     * @return array|string
      */
-    public function destroy($id)
+    public function destroy($reservation_id)
     {
-        $result = Reservation::where('reservation_id', $id)->whereNull('deleted_at')->delete();
-        Log::debug($result);
-        return ['result' => $result];
+        $data = [
+            'result' => false,
+            'message' => 'キャンセル失敗',
+        ];
+        $reservation = Reservation::findByReservationId($reservation_id);
+        if (!$reservation) {
+            return $data['message'] = '予約がみつかりません';
+        }
+        $result = Reservation::where('reservation_id', $reservation_id)->whereNull('deleted_at')->delete();
+        if ($result) {
+            // お客様にプッシュ通知
+            $bot = app('line-bot');
+            ////////////////////////////////////
+            /// ユーザー
+            ////////////////////////////////////
+            $user_message = "キャンセルしました。\n\n";
+            $user_message .= '日時：' . $reservation->reservations_reserved_at . "\n";
+            $user_message .= 'トレーナ：' . $reservation->player_sei . $reservation->player_mei . "\n";
+            $user_message .= '店舗：' . $reservation->stores_name . "\n";
+            $user_messageBuilder = new TextMessageBuilder($user_message);
+            $bot->pushMessage($reservation->reservations_user_id, $user_messageBuilder);
+            ////////////////////////////////////
+            /// プレイヤー
+            ////////////////////////////////////
+            $player_message = "予約がキャンセルされました。\n\n";
+            $player_message .= '名前：' . $reservation->user_sei . $reservation->user_mei . "様\n";
+            $player_message .= '日時：' . $reservation->reservations_reserved_at . "\n";
+            $player_message .= '店舗：' . $reservation->stores_name . "\n";
+            $player_messageBuilder = new TextMessageBuilder($player_message);
+            $bot->pushMessage($reservation->reservations_player_id, $player_messageBuilder);
+            // 結果
+            $data['result'] = true;
+            $data['message'] = 'キャンセルしました';
+        }
+        return $data;
     }
 }

@@ -30,6 +30,7 @@ class CreateReservationRequest extends FormRequest
             'course' => 'required|string|max:100',
             'user' => 'required|string|max:100',
             'store' => 'required|string|max:100',
+            'status' => 'required|string|max:100',
         ];
     }
 }

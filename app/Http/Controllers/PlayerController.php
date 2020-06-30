@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class PlayerController extends Controller
 {
@@ -88,7 +89,7 @@ class PlayerController extends Controller
                     'user_id')
             );
         } catch (\Exception $e) {
-            print_r($e);
+            print_r($e->getMessage());
         }
     }
 
