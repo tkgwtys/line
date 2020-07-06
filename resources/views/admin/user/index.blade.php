@@ -17,6 +17,15 @@
                     </td>
                     <td>{{$userModel->getLevel($user->level)}}</td>
                     <td>{{$user->created_at}}</td>
+                    @if($user->level === 10)
+                    <td align="right">
+                        <a href="{{url('admin/note/'.$user->id.'/post')}}" class="btn btn-primary">新規ノート</a>
+                        <a href="{{url('admin/note/'.$user->id)}}" class="btn btn-warning">ノート一覧</a>
+                    </td>
+                    @else
+                        <td>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>

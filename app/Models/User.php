@@ -64,6 +64,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function notes()
+    {
+        return $this->hasMany('App\Note');
+    }
+
     /**
      * ユーザーはUUIDを自動で実行しない
      * ラインIDが上書きされてしまう

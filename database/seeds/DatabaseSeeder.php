@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
                 UsersTableSeeder::class,
                 StoresTableSeeder::class,
                 CoursesTableSeeder::class,
+                NotesTableSeeder::class,
             ]
         );
     }

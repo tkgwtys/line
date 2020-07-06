@@ -66,5 +66,7 @@ Route::group(['middleware' => 'basicauth'], function () {
         Route::resource('reservation', 'ReservationController');
         Route::resource('course', 'Admin\CourseController');
         Route::resource('store', 'Admin\StoreController');
+        Route::resource('note','Admin\NoteController');
+        Route::get('note/{post}/post', 'Admin\NoteController@post')->name('note.post');
     });
 });
