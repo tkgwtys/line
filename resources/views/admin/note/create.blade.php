@@ -26,7 +26,7 @@
                     <label>ユーザーID</label>
                     {{Form::input('text', 'user_id',old('user_id'),['class' => 'form-control form-control-lg', 'placeholder' => $user->id,'disabled'])}}
                     {{Form::hidden('user_id',$user->id)}}
-                    {{Form::hidden('player_id','test')}}
+                    {{Form::hidden('admin_id',$admin->id)}}
                     {{Form::hidden('course_id','test')}}
                 </div>
             </div>

@@ -13,7 +13,7 @@
                 <th scope="col">ノート</th>
                 <th scope="col">作成者</th>
                 <th scope="col">登録日</th>
-                <th scope="col"></th>
+{{--                <th scope="col"></th>--}}
             </tr>
             </thead>
             <tbody>

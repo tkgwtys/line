@@ -8,6 +8,7 @@ use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -35,7 +36,8 @@ class NoteController extends Controller
     {
         //新規ノート作成画面へ移動（User IDでユーザーごとに違う投稿ページ）
         $user = User::where('id', $id)->first();
-        return view('admin.note.create', compact('user'));
+        $admin = Auth::user();
+        return view('admin.note.create', compact('user','admin'));
     }
 
     /**
@@ -52,10 +54,9 @@ class NoteController extends Controller
 
         //Showに戻るためのデータ取得
         $user_id = $request->user_id;
-        $notes = Note::where('user_id', $user_id)->get();
+        $notes = (new \App\Models\User)->getNotes($user_id);
         $user = User::where('id', $user_id)->first();
-
-        return view('admin.note.show', compact('user','notes'));
+        return view('admin.user.show', compact('user','notes'));
     }
 
     /**
@@ -66,10 +67,9 @@ class NoteController extends Controller
      */
     public function show($id)
     {
-
-        $notes = Note::where('user_id',$id)->get();
-        $user = User::where('id',$id)->first();
-        return view('admin.note.show', compact('notes','user'));
+//        $notes = Note::where('user_id',$id)->get();
+//        $user = User::where('id',$id)->first();
+//        return view('admin.note.show', compact('notes','user'));
 
     }
 
@@ -115,9 +115,11 @@ class NoteController extends Controller
         $note->delete();
 
         $user_id = $note->user_id;
-        $notes = Note::where('user_id', $user_id)->get();
+        $notes = (new \App\Models\User)->getNotes($user_id);
         $user = User::where('id', $user_id)->first();
+//        $notes = Note::where('user_id', $user_id)->get();
+//        $user = User::where('id', $user_id)->first();
 
-        return view('admin.note.show', compact('user','notes'));
+        return view('admin.user.show', compact('user','notes'));
     }
 }
