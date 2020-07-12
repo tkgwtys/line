@@ -82,7 +82,8 @@ class NoteController extends Controller
     public function edit($id)
     {
         $note = Note::find($id);
-        return view('admin.note.edit', compact('note'));
+        $user = (new \App\Models\User)->getNotes($id);
+        return view('admin.note.edit', compact('note','user'));
     }
 
     /**
@@ -117,8 +118,6 @@ class NoteController extends Controller
         $user_id = $note->user_id;
         $notes = (new \App\Models\User)->getNotes($user_id);
         $user = User::where('id', $user_id)->first();
-//        $notes = Note::where('user_id', $user_id)->get();
-//        $user = User::where('id', $user_id)->first();
 
         return view('admin.user.show', compact('user','notes'));
     }

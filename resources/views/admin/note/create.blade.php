@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-{{--        {{ Breadcrumbs::render('admin.course.create') }}--}}
+        {{ Breadcrumbs::render('admin.note.post', $user) }}
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -27,7 +27,6 @@
                     {{Form::input('text', 'user_id',old('user_id'),['class' => 'form-control form-control-lg', 'placeholder' => $user->id,'disabled'])}}
                     {{Form::hidden('user_id',$user->id)}}
                     {{Form::hidden('admin_id',$admin->id)}}
-                    {{Form::hidden('course_id','test')}}
                 </div>
             </div>
         </div>
