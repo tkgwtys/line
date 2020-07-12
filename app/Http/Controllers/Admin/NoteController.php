@@ -54,9 +54,7 @@ class NoteController extends Controller
 
         //Showに戻るためのデータ取得
         $user_id = $request->user_id;
-        $notes = (new \App\Models\User)->getNotes($user_id);
-        $user = User::where('id', $user_id)->first();
-        return view('admin.user.show', compact('user','notes'));
+        return redirect()->route('admin.user.show',['id'=>$user_id]);
     }
 
     /**
@@ -96,12 +94,12 @@ class NoteController extends Controller
     public function update(Request $request, $id)
     {
         $note = Note::find($id);
-
         $note->note_contents = $request->note_contents;
-
         $note->save();
+
+        $user_id = $note->user_id;
         session()->flash('flash_message', '編集が完了しました');
-        return view('admin.note.edit',compact('note'));
+        return redirect()->route('admin.user.show',['id'=>$user_id]);
     }
 
     /**
@@ -116,9 +114,9 @@ class NoteController extends Controller
         $note->delete();
 
         $user_id = $note->user_id;
-        $notes = (new \App\Models\User)->getNotes($user_id);
-        $user = User::where('id', $user_id)->first();
 
-        return view('admin.user.show', compact('user','notes'));
+        return redirect()->route('admin.user.show',['id'=>$user_id]);
+
     }
+
 }

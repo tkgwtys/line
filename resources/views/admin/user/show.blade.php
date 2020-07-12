@@ -5,6 +5,11 @@
     <div class="container">
         {{ Breadcrumbs::render('adminUser', $user) }}
         <!-- ノートボタン-->
+            @if (session('flash_message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('flash_message') }}
+                </div>
+            @endif
             @if($user->level === 10)
                 <a href="{{url('admin/note/'.$user->id.'/post')}}" class="btn btn-primary">新規ノート</a>
             @else
