@@ -15,16 +15,14 @@
         {{Form::open(['url' => '/admin/note'])}}
         @csrf
         <div class="row">
+{{--            <div class="col-sm">--}}
+{{--                <div class="form-group">--}}
+{{--                    <label>ユーザー名</label>--}}
+{{--                    {{Form::input('text', 'name',old('name'),['class' => 'form-control form-control-lg', 'placeholder' => $user->sei, 'disabled'])}}--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <div class="col-sm">
                 <div class="form-group">
-                    <label>ユーザー名</label>
-                    {{Form::input('text', 'name',old('name'),['class' => 'form-control form-control-lg', 'placeholder' => $user->sei, 'disabled'])}}
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="form-group">
-                    <label>ユーザーID</label>
-                    {{Form::input('text', 'user_id',old('user_id'),['class' => 'form-control form-control-lg', 'placeholder' => $user->id,'disabled'])}}
                     {{Form::hidden('user_id',$user->id)}}
                     {{Form::hidden('admin_id',$admin->id)}}
                 </div>

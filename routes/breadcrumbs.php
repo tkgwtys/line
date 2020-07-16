@@ -47,7 +47,7 @@ Breadcrumbs::for('adminUser.edit', function ($trail, $user) {
  */
 Breadcrumbs::for('admin.note.post', function($trail, $user){
     $trail->parent('adminUser',$user);
-    $trail->push('ノート作成', url('/admin/note/'.$user->id.'/post'));
+    $trail->push('ノート作成('.$user->sei.')', url('/admin/note/'.$user->id.'/post'));
 });
 
 /**

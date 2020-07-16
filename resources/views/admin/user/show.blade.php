@@ -51,10 +51,12 @@
             </tr>
             </tbody>
         </table>
+{{--            <div class="container">--}}
+                <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/user/'.$user->id.'/edit')}}" role="button">ユーザー編集</a>
+{{--            </div>--}}
+
             @component('common.notes')
                 @slot('notes',$notes)
             @endcomponent
-    <div class="container">
-        <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/user/'.$user->id.'/edit')}}" role="button">ユーザー編集</a>
-    </div>
+
 @endsection
