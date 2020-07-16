@@ -4,6 +4,17 @@
 @section('content')
     <div class="container">
         {{ Breadcrumbs::render('adminUser', $user) }}
+        <!-- ノートボタン-->
+            @if (session('flash_message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('flash_message') }}
+                </div>
+            @endif
+            @if($user->level === 10)
+                <a href="{{url('admin/note/'.$user->id.'/post')}}" class="btn btn-primary">新規ノート</a>
+            @else
+        @endif
+        <!-- フラッシュメッセージ -->
         <table class="table table-bordered">
             <tbody>
             <tr>
@@ -40,6 +51,12 @@
             </tr>
             </tbody>
         </table>
-        <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/user/'.$user->id.'/edit')}}" role="button">編集</a>
-    </div>
+{{--            <div class="container">--}}
+                <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/user/'.$user->id.'/edit')}}" role="button">ユーザー編集</a>
+{{--            </div>--}}
+
+            @component('common.notes')
+                @slot('notes',$notes)
+            @endcomponent
+
 @endsection

@@ -42,6 +42,24 @@ Breadcrumbs::for('adminUser.edit', function ($trail, $user) {
 });
 
 /**
+ * ノート作成
+ * /admin/note/{post}/post
+ */
+Breadcrumbs::for('admin.note.post', function($trail, $user){
+    $trail->parent('adminUser',$user);
+    $trail->push('ノート作成('.$user->sei.')', url('/admin/note/'.$user->id.'/post'));
+});
+
+/**
+ * ノート編集
+ * /admin/note/{post}/edit
+ */
+Breadcrumbs::for('admin.note.edit', function($trail, $user, $note){
+    $trail->parent('adminUser',$user);
+    $trail->push('ノート編集', url('/admin/note/'.$note->id.'/edit'));
+});
+
+/**
  * トレーナ一覧
  * /admin/player
  */
@@ -138,6 +156,8 @@ Breadcrumbs::for('admin.store.create', function ($trail) {
     $trail->push('ストア管理', url('/admin/store'));
     $trail->push('ストア登録', url('/admin/store/create'));
 });
+
+
 
 /////////////////////////////////////////////////////////////////////////
 ///

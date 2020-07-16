@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Note;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Filesystem\Filesystem;
@@ -57,8 +58,9 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('admin.user.show')
-            ->with('user', $user);
+        $notes = (new \App\Models\User)->getNotes($id);
+
+        return view('admin.user.show', compact('user','notes'));
     }
 
     /**
