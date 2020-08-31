@@ -81,6 +81,8 @@ class PlayerController extends Controller
     {
         // 開始日
         $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
+        // 開始月
+        $start_month = Carbon::parse($start_date)->format('Y年m月');
         // 件数
         $day_count = !empty($request->get('day_count')) ? $request->get('day_count') : 7;
         // 本日リンク
@@ -117,6 +119,7 @@ class PlayerController extends Controller
                 'user_level',
                 'reservations',
                 'users',
+                'start_month',
                 'stores')
         );
     }

@@ -41,6 +41,9 @@ class LineBotController extends Controller
      */
     private function createCarousel($player_id, $user_id, $name, $self_introduction, $image)
     {
+        Log::debug("-----------");
+        Log::debug($self_introduction);
+        Log::debug("-----------");
 //        $user = User::where('id', $user_id)->first();
 //        Log::debug($user);
         // カルーセルに付与するボタンを作る
@@ -243,7 +246,7 @@ class LineBotController extends Controller
             $players_data[$key]['player_id'] = $player['id'];
             $players_data[$key]['name'] = $player['sei'] . $player['mei'];
             //'self_introduction'キー -> self_introduction
-            $players_data[$key]['self_introduction'] = $player['self_introduction'] || '';
+            $players_data[$key]['self_introduction'] = mb_strimwidth($player['self_introduction'], 0, 80, '...');
             //image取得
             $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg?' . time());
             $players_data[$key]['image'] = $image;
