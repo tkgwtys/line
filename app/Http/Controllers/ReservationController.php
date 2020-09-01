@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use Exception;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 
 class ReservationController extends Controller
@@ -183,7 +184,7 @@ class ReservationController extends Controller
             $type = $request->get('type') ? $request->get('type') : 'p';
             $user = User::where('id', $user_id)->first();
             if (!$user) {
-                throw new Exception("ユーザーがみつかりません");
+                throw new Exception("お友達がみつかりません");
             }
             // 明日
             $tomorrow = Carbon::tomorrow()->format('Y-m-d');
@@ -191,10 +192,10 @@ class ReservationController extends Controller
             $time_array = Reservation::getOpenTimeArray();
             // トレーナ全員
             $player = User::where('id', $player_id)->where('level', 20)->first();
-            if ($player) {
-                $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg');
-                $player['image'] = $image;
+            if(!$player) {
+                throw new Exception("トレーナが見つかりません");
             }
+            $player->image = $player ? $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg') : '';
             // トレーナ全員
             $player_array = User::where('level', 20)->get();
             // コース
@@ -214,7 +215,7 @@ class ReservationController extends Controller
                     'user_id')
             );
         } catch (\Exception $e) {
-            print_r($e);
+            print_r($e->getMessage());
         }
     }
 
