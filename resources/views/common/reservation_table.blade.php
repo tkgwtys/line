@@ -1,9 +1,41 @@
 @inject('reservationModel', 'App\Models\Reservation')
 <div class="scroll_div">
     <div id="alert_message"></div>
-    <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
-    <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
-    <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
+    <div class="d-flex justify-content-between">
+        <div>
+            <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
+            <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
+            <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
+        </div>
+        <button
+            data-toggle="modal"
+            data-day=""
+            data-player_id=""
+            data-time=""
+            data-target="#modalLarge"
+            data-course_id=""
+            data-status=""
+            data-user_id=""
+            data-reservation_id=""
+            data-sei=""
+            data-mei=""
+            data-store_id=""
+            type="button"
+            class="btn btn-primary btn-sm reservationButton">
+            <svg
+                width="1.5em"
+                height="1.5em"
+                viewBox="0 0 16 16"
+                class="bi bi-pencil"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                <path fill-rule="evenodd"
+                      d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+            </svg>
+        </button>
+    </div>
     <div class="calendar">
         <table class="calendar__table" id="target-table">
             <thead>
@@ -42,7 +74,7 @@
                                                 data-store_id="{{$reservation->store_id}}"
                                                 class="reservationButton plan plan--undecided plan__left-{{ltrim(str_replace(':', '', $hi), '0')}} plan__width--60">
                                                 <div class="@if($reservation->status == 30) plan @endif">
-                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->course_time}}分】【{{$reservationModel->getStatus($reservation->status)}}】</span>
+                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->course_time}}分】</span>
                                                 </div>
                                             </div>
                                             {{--                                                    <button--}}
@@ -141,8 +173,14 @@
                             <div class="form-group">
                                 <label for="reservation_day">予約日</label>
                                 <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
+                                <div
+                                    id="err_selected_date"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    style="display: none">
+                                </div>
+                                <input type="hidden" value="" id="selected_date" name="selected_date">
                             </div>
-                            <input type="hidden" value="" id="selected_date" name="selected_date">
                         </div>
                         <div class="col">
                             <!-- 時間 -->
@@ -198,7 +236,8 @@
                                 id="err_store"
                                 class="alert alert-danger"
                                 role="alert"
-                                style="display: none"></div>
+                                style="display: none">
+                            </div>
                         </div>
                     </div>
                     <!-- コース -->
@@ -224,9 +263,7 @@
                     <!-- トレーナ -->
                     <div class="form-group">
                         <div class="card">
-                            <div class="card-header">
-                                お客様情報
-                            </div>
+                            <div class="card-header">予約お客様</div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <select class="form-control form-control-lg" id="user" name="user">
@@ -236,7 +273,7 @@
                                         @endforeach
                                     </select>
                                     <div
-                                        id="err_player"
+                                        id="err_user"
                                         class="alert alert-danger"
                                         role="alert"
                                         style="display: none">
