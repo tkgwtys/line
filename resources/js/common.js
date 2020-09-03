@@ -217,7 +217,7 @@ $('#reservation_form').on('submit', function (e) {
             }
         }
         if (formData[key]['name'] === 'course') {
-            if (formData[key]['value'] == '0') {
+            if (formData[key]['value'] == '') {
                 $('#err_course').css('display', 'block');//.text('選択してください');
                 $('#err_course').text('コースを選択してください');
                 errorFlgs = false;
@@ -236,8 +236,10 @@ $('#reservation_form').on('submit', function (e) {
                 $('#err_user').text('');
             }
         }
+        //////////////////////////
+        // 店舗
         if (formData[key]['name'] === 'store') {
-            if (formData[key]['value'] == '0') {
+            if (formData[key]['value'] == '') {
                 $('#err_store').css('display', 'block');//.text('選択してください');
                 $('#err_store').text('店舗を選択してください');
                 errorFlgs = false;

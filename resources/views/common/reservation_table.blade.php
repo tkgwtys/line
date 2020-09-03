@@ -1,40 +1,65 @@
+@inject('reservationModel', 'App\Models\Reservation')
 <div class="scroll_div">
     <div id="alert_message"></div>
-    <div class="table-responsive">
-        <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
-        <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
-        <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
-        <table class="table table-bordered table-sm table-hover"
-               id="target-table"
-               _fixedhead="rows:1; cols:2">
+    <div class="d-flex justify-content-between">
+        <div>
+            <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
+            <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
+            <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
+        </div>
+        <button
+            data-toggle="modal"
+            data-day=""
+            data-player_id=""
+            data-time=""
+            data-target="#modalLarge"
+            data-course_id=""
+            data-status=""
+            data-user_id=""
+            data-reservation_id=""
+            data-sei=""
+            data-mei=""
+            data-store_id=""
+            type="button"
+            class="btn btn-primary btn-sm reservationButton">
+            <svg
+                width="1.5em"
+                height="1.5em"
+                viewBox="0 0 16 16"
+                class="bi bi-pencil"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
+                <path fill-rule="evenodd"
+                      d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
+            </svg>
+        </button>
+    </div>
+    <div class="calendar">
+        <table class="calendar__table" id="target-table">
             <thead>
             <tr>
-                <th></th>
-                <th></th>
+                <th colspan="2" class="calendar__fixed-date">{{$start_month}}</th>
                 @foreach($time_array as $key => $time)
                     @foreach($time as $hi)
-                        <td>{{$hi}}</td>
+                        <th>{{$hi}}</th>
                     @endforeach
                 @endforeach
             </tr>
             </thead>
             <tbody>
-            @foreach($days_array as $day)
-                <tr>
-                    <th rowspan="{{count($player_array)}}" class="viewDay">{{$day}}</th>
+            @foreach($days_array as $dayKey => $day)
+                <tr class="">
+                    <th rowspan="{{count($player_array)}}" class="viewDay calendar__fixed-date">{{$day}}</th>
                     @foreach($player_array as $key => $player)
-                        <th class="playerName">{{$player->sei}}</th>
-                        @foreach($time_array as $key => $time)
-                            @foreach($time as $hi)
-                                @php
-                                    $count = 0;
-                                @endphp
-                                <td colspan="{{$count}}">
+                        <th class="playerName calendar__fixed-name calendar__last-player-name">{{$player->sei}}</th>
+                        <td colspan="68">
+                            @foreach($time_array as $key => $time)
+                                @foreach($time as $hi)
                                     @foreach($reservations as $reservation)
                                         @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
-                                            <button
-                                                type="button"
-                                                class="btn btn-info reservationButton"
+                                            <div
                                                 data-toggle="modal"
                                                 data-day="{{$day}}"
                                                 data-player_id="{{$player->id}}"
@@ -46,30 +71,79 @@
                                                 data-reservation_id="{{$reservation->reservation_id}}"
                                                 data-sei="{{$reservation->sei}}"
                                                 data-mei="{{$reservation->mei}}"
-                                                data-store_id="{{$reservation->store_id}}">
-                                                {{$reservation->sei}}{{$reservation->mei}}
-                                                【{{$reservation->name}}（{{$reservation->course_time}}分）】
-                                            </button>
+                                                data-store_id="{{$reservation->store_id}}"
+                                                class="reservationButton plan plan--undecided plan__left-{{ltrim(str_replace(':', '', $hi), '0')}} plan__width--60">
+                                                <div class="@if($reservation->status == 30) plan @endif">
+                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->course_time}}分】</span>
+                                                </div>
+                                            </div>
+                                            {{--                                                    <button--}}
+                                            {{--                                                        type="button"--}}
+                                            {{--                                                        class="btn btn-info reservationButton"--}}
+                                            {{--                                                        data-toggle="modal"--}}
+                                            {{--                                                        data-day="{{$day}}"--}}
+                                            {{--                                                        data-player_id="{{$player->id}}"--}}
+                                            {{--                                                        data-time="{{$hi}}:00"--}}
+                                            {{--                                                        data-target="#modalLarge"--}}
+                                            {{--                                                        data-course_id="{{$reservation->course_id}}"--}}
+                                            {{--                                                        data-status="{{$reservation->status}}"--}}
+                                            {{--                                                        data-user_id="{{$reservation->user_id}}"--}}
+                                            {{--                                                        data-reservation_id="{{$reservation->reservation_id}}"--}}
+                                            {{--                                                        data-sei="{{$reservation->sei}}"--}}
+                                            {{--                                                        data-mei="{{$reservation->mei}}"--}}
+                                            {{--                                                        data-store_id="{{$reservation->store_id}}">--}}
+                                            {{--                                                        {{$reservation->sei}}{{$reservation->mei}}--}}
+                                            {{--                                                        {{$reservation->name}}（{{$reservation->course_time}}分）】--}}
+                                            {{--                                                    </button>--}}
                                         @endif
                                     @endforeach
-                                    <button type="button"
-                                            class="btn btn-link reservationButton"
-                                            data-toggle="modal"
-                                            data-day="{{$day}}"
-                                            data-player_id="{{$player->id}}"
-                                            data-time="{{$hi}}:00"
-                                            data-target="#modalLarge">
-                                        <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16"
-                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd"
-                                                  d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
-                                            <path fill-rule="evenodd"
-                                                  d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>
-                                        </svg>
-                                    </button>
-                                </td>
+                                @endforeach
+                                {{--                            @foreach($time as $hi)--}}
+                                {{--                                @php--}}
+                                {{--                                    $count = 0;--}}
+                                {{--                                @endphp--}}
+                                {{--                                <td colspan="{{$count}}">--}}
+                                {{--                                    @foreach($reservations as $reservation)--}}
+                                {{--                                        @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)--}}
+                                {{--                                            <button--}}
+                                {{--                                                type="button"--}}
+                                {{--                                                class="btn btn-info reservationButton"--}}
+                                {{--                                                data-toggle="modal"--}}
+                                {{--                                                data-day="{{$day}}"--}}
+                                {{--                                                data-player_id="{{$player->id}}"--}}
+                                {{--                                                data-time="{{$hi}}:00"--}}
+                                {{--                                                data-target="#modalLarge"--}}
+                                {{--                                                data-course_id="{{$reservation->course_id}}"--}}
+                                {{--                                                data-status="{{$reservation->status}}"--}}
+                                {{--                                                data-user_id="{{$reservation->user_id}}"--}}
+                                {{--                                                data-reservation_id="{{$reservation->reservation_id}}"--}}
+                                {{--                                                data-sei="{{$reservation->sei}}"--}}
+                                {{--                                                data-mei="{{$reservation->mei}}"--}}
+                                {{--                                                data-store_id="{{$reservation->store_id}}">--}}
+                                {{--                                                {{$reservation->sei}}{{$reservation->mei}}--}}
+                                {{--                                                【{{$reservation->name}}（{{$reservation->course_time}}分）】--}}
+                                {{--                                            </button>--}}
+                                {{--                                        @endif--}}
+                                {{--                                    @endforeach--}}
+                                {{--                                    <button type="button"--}}
+                                {{--                                            class="btn btn-link reservationButton"--}}
+                                {{--                                            data-toggle="modal"--}}
+                                {{--                                            data-day="{{$day}}"--}}
+                                {{--                                            data-player_id="{{$player->id}}"--}}
+                                {{--                                            data-time="{{$hi}}:00"--}}
+                                {{--                                            data-target="#modalLarge">--}}
+                                {{--                                        <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16"--}}
+                                {{--                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">--}}
+                                {{--                                            <path fill-rule="evenodd"--}}
+                                {{--                                                  d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>--}}
+                                {{--                                            <path fill-rule="evenodd"--}}
+                                {{--                                                  d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"/>--}}
+                                {{--                                        </svg>--}}
+                                {{--                                    </button>--}}
+                                {{--                                </td>--}}
+                                {{--                            @endforeach--}}
                             @endforeach
-                        @endforeach
+                        </td>
                 </tr>
             @endforeach
             @endforeach
@@ -99,8 +173,14 @@
                             <div class="form-group">
                                 <label for="reservation_day">予約日</label>
                                 <input id="reservation_day" class="selector form-control form-control-lg" type="text"/>
+                                <div
+                                    id="err_selected_date"
+                                    class="alert alert-danger"
+                                    role="alert"
+                                    style="display: none">
+                                </div>
+                                <input type="hidden" value="" id="selected_date" name="selected_date">
                             </div>
-                            <input type="hidden" value="" id="selected_date" name="selected_date">
                         </div>
                         <div class="col">
                             <!-- 時間 -->
@@ -156,7 +236,8 @@
                                 id="err_store"
                                 class="alert alert-danger"
                                 role="alert"
-                                style="display: none"></div>
+                                style="display: none">
+                            </div>
                         </div>
                     </div>
                     <!-- コース -->
@@ -182,9 +263,7 @@
                     <!-- トレーナ -->
                     <div class="form-group">
                         <div class="card">
-                            <div class="card-header">
-                                お客様情報
-                            </div>
+                            <div class="card-header">予約お客様</div>
                             <div class="card-body">
                                 <div class="form-group">
                                     <select class="form-control form-control-lg" id="user" name="user">
@@ -194,7 +273,7 @@
                                         @endforeach
                                     </select>
                                     <div
-                                        id="err_player"
+                                        id="err_user"
                                         class="alert alert-danger"
                                         role="alert"
                                         style="display: none">

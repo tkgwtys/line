@@ -10,6 +10,7 @@
     'reservations', $reservations,
     'courses', $courses,
     'today_link', $today_link,
+    'start_month', $start_month,
     ])
     </div>
 @endsection
