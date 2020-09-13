@@ -51,7 +51,7 @@
             <tbody>
             @foreach($days_array as $dayKey => $day)
                 <tr class="">
-                    <th rowspan="{{count($player_array)}}" class="viewDay calendar__fixed-date">{{$day}}</th>
+                    <th rowspan="{{count($player_array)}}" class="viewDay calendar__fixed-date day_number_{{$days_number_array[$dayKey]}}">{{$days_array_format[$dayKey]}}</th>
                     @foreach($player_array as $key => $player)
                         <th class="playerName calendar__fixed-name calendar__last-player-name">{{$player->sei}}</th>
                         <td colspan="68">
