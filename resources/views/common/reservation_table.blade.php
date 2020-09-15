@@ -51,7 +51,8 @@
             <tbody>
             @foreach($days_array as $dayKey => $day)
                 <tr class="">
-                    <th rowspan="{{count($player_array)}}" class="viewDay calendar__fixed-date day_number_{{$days_number_array[$dayKey]}}">{{$days_array_format[$dayKey]}}</th>
+                    <th rowspan="{{count($player_array)}}"
+                        class="viewDay calendar__fixed-date day_number_{{$days_number_array[$dayKey]}}">{{$days_array_format[$dayKey]}}</th>
                     @foreach($player_array as $key => $player)
                         <th class="playerName calendar__fixed-name calendar__last-player-name">{{$player->sei}}</th>
                         <td colspan="68">
@@ -74,7 +75,7 @@
                                                 data-store_id="{{$reservation->store_id}}"
                                                 class="reservationButton plan plan--undecided plan__left-{{ltrim(str_replace(':', '', $hi), '0')}} plan__width--60">
                                                 <div class="@if($reservation->status == 30) plan @endif">
-                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->course_time}}分】</span>
+                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->store_name}}】</span>
                                                 </div>
                                             </div>
                                             {{--                                                    <button--}}
