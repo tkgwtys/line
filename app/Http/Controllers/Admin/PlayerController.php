@@ -94,8 +94,13 @@ class PlayerController extends Controller
         $player_array = User::where('level', 20)->get();
         // 件数
         for ($i = 0; $i <= $day_count; $i++) {
+            //日付と曜日の取得
             $days_array[$i] = Carbon::parse($start_date)->addDay($i)->format('Y-m-d');
+            $days_array_format[$i] = Carbon::parse($start_date)->addDay($i)->isoFormat('ddd D');
+            //曜日番号の取得
+            $days_number_array[$i]= Carbon::parse($start_date)->addDay($i)->dayOfWeekIso;
         }
+
         // コース
         $courses = Course::all();
         // プレイヤー１件取得
@@ -116,6 +121,8 @@ class PlayerController extends Controller
                 'time_array',
                 'player_array',
                 'days_array',
+                'days_array_format',
+                'days_number_array',
                 'user_level',
                 'reservations',
                 'users',
