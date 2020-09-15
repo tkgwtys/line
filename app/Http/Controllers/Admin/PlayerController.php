@@ -98,9 +98,8 @@ class PlayerController extends Controller
             $days_array[$i] = Carbon::parse($start_date)->addDay($i)->format('Y-m-d');
             $days_array_format[$i] = Carbon::parse($start_date)->addDay($i)->isoFormat('ddd D');
             //曜日番号の取得
-            $days_number_array[$i]= Carbon::parse($start_date)->addDay($i)->dayOfWeekIso;
+            $days_number_array[$i] = Carbon::parse($start_date)->addDay($i)->dayOfWeekIso;
         }
-
         // コース
         $courses = Course::all();
         // プレイヤー１件取得

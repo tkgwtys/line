@@ -73,6 +73,13 @@ class Reservation extends Model
         return DB::table($this->table)
             ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
             ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
+            ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
+            ->select(
+                'users.*',
+                'courses.*',
+                'reservations.*',
+                'stores.name as store_name'
+            )
             ->whereBetween('reserved_at', [$start, $end])
             ->whereNull('reservations.deleted_at')
             ->get();
