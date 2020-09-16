@@ -4,6 +4,7 @@
     <div class="container">
         {{ Breadcrumbs::render('userReservation') }}
         <div id="alert_message"></div>
+        ※確定された予約はキャンセルすることができません。直接トレーナーにご連絡してください。
         <table class="table table-striped" id="user_reservation_list">
             <tbody>
             @if(count($reservations) > 0)
@@ -13,11 +14,13 @@
                             日時：{{$reservation->reservations_reserved_at}}<br>
                             トレーナー：{{$reservation->player_sei}}<br>
                             店舗：{{$reservation->stores_name}}<br>
+                            コース：{{$reservation->courses_name}}<br>
                             ステータス：{{$reservationModel->getStatus($reservation->reservations_status)}}
                         </td>
                         <td align="right">
                             <button
                                 type="button"
+                                @if($reservation->reservations_status == 30) disabled @endif
                                 data-reservation_id="{{$reservation->reservation_id}}"
                                 class="btn btn-danger reservation_cancel_button">
                                 キャンセル

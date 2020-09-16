@@ -41,9 +41,6 @@ class LineBotController extends Controller
      */
     private function createCarousel($player_id, $user_id, $name, $self_introduction, $image)
     {
-        Log::debug("-----------");
-        Log::debug($self_introduction);
-        Log::debug("-----------");
 //        $user = User::where('id', $user_id)->first();
 //        Log::debug($user);
         // カルーセルに付与するボタンを作る
@@ -194,7 +191,7 @@ class LineBotController extends Controller
     {
         $actions = [
             new UriTemplateActionBuilder("入力フォームへ",
-                config('app.url') . 'user/edit'
+                config('app.url') . 'home'
             ),
             new UriTemplateActionBuilder("管理画面（一時的）",
                 config('app.url') . 'admin'
