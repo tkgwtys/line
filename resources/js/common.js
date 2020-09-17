@@ -170,9 +170,48 @@ flatpickr('.selector', {
     // minuteIncrement: 15,
     // カレンダーが変更されたら
     onChange(selectedDates) {
-        $('#selected_date').val(`${selectedDates[0].getFullYear()}-${selectedDates[0].getMonth() + 1}-${selectedDates[0].getDate()}`);
+        console.log(selectedDates);
+        // 選択された日付
+        const selectedYear = selectedDates[0].getFullYear();
+        const selectedMonth = ("0" + (selectedDates[0].getMonth() + 1)).split(-2);
+        const selectedDate = selectedDates[0].getDate();
+        // 予約データー取得
+        const startTime = `${selectedYear}-${selectedMonth}-${selectedDate} 00:00:00`;
+        const endTime = `${selectedYear}-${selectedMonth}-${selectedDate} 23:59:59`;
+
+        $('#selected_date').val(`${selectedYear}-${selectedMonth}-${selectedDate}`);
+        reservationDate(`${startTime}`, `${endTime}`, $('#player').val());
     },
 });
+
+
+/**
+ * せんたくできる時間取得
+ * @param date
+ */
+function reservationDate(startTime, endTime, playerId) {
+    $.ajax({
+        type: 'get',
+        url: '/reservation/getTimes',
+        data: {
+            startTime: startTime,
+            endTime: endTime,
+            playerId: playerId
+        },
+    }).done(function (result) {
+        console.log(result);
+        if (result) {
+            console.log(result.data);
+            $('#selected_time optgroup').remove();
+            $('#selected_time option').remove();
+
+        }
+    }).fail(function () {
+        console.log('NG');
+    }).always(function () {
+        console.log('★');
+    });
+}
 
 /**
  * 予約

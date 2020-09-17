@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Reservation extends Model
 {
@@ -86,10 +87,47 @@ class Reservation extends Model
     }
 
     /**
+     * トレーナーの選択された日の空いてない時間を取得
+     * @param $playerId
+     * @param $startTime
+     * @param $endTime
+     */
+    public static function getUserReservationTimes($playerId, $startTime, $endTime)
+    {
+        $new_times = [];
+        // 予約時間があるか
+        $reservationTimes = DB::table('reservations')
+            ->where('player_id', '=', $playerId)
+            ->where('status', '=', 30)
+            ->whereNull('reservations.deleted_at')
+            ->whereBetween('reserved_at', [$startTime, $endTime])
+            ->select(DB::raw('DATE_FORMAT(reservations.reserved_at, "%H:%i") as reserved_at'))
+            ->get();
+        if (count($reservationTimes) > 0) {
+            foreach (Reservation::getOpenTimeArray() as $h => $time) {
+                foreach ($time as $t) {
+                    foreach ($reservationTimes as $rTime) {
+                        if ($t == $rTime->reserved_at) {
+                            break;
+                        }
+                    }
+                    if ($t != $rTime->reserved_at) {
+                        $new_times[$h][] = $t;
+                    }
+                }
+            }
+        } else {
+            $new_times = Reservation::getOpenTimeArray();
+        }
+        return $new_times;
+    }
+
+    /**
      * 一人のユーザー予約一覧
      * @param $user_id
      */
-    public static function getUserReservations($user_id)
+    public
+    static function getUserReservations($user_id)
     {
         $now = Carbon::now();
         return DB::table('reservations')
@@ -133,7 +171,8 @@ class Reservation extends Model
      * @param $reservation_id
      * @return Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public static function findByReservationId($reservation_id)
+    public
+    static function findByReservationId($reservation_id)
     {
         return DB::table('reservations')
             ->leftJoin('users', 'reservations.player_id', '=', 'users.id')
@@ -168,5 +207,12 @@ class Reservation extends Model
                 ['reservation_id', '=', $reservation_id],
             ])->whereNull('reservations.deleted_at')
             ->first();
+    }
+
+    /**
+     * @param $date
+     */
+    public static function findByReservationMonth($date)
+    {
     }
 }

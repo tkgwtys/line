@@ -192,7 +192,7 @@ class ReservationController extends Controller
             $time_array = Reservation::getOpenTimeArray();
             // トレーナ全員
             $player = User::where('id', $player_id)->where('level', 20)->first();
-            if(!$player) {
+            if (!$player) {
                 throw new Exception("トレーナが見つかりません");
             }
             $player->image = $player ? $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg') : '';
@@ -200,6 +200,8 @@ class ReservationController extends Controller
             $player_array = User::where('level', 20)->get();
             // コース
             $courses = Course::all();
+            // 予約取得
+
             // 店舗一覧
             $stores = Store::all();
             return view('reservation.show', compact(
@@ -284,6 +286,38 @@ class ReservationController extends Controller
             $data['result'] = true;
             $data['message'] = 'キャンセルしました';
         }
+        return $data;
+    }
+
+    /**
+     * @param Request $request
+     * @return array|string
+     */
+    public function getTimes(Request $request)
+    {
+        // データー
+        $startTime = $request['startTime'];
+        $endTime = $request['endTime'];
+        $playerId = $request['playerId'];
+
+        Log::debug($startTime);
+        Log::debug($endTime);
+
+        $data = [
+            'result' => false,
+            'message' => 'キャンセル失敗',
+            'data' => [],
+        ];
+
+        if (!$startTime && !$endTime) {
+            return $data['message'] = '日付を選択してください';
+        }
+        if (!$playerId) {
+            return $data['message'] = 'トレーナーを選択してください';
+        }
+        $data['data'] = Reservation::getUserReservationTimes($playerId, $startTime, $endTime);
+        $data['message'] = 'success';
+        $data['result'] = true;
         return $data;
     }
 }
