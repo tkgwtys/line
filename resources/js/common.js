@@ -106,6 +106,7 @@ $('#user_reservation_list').on('click', 'button', function () {
     }).always(function (data) {
     });
 });
+
 /**
  * 予約削除処理
  */
@@ -330,4 +331,38 @@ $('#month_count').on('input', function () {
 $('#course_time').on('input', function () {
     let value = $(this).val();
     $(this).val(value.replace(/[^0-9]+/g, ''));
+});
+
+/**
+ * ユーザー側の予約処理
+ */
+$('.reservationTd').on('click', 'span', function (e) {
+    // 選択された日時
+    const selectedDate = $(this).data('date');
+    // 選択された日付をセット
+    $('#confirmDate').text(selectedDate);
+    // モーダル
+    $('#modalLarge').modal('show');
+});
+
+$('#reservationButton').on('click', function (e) {
+    $('button').attr('disabled', true);
+    console.log('おされた');
+    e.preventDefault();
+    $form = $(this)
+    var $button = $form.find('button');
+    $.ajax({
+        type: $form.attr('method'),
+        url: $form.attr('action'),
+        data: $form.serialize(),
+        dataType: 'json',
+        timeout: 10000,
+    }).done(function (data) {
+        $('button').attr('disabled', false);
+        console.log(data);
+    }).fail(function (e) {
+        $('button').attr('disabled', false);
+    }).always(function () {
+        console.log('結果');
+    });
 });

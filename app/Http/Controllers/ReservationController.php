@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReservationRequest;
 use App\Models\Course;
+use App\Models\Player;
 use App\Models\Reservation;
 use App\Models\Store;
 use App\Models\User;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use Exception;
@@ -178,45 +180,79 @@ class ReservationController extends Controller
      */
     public function show(Request $request, $player_id)
     {
-        try {
-            // 予約者
-            $user_id = $request->get('uid');
-            $type = $request->get('type') ? $request->get('type') : 'p';
-            $user = User::where('id', $user_id)->first();
-            if (!$user) {
-                throw new Exception("お友達がみつかりません");
-            }
-            // 明日
-            $tomorrow = Carbon::tomorrow()->format('Y-m-d');
-            // 時間
-            $time_array = Reservation::getOpenTimeArray();
-            // トレーナ全員
-            $player = User::where('id', $player_id)->where('level', 20)->first();
-            if(!$player) {
-                throw new Exception("トレーナが見つかりません");
-            }
-            $player->image = $player ? $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg') : '';
-            // トレーナ全員
-            $player_array = User::where('level', 20)->get();
-            // コース
-            $courses = Course::all();
-            // 店舗一覧
-            $stores = Store::all();
-            return view('reservation.show', compact(
-                    'player',
-                    'player_id',
-                    'time_array',
-                    'type',
-                    'courses',
-                    'stores',
-                    'tomorrow',
-                    'user',
-                    'player_array',
-                    'user_id')
-            );
-        } catch (\Exception $e) {
-            print_r($e->getMessage());
+        // トレーナ取得
+        $player = User::where(['id' => $player_id, 'level' => 20])->first();
+        if (!$player) {
+            print_r('トレーナが見つかりません');
+            exit;
         }
+        // 表示件数
+        $max_day = 14;
+        // スタート日付
+        $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
+        // 15分刻みの時間を取得する
+        $time_array = Reservation::getOpenTimeArray();
+        // 店舗
+        $stores = Store::all();
+        // コース
+        $courses = Course::all();
+        // 本日から２週間表示
+        for ($i = 0; $i < $max_day; $i++) {
+            //日付と曜日の取得
+            $days_array[$i] = Carbon::parse($start_date)->addDay($i)->format('Y-m-d');
+            $days_array_format[$i][0] = Carbon::parse($start_date)->addDay($i)->isoFormat('ddd');
+            $days_array_format[$i][1] = Carbon::parse($start_date)->addDay($i)->isoFormat('D');
+            $days_array_format[$i][2] = Carbon::parse($start_date)->addDay($i)->dayOfWeekIso;
+        }
+        return view('reservation.show', compact(
+            'max_day',
+            'player_id',
+            'time_array',
+            'days_array',
+            'days_array_format',
+            'stores',
+            'courses',
+            'player'
+        ));
+//        try {
+//            // 予約者
+//            $user_id = $request->get('uid');
+//            $type = $request->get('type') ? $request->get('type') : 'p';
+//            $user = User::where('id', $user_id)->first();
+//            if (!$user) {
+//                throw new Exception("お友達がみつかりません");
+//            }
+//            // 明日
+//            $tomorrow = Carbon::tomorrow()->format('Y-m-d');
+//            // 時間
+//            $time_array = Reservation::getOpenTimeArray();
+//            // トレーナ全員
+//            $player = User::where('id', $player_id)->where('level', 20)->first();
+//            if(!$player) {
+//                throw new Exception("トレーナが見つかりません");
+//            }
+//            $player->image = $player ? $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg') : '';
+//            // トレーナ全員
+//            $player_array = User::where('level', 20)->get();
+//            // コース
+//            $courses = Course::all();
+//            // 店舗一覧
+//            $stores = Store::all();
+//            return view('reservation.show', compact(
+//                    'player',
+//                    'player_id',
+//                    'time_array',
+//                    'type',
+//                    'courses',
+//                    'stores',
+//                    'tomorrow',
+//                    'user',
+//                    'player_array',
+//                    'user_id')
+//            );
+//        } catch (\Exception $e) {
+//            print_r($e->getMessage());
+//        }
     }
 
     /**
