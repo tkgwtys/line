@@ -7,7 +7,7 @@
 
 @section('content')
     <div class="table-responsive-sm">
-        <table class="table table-bordered reservation">
+        <table class="table table-bordered reservation" id="reservation_user_table">
             <thead>
             <tr>
                 <th scope="col">前</th>
@@ -23,10 +23,8 @@
                     <tr>
                         <td>{{$hi}}</td>
                         @for($i = 0; $i < $max_day ; $i++)
-                            <td>
-                                <div class="reservationTd" data-date="{{$days_array[$i]}} {{$hi}}">
-                                    <span>○</span>
-                                </div>
+                            <td data-date="{{$days_array[$i]}} {{$hi}}">
+                                <span>○</span>
                             </td>
                         @endfor
                         <td>{{$hi}}</td>
