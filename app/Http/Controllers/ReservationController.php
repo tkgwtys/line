@@ -54,19 +54,55 @@ class ReservationController extends Controller
     public function store(CreateReservationRequest $request)
     {
         $data = [
-            'result' => true,
+            'result' => false,
             'message' => '',
         ];
-        // カテゴリー
-        $category = 10;
-        // 予約者
-        $user_id = $request->get('user');
+        $reservationDates = [];
+        // 10は仮予約
+        $_category = 10;
         // トレーナ
-        $player_id = $request->get('player');
+        $_player_id = $request->get('player_id');
         // コース
-        $course_id = (int)$request->get('course');
+        $_course_id = (int)$request->get('course');
         // 店舗
-        $store_id = (int)$request->get('store');
+        $_store_id = (int)$request->get('store');
+        // 予約日
+        $_reservationDate = $request->get('reservationDate');
+        // トランザクション
+        DB::beginTransaction();
+        try {
+            //////////////////
+            // ユーザー（予約社）
+            $user_id = Auth::id();
+            if (!$user_id) {
+                throw new Exception('ログインしてください');
+            }
+            //////////////////
+            /// トレーナがいるか
+            $player = User::where('id', $_player_id)->where('level', 20)->whereNull('blocked_at')->first();
+            if (!$player) {
+                throw new Exception('トレーナが見つかりません');
+            }
+            /////////////////
+            /// 予約データー作成（45分）
+            $reservationDates[0] = Carbon::parse($_reservationDate)->toString();
+            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15)->toString();
+            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15)->toString();
+            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15)->toString();
+            Log::debug($reservationDates);
+
+            return $data = [
+                'result' => true,
+                'message' => 'suceess',
+            ];
+            DB::commit();
+        } catch (Exception $e) {
+            Log::debug($e->getMessage());
+            DB::rollBack();
+            return $data['message'] = $e->getMessage();
+        }
+
+        /*
         // 予約番号
         $reservation_id = $request->get('reservation_id');
         // ステータス
@@ -170,6 +206,7 @@ class ReservationController extends Controller
             DB::rollBack();
             Log::debug($e);
         }
+        */
     }
 
     /**

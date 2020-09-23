@@ -24,13 +24,12 @@ class CreateReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            'selected_date' => 'required|string',
-            'selected_time' => 'required|string',
-            'player' => 'required|string|max:50',
-            'course' => 'required|string|max:100',
-            'user' => 'required|string|max:100',
-            'store' => 'required|string|max:100',
-            'status' => 'required|string|max:100',
+            'player_id' => 'required|string',
+            'reservationDate' => 'required|string',
+            'course' => 'required|string|max:10',
+            'store' => 'required|string|max:10',
+            'status' => 'required|string|max:10',
+            'status' => 'required|string|max:10',
         ];
     }
 }

@@ -339,17 +339,20 @@ $('#course_time').on('input', function () {
 $('#reservation_user_table td').on('click', function (e) {
     // 選択された日時
     const selectedDate = $(this).data('date');
-    // 選択された日付をセット
-    $('#confirmDate').text(selectedDate);
-    // モーダル
-    $('#modalLarge').modal('show');
+    if (selectedDate) {
+        // 選択された日付をセット
+        $('#reservationDateView').text(selectedDate);
+        $('#reservationDate').val(selectedDate);
+        // モーダル
+        $('#modalLarge').modal('show');
+    }
 });
 
-$('#reservationButton').on('click', function (e) {
-    $('button').attr('disabled', true);
+$('#reservation_form_user').submit(function (e) {
     console.log('おされた');
     e.preventDefault();
     $form = $(this)
+    console.log($form.serialize());
     var $button = $form.find('button');
     $.ajax({
         type: $form.attr('method'),

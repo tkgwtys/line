@@ -46,7 +46,7 @@
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form id="reservation_form_user" method="post" action="/admin/reservation">
+                <form id="reservation_form_user" method="post" action="/reservation">
                     <input type="hidden" name="player_id" id="player_id" value="{{$player_id}}">
                     @csrf
                     <input type="hidden" name="status" value="30">
@@ -67,7 +67,8 @@
                         </div>
                         <div class="form-group">
                             <label for="store">予約申請日</label>
-                            <div id="confirmDate"></div>
+                            <div id="reservationDateView"></div>
+                            <input type="hidden" value="" id="reservationDate" name="reservationDate">
                         </div>
                         <!-- 店舗 -->
                         <div class="form-group">
