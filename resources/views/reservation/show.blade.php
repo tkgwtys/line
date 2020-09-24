@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="table-responsive-sm">
+        <a class="btn btn-link" href="/reservation/{{$player_id}}">今週</a>
         <table class="table table-bordered reservation" id="reservation_user_table">
             <thead>
             <tr>
