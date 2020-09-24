@@ -10,19 +10,6 @@
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 
-
-///////////////////////////////
-/// ユーザー
-Breadcrumbs::for('home', function ($trail) {
-    $trail->push('ホーム', url('/home'));
-});
-
-Breadcrumbs::for('user', function ($trail) {
-    $trail->parent('home');
-    $trail->push('カウント設定', url('/user/edit'));
-});
-
-///////////////////////////////
 /// 管理
 Breadcrumbs::for('adminHome', function ($trail) {
     $trail->push('ホーム', url('/admin/home'));
@@ -181,10 +168,11 @@ Breadcrumbs::for('admin.store.create', function ($trail) {
 Breadcrumbs::for('userHome', function ($trail) {
     $trail->push('ホーム', url('/home'));
 });
-/**
- * 予約一覧
- */
 Breadcrumbs::for('userReservation', function ($trail) {
     $trail->parent('userHome');
-    $trail->push('予約', url('/reservation/'));
+    $trail->push('予約確認・キャンセル', url('/reservation/'));
+});
+Breadcrumbs::for('userUserEdit', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('カウント設定', url('/user/edit'));
 });

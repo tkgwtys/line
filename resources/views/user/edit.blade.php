@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-    {{ Breadcrumbs::render('user') }}
+    {{ Breadcrumbs::render('userUserEdit') }}
 
     <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
