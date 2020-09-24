@@ -10,7 +10,21 @@
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 
-Breadcrumbs::for('admin.home', function ($trail) {
+
+///////////////////////////////
+/// ユーザー
+Breadcrumbs::for('home', function ($trail) {
+    $trail->push('ホーム', url('/home'));
+});
+
+Breadcrumbs::for('user', function ($trail) {
+    $trail->parent('home');
+    $trail->push('カウント設定', url('/user/edit'));
+});
+
+///////////////////////////////
+/// 管理
+Breadcrumbs::for('adminHome', function ($trail) {
     $trail->push('ホーム', url('/admin/home'));
 });
 
@@ -45,18 +59,18 @@ Breadcrumbs::for('adminUser.edit', function ($trail, $user) {
  * ノート作成
  * /admin/note/{post}/post
  */
-Breadcrumbs::for('admin.note.post', function($trail, $user){
-    $trail->parent('adminUser',$user);
-    $trail->push('ノート作成('.$user->sei.')', url('/admin/note/'.$user->id.'/post'));
+Breadcrumbs::for('admin.note.post', function ($trail, $user) {
+    $trail->parent('adminUser', $user);
+    $trail->push('ノート作成(' . $user->sei . ')', url('/admin/note/' . $user->id . '/post'));
 });
 
 /**
  * ノート編集
  * /admin/note/{post}/edit
  */
-Breadcrumbs::for('admin.note.edit', function($trail, $user, $note){
-    $trail->parent('adminUser',$user);
-    $trail->push('ノート編集', url('/admin/note/'.$note->id.'/edit'));
+Breadcrumbs::for('admin.note.edit', function ($trail, $user, $note) {
+    $trail->parent('adminUser', $user);
+    $trail->push('ノート編集', url('/admin/note/' . $note->id . '/edit'));
 });
 
 /**
@@ -156,7 +170,6 @@ Breadcrumbs::for('admin.store.create', function ($trail) {
     $trail->push('ストア管理', url('/admin/store'));
     $trail->push('ストア登録', url('/admin/store/create'));
 });
-
 
 
 /////////////////////////////////////////////////////////////////////////

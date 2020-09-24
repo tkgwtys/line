@@ -305,6 +305,9 @@ class ReservationController extends Controller
      */
     public function show(Request $request, $player_id)
     {
+        if (!Auth::check()) {
+            return \redirect('login');
+        }
         // トレーナ取得
         $player = User::where(['id' => $player_id, 'level' => 20])->first();
         if (!$player) {
