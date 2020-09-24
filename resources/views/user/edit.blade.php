@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
-        <!-- フラッシュメッセージ -->
+    {{ Breadcrumbs::render('userUserEdit') }}
+
+    <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
                 <strong>{{ session('flash_message') }}</strong>

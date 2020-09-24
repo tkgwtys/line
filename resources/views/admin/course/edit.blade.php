@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        {{Breadcrumbs::render('adminCourse.edit', $course)}}
-        <!-- フラッシュメッセージ -->
+    {{Breadcrumbs::render('adminCourseEdit', $course)}}
+    <!-- フラッシュメッセージ -->
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
                 {{ session('flash_message') }}

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminPlayers') }}
+        {{ Breadcrumbs::render('adminPlayer') }}
         <table class="table table-striped">
             <tbody>
             @foreach($players as $player)

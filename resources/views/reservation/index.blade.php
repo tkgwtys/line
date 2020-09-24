@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @inject('reservationModel', 'App\Models\Reservation')
 @section('content')
     <div class="container">

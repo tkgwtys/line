@@ -62,11 +62,12 @@ Route::group(['middleware' => 'basicauth'], function () {
             'show' => 'admin.user.show',
             'update' => 'admin.user.update',
         ]);
+        Route::resource('schedule', 'Admin\ScheduleController');
         Route::resource('player', 'Admin\PlayerController');
         Route::resource('reservation', 'ReservationController');
         Route::resource('course', 'Admin\CourseController');
         Route::resource('store', 'Admin\StoreController');
-        Route::resource('note','Admin\NoteController');
+        Route::resource('note', 'Admin\NoteController');
         Route::get('note/{post}/post', 'Admin\NoteController@post')->name('note.post');
     });
 });

@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminUsers') }}
+        {{ Breadcrumbs::render('adminUser') }}
         <table class="table table-striped">
             <tbody>
             @foreach($users as $user)
