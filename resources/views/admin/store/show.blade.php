@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminCourse', $store) }}
+        {{ Breadcrumbs::render('adminStoreShow', $store) }}
         <table class="table table-bordered">
             <tbody>
             <tr>

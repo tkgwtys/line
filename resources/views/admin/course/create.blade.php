@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('admin.course.create') }}
+        {{ Breadcrumbs::render('adminCourseCreate') }}
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>

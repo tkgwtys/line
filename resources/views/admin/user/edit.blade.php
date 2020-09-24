@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-    {{Breadcrumbs::render('adminUser.edit', $user)}}
+    {{Breadcrumbs::render('adminUserEdit', $user)}}
         @if (session('flash_message'))
             <div class="alert alert-success" role="alert">
                 {{ session('flash_message') }}

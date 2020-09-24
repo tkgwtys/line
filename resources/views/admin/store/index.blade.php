@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminStores') }}
+        {{ Breadcrumbs::render('adminStoreIndex') }}
         <p>
-            <a href="{{url('/admin/store/create')}}" class="btn btn-primary">ストア登録</a>
+            <a href="{{url('/admin/store/create')}}" class="btn btn-primary">新規登録</a>
         </p>
         <table class="table table-striped">
             <thead>
@@ -24,7 +24,8 @@
                         <form action="{{url('/admin/store/'. $store->id)}}" method="post" style="display:inline">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="削除" class="btn btn-delete btn-danger" onclick="return confirm('削除しますか？')">
+                            <input type="submit" value="削除" class="btn btn-delete btn-danger"
+                                   onclick="return confirm('削除しますか？')">
                         </form>
                     </td>
                 </tr>

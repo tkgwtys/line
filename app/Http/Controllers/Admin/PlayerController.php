@@ -86,12 +86,13 @@ class PlayerController extends Controller
         // 件数
         $day_count = !empty($request->get('day_count')) ? $request->get('day_count') : 7;
         // 本日リンク
-        $today_link = '/admin/player/' . $player_id . '?start_date=' . Carbon::now()->toDateString() . '&day_count=' . $day_count;
-        $next_week = '/admin/player/' . $player_id . '?start_date=' . Carbon::now()->toDateString() . '&day_count=' . $day_count;
+        $back_link = '/admin/player/' . $player_id . '?start_date=' . Carbon::parse($start_date)->addDays(-($day_count + 1))->toDateString() . '&day_count=' . $day_count;
+        $next_link = '/admin/player/' . $player_id . '?start_date=' . Carbon::parse($start_date)->addDays(($day_count + 1))->toDateString() . '&day_count=' . $day_count;
+        $today_link = '/admin/player/' . $player_id;
         // 時間
         $time_array = Reservation::getOpenTimeArray();
         // トレーナ全員
-        $player_array = User::where('level', 20)->get();
+        $player_array = User::where('level', 20)->where('id', $player_id)->get();
         // 件数
         for ($i = 0; $i <= $day_count; $i++) {
             //日付と曜日の取得
@@ -115,6 +116,8 @@ class PlayerController extends Controller
         return view('admin.player.show',
             compact(
                 'courses',
+                'back_link',
+                'next_link',
                 'today_link',
                 'player',
                 'time_array',

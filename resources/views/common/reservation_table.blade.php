@@ -3,9 +3,9 @@
     <div id="alert_message"></div>
     <div class="d-flex justify-content-between">
         <div>
-            <a type="button" class="btn btn-primary btn-sm" href="">先週</a>
+            <a type="button" class="btn btn-primary btn-sm" href="{{$back_link}}">先週</a>
             <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
-            <a type="button" class="btn btn-primary btn-sm" href="">来週</a>
+            <a type="button" class="btn btn-primary btn-sm" href="{{$next_link}}">来週</a>
         </div>
         <button
             data-toggle="modal"
@@ -54,7 +54,9 @@
                     <th rowspan="{{count($player_array)}}"
                         class="viewDay calendar__fixed-date day_number_{{$days_number_array[$dayKey]}}">{{$days_array_format[$dayKey]}}</th>
                     @foreach($player_array as $key => $player)
-                        <th class="playerName calendar__fixed-name calendar__last-player-name">{{$player->sei}}</th>
+                        <th class="playerName calendar__fixed-name calendar__last-player-name">
+                            <a href="/admin/player/{{$player->id}}">{{$player->sei}}</a>
+                        </th>
                         <td colspan="68">
                             @foreach($time_array as $key => $time)
                                 @foreach($time as $hi)

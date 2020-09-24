@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        {{ Breadcrumbs::render('adminUser', $user) }}
+        {{ Breadcrumbs::render('adminUserShow', $user) }}
         <!-- ノートボタン-->
             @if (session('flash_message'))
                 <div class="alert alert-success" role="alert">
