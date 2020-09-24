@@ -336,7 +336,7 @@ $('#course_time').on('input', function () {
 /**
  * ユーザー側の予約処理
  */
-$('#reservation_user_table td').on('click', function (e) {
+$('.reservationDateTap').on('click', function (e) {
     // 選択された日時
     const selectedDate = $(this).data('date');
     if (selectedDate) {

@@ -17,15 +17,20 @@
                     <tr>
                         <td>{{$hi}}</td>
                         @for($i = 0; $i < $max_day ; $i++)
-                            @php $var = '○'; @endphp
-                            <td data-date="{{$days_array[$i]}} {{$hi}}">
+                            @php $var = '◯'; $class = 'reservationDateTap'; @endphp
+                            <td style="padding: 0;text-align: center;vertical-align: middle">
                                 @foreach($reservations as $reservation)
                                     @if($reservation->reserved_at == $days_array[$i] . ' ' . $hi . ':00')
-                                        @php $var = '☓'; @endphp
+                                        @php $var = '✖';$class= ''; @endphp
                                         @break
                                     @endif
                                 @endforeach
-                                <span style="width: 100%; height: 100%" >{{$var}}</span>
+                                <span data-date="{{$days_array[$i]}} {{$hi}}"
+                                      style="width: 100%;
+                                      height: 100%"
+                                      class="{{$class}}">
+                                    {{$var}}
+                                </span>
                             </td>
                         @endfor
                         <td>{{$hi}}</td>
