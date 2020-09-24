@@ -4,11 +4,15 @@
         <table class="table table-bordered reservation" id="reservation_user_table">
             <thead>
             <tr>
-                <th scope="col">前</th>
+                <th scope="col">
+                    <a class="btn btn-link" href="/reservation/{{$player_id}}?start_date={{$back_date}}">次の週</a>
+                </th>
                 @foreach($days_array_format as $day)
                     <th scope="col">{{$day[1]}}<br>{{$day[0]}}</th>
                 @endforeach
-                <th scope="col">次</th>
+                <th scope="col">
+                    <a class="btn btn-link" href="/reservation/{{$player_id}}?start_date={{$next_date}}">次の週</a>
+                </th>
             </tr>
             </thead>
             <tbody>

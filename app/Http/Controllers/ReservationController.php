@@ -315,6 +315,9 @@ class ReservationController extends Controller
         $max_day = 14;
         // スタート日付
         $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
+        // つぎの週
+        $back_date = Carbon::parse($start_date)->addDays(-$max_day)->format('Y-m-d');
+        $next_date = Carbon::parse($start_date)->addDays($max_day)->format('Y-m-d');
         // 15分刻みの時間を取得する
         $time_array = Reservation::getOpenTimeArray();
         // 店舗
@@ -344,47 +347,10 @@ class ReservationController extends Controller
             'stores',
             'courses',
             'player',
-            'reservations'
+            'reservations',
+            'next_date',
+            'back_date'
         ));
-//        try {
-//            // 予約者
-//            $user_id = $request->get('uid');
-//            $type = $request->get('type') ? $request->get('type') : 'p';
-//            $user = User::where('id', $user_id)->first();
-//            if (!$user) {
-//                throw new Exception("お友達がみつかりません");
-//            }
-//            // 明日
-//            $tomorrow = Carbon::tomorrow()->format('Y-m-d');
-//            // 時間
-//            $time_array = Reservation::getOpenTimeArray();
-//            // トレーナ全員
-//            $player = User::where('id', $player_id)->where('level', 20)->first();
-//            if(!$player) {
-//                throw new Exception("トレーナが見つかりません");
-//            }
-//            $player->image = $player ? $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg') : '';
-//            // トレーナ全員
-//            $player_array = User::where('level', 20)->get();
-//            // コース
-//            $courses = Course::all();
-//            // 店舗一覧
-//            $stores = Store::all();
-//            return view('reservation.show', compact(
-//                    'player',
-//                    'player_id',
-//                    'time_array',
-//                    'type',
-//                    'courses',
-//                    'stores',
-//                    'tomorrow',
-//                    'user',
-//                    'player_array',
-//                    'user_id')
-//            );
-//        } catch (\Exception $e) {
-//            print_r($e->getMessage());
-//        }
     }
 
     /**
