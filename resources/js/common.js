@@ -364,6 +364,7 @@ $('#reservation_form_user').submit(function (e) {
         $('button').attr('disabled', false);
         console.log(data);
     }).fail(function (e) {
+        console.log(e);
         $('button').attr('disabled', false);
     }).always(function () {
         console.log('結果');

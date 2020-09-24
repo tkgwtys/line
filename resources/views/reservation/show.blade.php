@@ -1,10 +1,4 @@
 @extends('layouts.app')
-<style>
-    .reservationTd {
-        cursor: pointer;
-    }
-</style>
-
 @section('content')
     <div class="table-responsive-sm">
         <table class="table table-bordered reservation" id="reservation_user_table">
@@ -23,8 +17,15 @@
                     <tr>
                         <td>{{$hi}}</td>
                         @for($i = 0; $i < $max_day ; $i++)
+                            @php $var = '○'; @endphp
                             <td data-date="{{$days_array[$i]}} {{$hi}}">
-                                <span>○</span>
+                                @foreach($reservations as $reservation)
+                                    @if($reservation->reserved_at == $days_array[$i] . ' ' . $hi . ':00')
+                                        @php $var = '☓'; @endphp
+                                        @break
+                                    @endif
+                                @endforeach
+                                <span style="width: 100%; height: 100%" >{{$var}}</span>
                             </td>
                         @endfor
                         <td>{{$hi}}</td>

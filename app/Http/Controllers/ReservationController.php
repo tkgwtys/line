@@ -59,48 +59,136 @@ class ReservationController extends Controller
         ];
         $reservationDates = [];
         // 10は仮予約
-        $_category = 10;
+        $status = 10;
+        // カテゴリー
+        $category = 10;
         // トレーナ
-        $_player_id = $request->get('player_id');
+        $player_id = $request->get('player_id');
         // コース
-        $_course_id = (int)$request->get('course');
+        $course_id = (int)$request->get('course');
         // 店舗
-        $_store_id = (int)$request->get('store');
+        $store_id = (int)$request->get('store');
         // 予約日
-        $_reservationDate = $request->get('reservationDate');
-        // トランザクション
-        DB::beginTransaction();
-        try {
-            //////////////////
-            // ユーザー（予約社）
-            $user_id = Auth::id();
-            if (!$user_id) {
-                throw new Exception('ログインしてください');
-            }
-            //////////////////
-            /// トレーナがいるか
-            $player = User::where('id', $_player_id)->where('level', 20)->whereNull('blocked_at')->first();
-            if (!$player) {
-                throw new Exception('トレーナが見つかりません');
-            }
-            /////////////////
-            /// 予約データー作成（45分）
-            $reservationDates[0] = Carbon::parse($_reservationDate)->toString();
-            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15)->toString();
-            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15)->toString();
-            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15)->toString();
-            Log::debug($reservationDates);
-
-            return $data = [
-                'result' => true,
-                'message' => 'suceess',
-            ];
-            DB::commit();
-        } catch (Exception $e) {
-            Log::debug($e->getMessage());
-            DB::rollBack();
-            return $data['message'] = $e->getMessage();
+        $reservationDate = $request->get('reservationDate');
+        // 予約ID
+        $reservation_id = Str::random(10);
+        //////////////////
+        // ユーザー（予約社）
+        $user_id = Auth::id();
+        if (!$user_id) {
+            return $data['message'] = 'ログインしてください';
         }
+        //////////////////
+        /// トレーナがいるか
+        $player = User::where('id', $player_id)->where('level', 20)->whereNull('blocked_at')->first();
+        if (!$player) {
+            return $data['message'] = 'トレーナが見つかりません';
+        }
+        /////////////////
+        /// 予約データー作成（45分）
+        $reservationDates[0] = Carbon::parse($reservationDate);
+        $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
+        $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
+        $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
+        if (count($reservationDates)) {
+            foreach ($reservationDates as $key => $reservation) {
+                $result = Reservation::where('reserved_at', $reservation)
+                    ->where('category', $category)
+                    ->where('player_id', $player_id)
+                    ->where('status', $status)
+                    ->whereNull('deleted_at')
+                    ->first();
+                if ($result) {
+                    return $data['message'] = '「' . $reservation . '」はすでに予約中です';
+                }
+            }
+            $now = Carbon::today()->format('Y-m-d H:m:i');
+            // トランザクション
+            DB::beginTransaction();
+            foreach ($reservationDates as $key => $reservation) {
+                $insert_data = [
+                    'reservation_id' => $reservation_id,
+                    'user_id' => Auth::id(),
+                    'player_id' => $player_id,
+                    'status' => $status,
+                    'category' => $category,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'reserved_at' => $reservation,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+                Reservation::insert($insert_data);
+            }
+            DB::commit();
+        }
+        return $data = [
+            'result' => true,
+            'message' => 'suceess',
+        ];
+
+
+//        try {
+//            //////////////////
+//            // ユーザー（予約社）
+//            $user_id = Auth::id();
+//            if (!$user_id) {
+//                throw new Exception('ログインしてください');
+//            }
+//            //////////////////
+//            /// トレーナがいるか
+//            $player = User::where('id', $player_id)->where('level', 20)->whereNull('blocked_at')->first();
+//            if (!$player) {
+//                throw new Exception('トレーナが見つかりません');
+//            }
+//            /////////////////
+//            /// 予約データー作成（45分）
+//            $reservationDates[0] = Carbon::parse($reservationDate);
+//            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
+//            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
+//            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
+//            /////////////////
+//            /// データー登録
+//            if (count($reservationDates)) {
+//                foreach ($reservationDates as $key => $reservation) {
+//                    $result = Reservation::where('reserved_at', $reservation)
+//                        ->where('category', $category)
+//                        ->where('player_id', $player_id)
+//                        ->where('status', $status)
+//                        ->whereNull('deleted_at')
+//                        ->first();
+//                    if ($result) {
+//                        throw new Exception('「' . $reservation . '」はすでに予約中です');
+//                    }
+//                }
+//                $now = Carbon::today()->format('Y-m-d H:m:i');
+//                // トランザクション
+//                DB::beginTransaction();
+//                foreach ($reservationDates as $key => $reservation) {
+//                    $insert_data = [
+//                        'reservation_id' => $reservation_id,
+//                        'user_id' => Auth::id(),
+//                        'player_id' => $player_id,
+//                        'status' => $status,
+//                        'category' => $category,
+//                        'course_id' => $course_id,
+//                        'store_id' => $store_id,
+//                        'reserved_at' => $reservation,
+//                        'created_at' => $now,
+//                        'updated_at' => $now,
+//                    ];
+//                    Reservation::insert($insert_data);
+//                }
+//                DB::commit();
+//            }
+//            return $data = [
+//                'result' => true,
+//                'message' => 'suceess',
+//            ];
+//        } catch (Exception $e) {
+//            Log::debug($e->getMessage());
+//            return $data['message'] = $e->getMessage();
+//        }
 
         /*
         // 予約番号
@@ -241,6 +329,12 @@ class ReservationController extends Controller
             $days_array_format[$i][1] = Carbon::parse($start_date)->addDay($i)->isoFormat('D');
             $days_array_format[$i][2] = Carbon::parse($start_date)->addDay($i)->dayOfWeekIso;
         }
+        ///////////////////
+        /// 予約データー取得
+        $reservation_model = new Reservation();
+        $reservations = $reservation_model->getReservation($start_date . ' 00:00:00', Carbon::parse($start_date)->addDay($max_day)->toDateString() . ' 23:59:59');
+        ///////////////////
+        /// view取得
         return view('reservation.show', compact(
             'max_day',
             'player_id',
@@ -249,7 +343,8 @@ class ReservationController extends Controller
             'days_array_format',
             'stores',
             'courses',
-            'player'
+            'player',
+            'reservations'
         ));
 //        try {
 //            // 予約者
