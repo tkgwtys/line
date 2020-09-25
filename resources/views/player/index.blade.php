@@ -23,7 +23,6 @@
                     </div>
                     <br>
                     <a href="/reservation/{{$player->id}}"
-                       type="button"
                        class="btn btn-primary btn-lg btn-block">予約申請する
                     </a>
                 @endforeach
