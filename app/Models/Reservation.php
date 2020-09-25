@@ -69,7 +69,7 @@ class Reservation extends Model
      * @param $end
      * @return \Illuminate\Support\Collection
      */
-    public function getReservation($start, $end, $player_id = '')
+    public function getReservation($start, $end, $player_id = '', $sort = '')
     {
         $query = DB::table($this->table);
         $query->leftJoin('users', 'reservations.user_id', '=', 'users.id');
@@ -84,9 +84,25 @@ class Reservation extends Model
         if ($player_id) {
             $query->where('player_id', $player_id);
         }
-        $query->whereBetween('reserved_at', [$start, $end]);
+        if ($sort) {
+            $query->where('reservation_sort', $sort);
+        }
+        $query->whereBetween('reserved_at', [$start . ' 00:00:00', $end . ' 23:59:59']);
         $query->whereNull('reservations.deleted_at');
         return $query->get();
+    }
+
+    public static function getUniqueArray($array, $column)
+    {
+        $tmp = [];
+        $uniqueArray = [];
+        foreach ($array as $value) {
+            if (!in_array($value[$column], $tmp)) {
+                $tmp[] = $value[$column];
+                $uniqueArray[] = $value;
+            }
+        }
+        return $uniqueArray;
     }
 
     /**

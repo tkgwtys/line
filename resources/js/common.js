@@ -280,19 +280,18 @@ $('#reservation_form').on('submit', function (e) {
             url: form.prop('action'),
             data: form.serialize(),
         }).done(function (data) {
-            console.log(data);
-            if (data.result) {
-                $('#reservation').modal('hide');
-                $('#reservationDirectly').modal('hide');
-                $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+            if (data.status === 20) {
+                // 却下
+
             }
-            if (data.status === '30') {
+            if (data.status === 30) {
+                // 確
                 $('#modalLarge').modal('hide');
                 $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 700);
             }
+            setTimeout(() => {
+                window.location.reload();
+            }, 700);
             //window.location.reload();
         }).fail(function () {
             $('button').attr('disabled', false);
@@ -349,7 +348,7 @@ $('.reservationDateTap').on('click', function (e) {
 });
 
 /**
- * ユーザー側からの予約
+ * ユーザーからの予約
  */
 $('#reservation_form_user').submit(function (e) {
     e.preventDefault();

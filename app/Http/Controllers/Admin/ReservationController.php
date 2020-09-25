@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreateReservationRequest;
 use App\Models\Course;
@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use Exception;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use App\Http\Controllers\Controller;
 
 class ReservationController extends Controller
 {
@@ -29,10 +30,6 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
-        $reservations = Reservation::getUserReservations(Auth::id());
-        return view('reservation.index', compact('reservations')
-        );
     }
 
     /**
@@ -46,24 +43,26 @@ class ReservationController extends Controller
     }
 
     /**
+     * 新規登録
      * Store a newly created resource in storage.
      *
      * @param Request $request
      * @return array
      */
-    public function store(CreateReservationRequest $request)
+    public function store(Request $request)
     {
+        Log::debug($request->all());
         $data = [
             'result' => false,
             'message' => '',
         ];
         $reservationDates = [];
         // 10は仮予約
-        $status = 10;
+        $status = 30;
         // カテゴリー
         $category = 10;
         // トレーナ
-        $player_id = $request->get('player_id');
+        $player_id = $request->get('player');
         // コース
         $course_id = (int)$request->get('course');
         // 店舗
@@ -71,7 +70,8 @@ class ReservationController extends Controller
         // 予約日
         $reservationDate = $request->get('reservationDate');
         // 予約ID
-        $reservation_id = Str::random(10);
+        $reservation_id = $request->get('reservation_id');
+
         //////////////////
         // ユーザー（予約社）
         $user_id = Auth::id();
@@ -84,44 +84,55 @@ class ReservationController extends Controller
         if (!$player) {
             return $data['message'] = 'トレーナが見つかりません';
         }
-        /////////////////
-        /// 予約データー作成（45分）
-        $reservationDates[0] = Carbon::parse($reservationDate);
-        $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
-        $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
-        $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
-        if (count($reservationDates)) {
-            foreach ($reservationDates as $key => $reservation) {
-                $result = Reservation::where('reserved_at', $reservation)
-                    ->where('category', $category)
-                    ->where('player_id', $player_id)
-                    ->where('status', $status)
-                    ->whereNull('deleted_at')
-                    ->first();
-                if ($result) {
-                    return $data['message'] = '「' . $reservation . '」はすでに予約中です';
+        //////////////////
+        /// アップデート
+        if ($reservation_id) {
+            Reservation::where('reservation_id', $reservation_id)->update(['status' => 30]);
+            return $data = [
+                'result' => true,
+                'status' => $status,
+                'message' => '予約を確定しました',
+            ];
+        } else {
+            /////////////////
+            /// 予約データー作成（45分）
+            $reservationDates[0] = Carbon::parse($reservationDate);
+            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
+            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
+            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
+            if (count($reservationDates)) {
+                foreach ($reservationDates as $key => $reservation) {
+                    $result = Reservation::where('reserved_at', $reservation)
+                        ->where('category', $category)
+                        ->where('player_id', $player_id)
+                        ->where('status', $status)
+                        ->whereNull('deleted_at')
+                        ->first();
+                    if ($result) {
+                        return $data['message'] = '「' . $reservation . '」はすでに予約中です';
+                    }
                 }
+                $now = Carbon::today()->format('Y-m-d H:m:i');
+                // トランザクション
+                DB::beginTransaction();
+                foreach ($reservationDates as $key => $reservation) {
+                    $insert_data = [
+                        'reservation_id' => $reservation_id,
+                        'user_id' => Auth::id(),
+                        'player_id' => $player_id,
+                        'status' => $status,
+                        'category' => $category,
+                        'course_id' => $course_id,
+                        'store_id' => $store_id,
+                        'reserved_at' => $reservation,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                        'reservation_sort' => ++$key,
+                    ];
+                    Reservation::insert($insert_data);
+                }
+                DB::commit();
             }
-            $now = Carbon::today()->format('Y-m-d H:m:i');
-            // トランザクション
-            DB::beginTransaction();
-            foreach ($reservationDates as $key => $reservation) {
-                $insert_data = [
-                    'reservation_id' => $reservation_id,
-                    'user_id' => Auth::id(),
-                    'player_id' => $player_id,
-                    'status' => $status,
-                    'category' => $category,
-                    'course_id' => $course_id,
-                    'store_id' => $store_id,
-                    'reserved_at' => $reservation,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                    'reservation_sort' => ++$key,
-                ];
-                Reservation::insert($insert_data);
-            }
-            DB::commit();
         }
         return $data = [
             'result' => true,

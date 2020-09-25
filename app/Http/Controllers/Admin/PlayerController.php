@@ -111,7 +111,7 @@ class PlayerController extends Controller
         $stores = Store::all();
         // 予約一覧
         $reservation = new Reservation();
-        $reservations = $reservation->getReservation($start_date, last($days_array));
+        $reservations = $reservation->getReservation($start_date, last($days_array), '', 1);
         // view
         return view('admin.player.show',
             compact(
