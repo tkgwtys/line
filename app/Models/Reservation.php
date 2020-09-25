@@ -64,11 +64,12 @@ class Reservation extends Model
 
     /**
      * 指定範囲での予約を取得する
+     * @param $player_id
      * @param $start
      * @param $end
      * @return \Illuminate\Support\Collection
      */
-    public function getReservation($start, $end)
+    public function getReservation($player_id, $start, $end)
     {
         return DB::table($this->table)
             ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
@@ -80,6 +81,7 @@ class Reservation extends Model
                 'reservations.*',
                 'stores.name as store_name'
             )
+            ->where('player_id', $player_id)
             ->whereBetween('reserved_at', [$start, $end])
             ->whereNull('reservations.deleted_at')
             ->get();

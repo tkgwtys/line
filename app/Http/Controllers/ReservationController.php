@@ -338,7 +338,7 @@ class ReservationController extends Controller
         ///////////////////
         /// 予約データー取得
         $reservation_model = new Reservation();
-        $reservations = $reservation_model->getReservation($start_date . ' 00:00:00', Carbon::parse($start_date)->addDay($max_day)->toDateString() . ' 23:59:59');
+        $reservations = $reservation_model->getReservation($player_id, $start_date . ' 00:00:00', Carbon::parse($start_date)->addDay($max_day)->toDateString() . ' 23:59:59');
         ///////////////////
         /// view取得
         return view('reservation.show', compact(
