@@ -22,6 +22,7 @@ Route::group(['middleware' => 'basicauth'], function () {
     Route::get('login/line', 'Auth\LoginController@socialLogin');
     Route::get('login/line/loginCallback', 'Auth\LoginController@handleProviderCallback');
     // 予約
+    Route::get('/reservation/end', 'ReservationController@end')->name('reservation.end');
     Route::resource('/reservation', 'ReservationController');
 //    Route::get('/user/{user_id}/edit', 'UserController@edit')->name('line-user.edit');
 //    Route::put('/user/{user_id}', 'UserController@update')->name('line-user.update');
