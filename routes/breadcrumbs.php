@@ -102,6 +102,10 @@ Breadcrumbs::for('userUserEdit', function ($trail) {
     $trail->parent('userHome');
     $trail->push('カウント設定', url('/user/edit'));
 });
+Breadcrumbs::for('userPlayer', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('トレーナ', url('/player'));
+});
 ///**
 // * フレンド一覧
 // * /admin/useshowUserr

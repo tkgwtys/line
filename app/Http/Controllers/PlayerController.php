@@ -20,7 +20,10 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
+        // トレーナ一覧を出す
+        $players = User::where('level', 20)->get();
+        return view('player.index', compact('players'));
+
     }
 
     /**
