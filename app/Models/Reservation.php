@@ -69,22 +69,24 @@ class Reservation extends Model
      * @param $end
      * @return \Illuminate\Support\Collection
      */
-    public function getReservation($player_id, $start, $end)
+    public function getReservation($start, $end, $player_id = '')
     {
-        return DB::table($this->table)
-            ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
-            ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
-            ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
-            ->select(
-                'users.*',
-                'courses.*',
-                'reservations.*',
-                'stores.name as store_name'
-            )
-            ->where('player_id', $player_id)
-            ->whereBetween('reserved_at', [$start, $end])
-            ->whereNull('reservations.deleted_at')
-            ->get();
+        $query = DB::table($this->table);
+        $query->leftJoin('users', 'reservations.user_id', '=', 'users.id');
+        $query->leftJoin('courses', 'reservations.course_id', '=', 'courses.id');
+        $query->leftJoin('stores', 'reservations.store_id', '=', 'stores.id');
+        $query->select(
+            'users.*',
+            'courses.*',
+            'reservations.*',
+            'stores.name as store_name'
+        );
+        if ($player_id) {
+            $query->where('player_id', $player_id);
+        }
+        $query->whereBetween('reserved_at', [$start, $end]);
+        $query->whereNull('reservations.deleted_at');
+        return $query->get();
     }
 
     /**
