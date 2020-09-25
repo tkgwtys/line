@@ -122,13 +122,14 @@
                             {{--                    <span class="d-none d-md-inline">Save changes</span>--}}
                             {{--                    <span class="d-md-none">Save</span>--}}
                             {{--                </button>--}}
-                            <button type="submit" class="btn btn-success" id="reservationButton"
-                                    name="reservationButton">
-                        <span
-                            class="spinner-border spinner-border-sm"
-                            role="status"
-                            aria-hidden="true">
-                        </span>予約申請
+                            <button
+                                type="submit"
+                                class="btn btn-success"
+                                id="reservationButton"
+                                name="reservationButton">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                予約申請
+                            </button>
                             </button>
                         </div>
                     </div>

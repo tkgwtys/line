@@ -1,23 +1,15 @@
 <?php
-////////////////////////////////////////////
-// 管理画面
-/////////////////////////////////////////////
-
-/**
- * トップ
- * /admin/home
- */
 
 use DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs;
 
-/// 管理
+////////////////////////////////////////////
+//
+// 管理
+//
+/////////////////////////////////////////////
 Breadcrumbs::for('adminHome', function ($trail) {
     $trail->push('ホーム', url('/admin/home'));
 });
-
-/**
- * トレーナ管理
- */
 Breadcrumbs::for('adminPlayer', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('トレーナ管理', url('/admin/player'));
@@ -30,73 +22,81 @@ Breadcrumbs::for('adminSchedule', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('スケジュール管理（全体）', url('/admin/schedule'));
 });
-
 Breadcrumbs::for('adminUser', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('フレンド管理', url('/admin/user'));
 });
-
 Breadcrumbs::for('adminUserShow', function ($trail, $user) {
     $trail->parent('adminHome');
     $trail->push('フレンド管理', url('/admin/user'));
     $trail->push($user->display_name, url('/admin/user' . $user->id));
 });
-
 Breadcrumbs::for('adminUserEdit', function ($trail, $user) {
     $trail->parent('adminHome');
     $trail->push('フレンド管理', url('/admin/user'));
     $trail->push($user->display_name, url('/admin/user/' . $user->id));
     $trail->push('編集', url('/admin/user'));
 });
-
 Breadcrumbs::for('adminCourseIndex', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('コース管理', url('/admin/course'));
 });
-
 Breadcrumbs::for('adminCourseCreate', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('コース管理', url('/admin/course'));
     $trail->push('新規作成', url('/admin/course'));
 });
-
 Breadcrumbs::for('adminCourseShow', function ($trail, $course) {
     $trail->parent('adminHome');
     $trail->push('コース管理', url('/admin/course'));
     $trail->push($course->name, url('/admin/course/' . $course->id));
 });
-
 Breadcrumbs::for('adminCourseEdit', function ($trail, $course) {
     $trail->parent('adminHome');
     $trail->push('コース管理', url('/admin/course'));
     $trail->push($course->name, url('/admin/course/' . $course->id));
     $trail->push('編集', url('/admin/course'));
 });
-
-/////////////////////////////////
-/// 店舗
 Breadcrumbs::for('adminStoreIndex', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('店舗管理', url('/admin/store'));
 });
-
 Breadcrumbs::for('adminStoreCreate', function ($trail) {
     $trail->parent('adminHome');
     $trail->push('店舗管理', url('/admin/store'));
     $trail->push('新規作成', url('/admin/store'));
 });
-
 Breadcrumbs::for('adminStoreShow', function ($trail, $store) {
     $trail->parent('adminHome');
     $trail->push('店舗管理', url('/admin/store'));
     $trail->push($store->name, url('/admin/store/' . $store->id));
 });
-
 Breadcrumbs::for('adminStoreEdit', function ($trail, $store) {
     $trail->parent('adminHome');
     $trail->push('店舗管理', url('/admin/store'));
     $trail->push($store->name, url('/admin/store/' . $store->id));
     $trail->push('編集', url('/admin/store'));
+});
+/////////////////////////////////////////////////////////////////////////
+///
+/// ユーザ側
+///
+/////////////////////////////////////////////////////////////////////////
+// ホーム
+Breadcrumbs::for('userHome', function ($trail) {
+    $trail->push('ホーム', url('/home'));
+});
+Breadcrumbs::for('userReservation', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('予約確認・キャンセル', url('/reservation/'));
+});
+Breadcrumbs::for('userReservationEnd', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('予約申請完了', url('/reservation/'));
+});
+Breadcrumbs::for('userUserEdit', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('カウント設定', url('/user/edit'));
 });
 ///**
 // * フレンド一覧
@@ -241,20 +241,3 @@ Breadcrumbs::for('adminStoreEdit', function ($trail, $store) {
 //    $trail->push('ストア登録', url('/admin/store/create'));
 //});
 
-/////////////////////////////////////////////////////////////////////////
-///
-/// ユーザ側
-///
-/////////////////////////////////////////////////////////////////////////
-// ホーム
-Breadcrumbs::for('userHome', function ($trail) {
-    $trail->push('ホーム', url('/home'));
-});
-Breadcrumbs::for('userReservation', function ($trail) {
-    $trail->parent('userHome');
-    $trail->push('予約確認・キャンセル', url('/reservation/'));
-});
-Breadcrumbs::for('userUserEdit', function ($trail) {
-    $trail->parent('userHome');
-    $trail->push('カウント設定', url('/user/edit'));
-});

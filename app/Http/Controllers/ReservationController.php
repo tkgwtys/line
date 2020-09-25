@@ -423,4 +423,15 @@ class ReservationController extends Controller
         }
         return $data;
     }
+
+    /**
+     * 予約完了
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function end(Request $request)
+    {
+        $player_id = $request->input('player_id');
+        return view('reservation.end')->with('player_id', $player_id);
+    }
 }

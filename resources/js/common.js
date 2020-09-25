@@ -335,9 +335,9 @@ $('#course_time').on('input', function () {
 
 /**
  * ユーザー側の予約処理
+ * 予約モーダル表示
  */
 $('.reservationDateTap').on('click', function (e) {
-    // 選択された日時
     const selectedDate = $(this).data('date');
     if (selectedDate) {
         // 選択された日付をセット
@@ -348,12 +348,18 @@ $('.reservationDateTap').on('click', function (e) {
     }
 });
 
+/**
+ * ユーザー側からの予約
+ */
 $('#reservation_form_user').submit(function (e) {
-    console.log('おされた');
     e.preventDefault();
+    // スピナー表示
+    $('.spinner-border').css('display', 'block');
+    // ボタンを無効になる
+    $('button').attr('disabled', true);
     $form = $(this)
     console.log($form.serialize());
-    var $button = $form.find('button');
+    const $button = $form.find('button');
     $.ajax({
         type: $form.attr('method'),
         url: $form.attr('action'),
@@ -361,10 +367,13 @@ $('#reservation_form_user').submit(function (e) {
         dataType: 'json',
         timeout: 10000,
     }).done(function (data) {
-        $('button').attr('disabled', false);
-        console.log(data);
+        // 選択された日時
+        const playerId = $('#player_id').val() ? $('#player_id').val() : '';
+        setTimeout(function () {
+            location.href = `/reservation/end?player_id=${playerId}`;
+        }, 500);
     }).fail(function (e) {
-        console.log(e);
+        $('.spinner-border').css('display', 'none');
         $('button').attr('disabled', false);
     }).always(function () {
         console.log('結果');
