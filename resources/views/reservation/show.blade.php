@@ -130,7 +130,6 @@
                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 予約申請
                             </button>
-                            </button>
                         </div>
                     </div>
                 </form>
