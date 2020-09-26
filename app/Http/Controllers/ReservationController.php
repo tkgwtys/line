@@ -427,8 +427,8 @@ class ReservationController extends Controller
         ////////////////////////////////////
         $user_message = "予約キャンセルしました。\n\n";
         $user_message .= 'トレーナ：' . $player->sei . $player->mei . "\n";
-        $user_message .= 'コース：' . $course->name . ' 【' . $course->course_time . '】';
-        $user_message .= '日時：' . $reservations[0]['reservations_reserved_at'] . "\n";
+        $user_message .= 'コース：' . $course->name . '【' . $course->course_time . '】' . "\n";
+        $user_message .= '日時：' . $reservations[0]['reserved_at'] . "\n";
         $user_message .= '店舗：' . $store->name . "\n";
         $user_messageBuilder = new TextMessageBuilder($user_message);
         $bot->pushMessage($reservations[0]->user_id, $user_messageBuilder);
@@ -437,6 +437,7 @@ class ReservationController extends Controller
         ////////////////////////////////////
         $player_message = "予約がキャンセルされました。\n\n";
         $player_message .= '名前：' . $user->user_sei . $user->user_mei . "様\n";
+        $player_message .= 'コース：' . $course->name . '【' . $course->course_time . '】' . "\n";
         $player_message .= '日時：' . $reservations[0]['reserved_at'] . "\n";
         $player_message .= '店舗：' . $store->name . "\n";
         $player_messageBuilder = new TextMessageBuilder($player_message);
