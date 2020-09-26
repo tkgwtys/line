@@ -112,6 +112,8 @@ class PlayerController extends Controller
         // 予約一覧
         $reservation = new Reservation();
         $reservations = $reservation->getReservation($start_date, last($days_array), '', 1);
+        $unsettled = Reservation::where('status', 10)->where('player_id', $player_id)->where('reservation_sort', 1)->count();
+
         // view
         return view('admin.player.show',
             compact(
@@ -129,6 +131,7 @@ class PlayerController extends Controller
                 'reservations',
                 'users',
                 'start_month',
+                'unsettled',
                 'stores')
         );
     }
