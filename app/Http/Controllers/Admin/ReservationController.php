@@ -327,7 +327,7 @@ class ReservationController extends Controller
             exit;
         }
         // 表示件数
-        $max_day = 14;
+        $max_day = !empty($request->get('day_count')) ? $request->get('day_count') : 14;
         // スタート日付
         $start_date = !empty($request->get('start_date')) ? $request->get('start_date') : Carbon::now()->toDateString();
         // つぎの週
