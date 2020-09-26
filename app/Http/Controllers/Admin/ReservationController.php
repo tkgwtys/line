@@ -51,9 +51,8 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        Log::debug($request->all());
         $data = [
-            'result' => false,
+            'status' => false,
             'message' => '',
         ];
         $reservationDates = [];
@@ -67,17 +66,14 @@ class ReservationController extends Controller
         $course_id = (int)$request->get('course');
         // 店舗
         $store_id = (int)$request->get('store');
-        // 予約日
-        $reservationDate = $request->get('reservationDate');
         // 予約ID
         $reservation_id = $request->get('reservation_id');
-
-        //////////////////
-        // ユーザー（予約社）
-        $user_id = Auth::id();
-        if (!$user_id) {
-            return $data['message'] = 'ログインしてください';
-        }
+        // 予約指定日
+        $selected_date = $request->get('selected_date');
+        // 予約日
+        $selected_time = $request->get('selected_time');
+        // 予約した人
+        $user_id = $request->get('user');
         //////////////////
         /// トレーナがいるか
         $player = User::where('id', $player_id)->where('level', 20)->whereNull('blocked_at')->first();
@@ -96,11 +92,12 @@ class ReservationController extends Controller
         } else {
             /////////////////
             /// 予約データー作成（45分）
-            $reservationDates[0] = Carbon::parse($reservationDate);
+            $reservationDates[0] = Carbon::parse($selected_date . ' ' . $selected_time);
             $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
             $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
             $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
             if (count($reservationDates)) {
+                // 予約データーがかぶってないか
                 foreach ($reservationDates as $key => $reservation) {
                     $result = Reservation::where('reserved_at', $reservation)
                         ->where('category', $category)
@@ -114,11 +111,12 @@ class ReservationController extends Controller
                 }
                 $now = Carbon::today()->format('Y-m-d H:m:i');
                 // トランザクション
+                $reservation_id = Str::random(10);
                 DB::beginTransaction();
                 foreach ($reservationDates as $key => $reservation) {
                     $insert_data = [
                         'reservation_id' => $reservation_id,
-                        'user_id' => Auth::id(),
+                        'user_id' => $user_id,
                         'player_id' => $player_id,
                         'status' => $status,
                         'category' => $category,
@@ -134,179 +132,11 @@ class ReservationController extends Controller
                 DB::commit();
             }
         }
+
         return $data = [
-            'result' => true,
+            'status' => true,
             'message' => 'suceess',
         ];
-
-
-//        try {
-//            //////////////////
-//            // ユーザー（予約社）
-//            $user_id = Auth::id();
-//            if (!$user_id) {
-//                throw new Exception('ログインしてください');
-//            }
-//            //////////////////
-//            /// トレーナがいるか
-//            $player = User::where('id', $player_id)->where('level', 20)->whereNull('blocked_at')->first();
-//            if (!$player) {
-//                throw new Exception('トレーナが見つかりません');
-//            }
-//            /////////////////
-//            /// 予約データー作成（45分）
-//            $reservationDates[0] = Carbon::parse($reservationDate);
-//            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
-//            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
-//            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
-//            /////////////////
-//            /// データー登録
-//            if (count($reservationDates)) {
-//                foreach ($reservationDates as $key => $reservation) {
-//                    $result = Reservation::where('reserved_at', $reservation)
-//                        ->where('category', $category)
-//                        ->where('player_id', $player_id)
-//                        ->where('status', $status)
-//                        ->whereNull('deleted_at')
-//                        ->first();
-//                    if ($result) {
-//                        throw new Exception('「' . $reservation . '」はすでに予約中です');
-//                    }
-//                }
-//                $now = Carbon::today()->format('Y-m-d H:m:i');
-//                // トランザクション
-//                DB::beginTransaction();
-//                foreach ($reservationDates as $key => $reservation) {
-//                    $insert_data = [
-//                        'reservation_id' => $reservation_id,
-//                        'user_id' => Auth::id(),
-//                        'player_id' => $player_id,
-//                        'status' => $status,
-//                        'category' => $category,
-//                        'course_id' => $course_id,
-//                        'store_id' => $store_id,
-//                        'reserved_at' => $reservation,
-//                        'created_at' => $now,
-//                        'updated_at' => $now,
-//                    ];
-//                    Reservation::insert($insert_data);
-//                }
-//                DB::commit();
-//            }
-//            return $data = [
-//                'result' => true,
-//                'message' => 'suceess',
-//            ];
-//        } catch (Exception $e) {
-//            Log::debug($e->getMessage());
-//            return $data['message'] = $e->getMessage();
-//        }
-
-        /*
-        // 予約番号
-        $reservation_id = $request->get('reservation_id');
-        // ステータス
-        $status = $request->get('status');
-        // タイプ（userかadminか）
-        $type = $request->get('type');
-        DB::beginTransaction();
-        try {
-            // 時間
-            $now = Carbon::today()->format('Y-m-d H:m:i');
-            // 予約日
-            $reserved_at = $request->get('selected_date') . ' ' . $request->get('selected_time');
-            // コースが存在するか
-            $course = Course::find($course_id)->first();
-            if (!$course) {
-                Log::debug('コースがない');
-            }
-            // 予約者
-            $user = User::where('id', $user_id)->first();
-            // トレーナー
-            $player = User::where('id', $player_id)->where('level', 20)->first();
-            // 店舗
-            $store = Store::where('id', $store_id)->first();
-            // 予約があるか
-            if ($reservation_id) {
-                // 更新
-                $update_date = [
-                    'user_id' => $user_id,
-                    'status' => $status,
-                    'category' => $category,
-                    'course_id' => $course_id,
-                    'store_id' => $store_id,
-                    'reserved_at' => $reserved_at,
-                    'updated_at' => $now,
-                ];
-                $result = Reservation::where('reservation_id', $reservation_id)->update($update_date);
-            } else {
-                // 予約番号
-                $reservation_id = Str::random(20);
-                $insert_data = [
-                    'reservation_id' => $reservation_id,
-                    'user_id' => $user_id,
-                    'player_id' => $player_id,
-                    'status' => $status,
-                    'category' => $category,
-                    'course_id' => $course_id,
-                    'store_id' => $store_id,
-                    'reserved_at' => $reserved_at,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-                $result = Reservation::insert($insert_data);
-            }
-            DB::commit();
-            $bot = app('line-bot');
-            if ($status == 10) {
-                ////////////////////////////
-                // トレーナー
-                $player_message = "予約申請\n";
-                $player_message .= $user->sei . $user->mei . "様\n";
-                $player_message .= Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
-                $player_message .= config('app.url') . 'admin';
-                $textMessageBuilder = new TextMessageBuilder($player_message);
-                $bot->pushMessage($player_id, $textMessageBuilder);
-
-                ////////////////////////////
-                // 自分
-                $user_message = "予約申請しました\n\n";
-                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
-                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
-                $user_message .= '店舗：' . $store->name . "\n";
-                $user_message .= 'ステータス：' . Reservation::getStatus($status);
-                $textMessageBuilder = new TextMessageBuilder($user_message);
-                $bot->pushMessage($user_id, $textMessageBuilder);
-
-                $data['result'] = true;
-                $data['message'] = '予約申請しました';
-            } else if ($status == 20) {
-                $message = "予約が確定しました\n" . Carbon::parse($reserved_at)->format('Y年m月d日 H:i');
-                $textMessageBuilder = new TextMessageBuilder($message);
-                $bot->pushMessage($user_id, $textMessageBuilder);
-                $data['result'] = true;
-                $data['message'] = '予約がキャンセルされました';
-            } else if ($status == 30) {
-                ////////////////////////////
-                // 自分
-                $user_message = "予約確定\n\n";
-                $user_message .= '日時：' . Carbon::parse($reserved_at)->format('Y年m月d日 H:i') . "\n";
-                $user_message .= 'トレーナー：' . $player->sei . $player->mei . "\n";
-                $user_message .= '店舗：' . $store->name . "\n";
-                $user_message .= 'ステータス：' . Reservation::getStatus($status);
-                $textMessageBuilder = new TextMessageBuilder($user_message);
-                $bot->pushMessage($user_id, $textMessageBuilder);
-
-                $data['result'] = true;
-                $data['message'] = '予約申請しました';
-                $data['status'] = $status;
-            }
-            return $data;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::debug($e);
-        }
-        */
     }
 
     /**
