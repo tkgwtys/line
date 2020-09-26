@@ -1,6 +1,5 @@
 @inject('reservationModel', 'App\Models\Reservation')
 <div class="scroll_div">
-    <div id="alert_message"></div>
     <div class="d-flex justify-content-between">
         <div>
             <a type="button" class="btn btn-primary btn-sm" href="{{$back_link}}">先週</a>
@@ -172,6 +171,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id="alert_message"></div>
                     <div class="row">
                         <div class="col">
                             <div class="form-group">

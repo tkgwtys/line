@@ -280,26 +280,23 @@ $('#reservation_form').on('submit', function (e) {
             url: form.prop('action'),
             data: form.serialize(),
         }).done(function (data) {
-            if (data.status === 20) {
-                // 却下
-
-            }
-            if (data.status === 30) {
-                // 確
-                $('#modalLarge').modal('hide');
+            console.log(data);
+            console.log(data.message);
+            if (data.status) {
                 $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+                $('#modalLarge').modal('hide');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 700);
+            } else {
+                $('#alert_message').html('<div class="alert alert-warning" role="alert"><strong>' + data.message + '</strong></div>');
             }
-            setTimeout(() => {
-                window.location.reload();
-            }, 700);
             //window.location.reload();
         }).fail(function () {
             $('button').attr('disabled', false);
             $('.spinner-border').css('display', 'none');
             // 通信が失敗したときの処理
-            console.log('ng');
         }).always(function () {
-            console.log('aaaaaaaaaaaaa');
             $("#course option[value='0']").prop('selected', true);
             $('button').attr('disabled', false);
             $('.spinner-border').css('display', 'none');

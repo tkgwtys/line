@@ -85,8 +85,7 @@ class ReservationController extends Controller
         if ($reservation_id) {
             Reservation::where('reservation_id', $reservation_id)->update(['status' => 30]);
             return $data = [
-                'result' => true,
-                'status' => $status,
+                'status' => true,
                 'message' => '予約を確定しました',
             ];
         } else {
@@ -106,7 +105,10 @@ class ReservationController extends Controller
                         ->whereNull('deleted_at')
                         ->first();
                     if ($result) {
-                        return $data['message'] = '「' . $reservation . '」はすでに予約中です';
+                        return $data = [
+                            'status' => false,
+                            'message' => '「' . $reservation . '」はすでに予約中です',
+                        ];
                     }
                 }
                 $now = Carbon::today()->format('Y-m-d H:m:i');
@@ -132,10 +134,9 @@ class ReservationController extends Controller
                 DB::commit();
             }
         }
-
         return $data = [
             'status' => true,
-            'message' => 'suceess',
+            'message' => '予約を確定しました',
         ];
     }
 
