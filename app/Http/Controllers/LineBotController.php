@@ -115,7 +115,7 @@ class LineBotController extends Controller
                     Log::debug('TextMessage');
                     $service = new ReceiveTextService($bot);
                     $reply_message = $service->execute($event);
-                    if ($event->getText() == 'トレーナー') {
+                    if ($event->getText() == 'トレーナー予約') {
                         foreach ($this->trainerArray() as $val) {
                             $columns[] = $this->createCarousel($val['player_id'], $event->getUserId(), $val['name'], $val['self_introduction'], $val['image']);
                         }
@@ -124,7 +124,7 @@ class LineBotController extends Controller
                         // カルーセルを追加してメッセージを作る
                         $carousel_message = new TemplateMessageBuilder("トレーナ選択", $carousel);
                         $bot->replyMessage($event->getReplyToken(), $carousel_message);
-                    } else if ($event->getText() == '設定') {
+                    } else if ($event->getText() == 'マイページ') {
 //                        // 「はい」ボタン
 //                        $yes_post = new PostbackTemplateActionBuilder("はい", "page=1");
 //                        // 「いいえ」ボタン
