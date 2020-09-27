@@ -21,6 +21,9 @@
     <meta name=”robots” content=”noindex”/>
 </head>
 <body>
+{{--if(config('app.env') !== 'development')--}}
+@include('ga')
+{{--@endif--}}
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="container">
