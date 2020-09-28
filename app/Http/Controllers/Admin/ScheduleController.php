@@ -56,7 +56,9 @@ class ScheduleController extends Controller
         $stores = Store::all();
         // 予約一覧
         $reservation = new Reservation();
-        $reservations = $reservation->getReservation($start_date, last($days_array));
+        $reservations = $reservation->getReservation($start_date, last($days_array), '', 1);
+        // 未確定合計
+        $unsettled = Reservation::where('status', 10)->where('reservation_sort', 1)->count();
         // view
         return view('admin.schedule.index',
             compact(
@@ -73,7 +75,8 @@ class ScheduleController extends Controller
                 'stores',
                 'back_link',
                 'next_link',
-                'today_link'
+                'today_link',
+                'unsettled'
             )
         );
     }

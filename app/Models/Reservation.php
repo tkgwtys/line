@@ -64,25 +64,45 @@ class Reservation extends Model
 
     /**
      * 指定範囲での予約を取得する
+     * @param $player_id
      * @param $start
      * @param $end
      * @return \Illuminate\Support\Collection
      */
-    public function getReservation($start, $end)
+    public function getReservation($start, $end, $player_id = '', $sort = '')
     {
-        return DB::table($this->table)
-            ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
-            ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
-            ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
-            ->select(
-                'users.*',
-                'courses.*',
-                'reservations.*',
-                'stores.name as store_name'
-            )
-            ->whereBetween('reserved_at', [$start, $end])
-            ->whereNull('reservations.deleted_at')
-            ->get();
+        $query = DB::table($this->table);
+        $query->leftJoin('users', 'reservations.user_id', '=', 'users.id');
+        $query->leftJoin('courses', 'reservations.course_id', '=', 'courses.id');
+        $query->leftJoin('stores', 'reservations.store_id', '=', 'stores.id');
+        $query->select(
+            'users.*',
+            'courses.*',
+            'reservations.*',
+            'stores.name as store_name'
+        );
+        if ($player_id) {
+            $query->where('player_id', $player_id);
+        }
+        if ($sort) {
+            $query->where('reservation_sort', $sort);
+        }
+        $query->whereBetween('reserved_at', [$start . ' 00:00:00', $end . ' 23:59:59']);
+        $query->whereNull('reservations.deleted_at');
+        return $query->get();
+    }
+
+    public static function getUniqueArray($array, $column)
+    {
+        $tmp = [];
+        $uniqueArray = [];
+        foreach ($array as $value) {
+            if (!in_array($value[$column], $tmp)) {
+                $tmp[] = $value[$column];
+                $uniqueArray[] = $value;
+            }
+        }
+        return $uniqueArray;
     }
 
     /**
@@ -123,7 +143,8 @@ class Reservation extends Model
                 'users.mei as user_mei'
             )->where([
                 ['user_id', '=', $user_id],
-                ['reserved_at', '>=', $now]
+                ['reserved_at', '>=', $now],
+                ['reservation_sort', '=', 1]
             ])->whereNull('reservations.deleted_at')
             ->get();
     }

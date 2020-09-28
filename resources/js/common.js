@@ -281,26 +281,22 @@ $('#reservation_form').on('submit', function (e) {
             data: form.serialize(),
         }).done(function (data) {
             console.log(data);
-            if (data.result) {
-                $('#reservation').modal('hide');
-                $('#reservationDirectly').modal('hide');
+            console.log(data.message);
+            if (data.status) {
                 $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
-            }
-            if (data.status === '30') {
                 $('#modalLarge').modal('hide');
-                $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
                 setTimeout(() => {
                     window.location.reload();
                 }, 700);
+            } else {
+                $('#alert_message').html('<div class="alert alert-warning" role="alert"><strong>' + data.message + '</strong></div>');
             }
             //window.location.reload();
         }).fail(function () {
             $('button').attr('disabled', false);
             $('.spinner-border').css('display', 'none');
             // 通信が失敗したときの処理
-            console.log('ng');
         }).always(function () {
-            console.log('aaaaaaaaaaaaa');
             $("#course option[value='0']").prop('selected', true);
             $('button').attr('disabled', false);
             $('.spinner-border').css('display', 'none');
@@ -349,7 +345,7 @@ $('.reservationDateTap').on('click', function (e) {
 });
 
 /**
- * ユーザー側からの予約
+ * ユーザーからの予約
  */
 $('#reservation_form_user').submit(function (e) {
     e.preventDefault();

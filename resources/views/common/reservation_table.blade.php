@@ -1,11 +1,11 @@
 @inject('reservationModel', 'App\Models\Reservation')
 <div class="scroll_div">
-    <div id="alert_message"></div>
     <div class="d-flex justify-content-between">
         <div>
             <a type="button" class="btn btn-primary btn-sm" href="{{$back_link}}">先週</a>
             <a type="button" class="btn btn-primary btn-sm" href="{{$today_link}}">本日</a>
             <a type="button" class="btn btn-primary btn-sm" href="{{$next_link}}">来週</a>
+            未確定数：{{$unsettled}}件
         </div>
         <button
             data-toggle="modal"
@@ -171,6 +171,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id="alert_message"></div>
                     <div class="row">
                         <div class="col">
                             <div class="form-group">

@@ -90,6 +90,10 @@ Breadcrumbs::for('userReservation', function ($trail) {
     $trail->parent('userHome');
     $trail->push('予約確認・キャンセル', url('/reservation/'));
 });
+Breadcrumbs::for('userReservationCreate', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('予約申請', url('/reservation/'));
+});
 Breadcrumbs::for('userReservationEnd', function ($trail) {
     $trail->parent('userHome');
     $trail->push('予約申請完了', url('/reservation/'));
@@ -97,6 +101,10 @@ Breadcrumbs::for('userReservationEnd', function ($trail) {
 Breadcrumbs::for('userUserEdit', function ($trail) {
     $trail->parent('userHome');
     $trail->push('カウント設定', url('/user/edit'));
+});
+Breadcrumbs::for('userPlayer', function ($trail) {
+    $trail->parent('userHome');
+    $trail->push('トレーナ', url('/player'));
 });
 ///**
 // * フレンド一覧
