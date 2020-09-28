@@ -81,13 +81,15 @@ class ReservationController extends Controller
             return $data['message'] = 'トレーナが見つかりません';
         }
         //////////////////
+        /// ストア
+        $store = Store::where('id', $store_id)->first();
+        if (!$store) {
+            return $data['message'] = '店舗が見つかりません';
+        }
+        //////////////////
         /// アップデート
         if ($reservation_id) {
             Reservation::where('reservation_id', $reservation_id)->update(['status' => 30]);
-            return $data = [
-                'status' => true,
-                'message' => '予約を確定しました',
-            ];
         } else {
             /////////////////
             /// 予約データー作成（45分）
@@ -134,6 +136,13 @@ class ReservationController extends Controller
                 DB::commit();
             }
         }
+        $user_message = "予約が確定しました。\n\n";
+        $user_message .= 'トレーナ：' . $player->sei . $player->mei . "\n";
+        $user_message .= '日時：' . Carbon::parse($selected_date . ' ' . $selected_time)->format('Y年m月d日 H時i分') . "\n";
+        $user_message .= '店舗：' . $store->name . "\n";
+        $user_messageBuilder = new TextMessageBuilder($user_message);
+        $bot = app('line-bot');
+        $bot->pushMessage($user_id, $user_messageBuilder);
         return $data = [
             'status' => true,
             'message' => '予約を確定しました',
