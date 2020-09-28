@@ -273,7 +273,9 @@
                                     <select class="form-control form-control-lg" id="user" name="user">
                                         <option value="">選択してください</option>
                                         @foreach($users as $key => $user)
-                                            <option value="{{$user->id}}">{{$user->sei}} {{$user->mei}}</option>
+                                            <option
+                                                value="{{$user->id}}">{{$user->display_name}} @if($user->sei)
+                                                    （{{$user->sei}} {{$user->mei}}）@endif</option>
                                         @endforeach
                                     </select>
                                     <div
