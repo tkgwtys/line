@@ -69,14 +69,22 @@ class User extends Authenticatable
     public function getNotes($id)
     {
         return DB::table('notes')
-            ->join('users','users.id','=','notes.user_id')
-            ->join('admins','admins.id','=','notes.admin_id')
-            ->select('users.*','admins.*','notes.*','notes.created_at as note_created_at')
-            ->orderBy('notes.created_at','desc')
-            ->where('deleted_at','=',null)
+            ->join('users', 'users.id', '=', 'notes.user_id')
+            ->join('admins', 'admins.id', '=', 'notes.admin_id')
+            ->select('users.*', 'admins.*', 'notes.*', 'notes.created_at as note_created_at')
+            ->orderBy('notes.created_at', 'desc')
+            ->where('deleted_at', '=', null)
             ->paginate(5);
     }
 
+    /**
+     * 有効なお友達だけ取得
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getUsers($level = 10)
+    {
+        return DB::table('users')->where('level', $level)->whereNull('blocked_at')->get();
+    }
 
     /**
      * ユーザーはUUIDを自動で実行しない

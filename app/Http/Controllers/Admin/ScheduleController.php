@@ -51,7 +51,7 @@ class ScheduleController extends Controller
         // コース
         $courses = Course::all();
         // 友達一覧
-        $users = User::where('level', 10)->get();
+        $users = User::getUsers(10);
         // 店舗一覧
         $stores = Store::all();
         // 予約一覧
