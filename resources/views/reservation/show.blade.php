@@ -72,6 +72,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div id="alert_message"></div>
                             <div class="form-group">
                                 <label for="store">トレーナー</label><br>
                                 <img

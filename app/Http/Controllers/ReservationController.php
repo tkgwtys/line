@@ -54,7 +54,7 @@ class ReservationController extends Controller
     public function store(CreateReservationRequest $request)
     {
         $data = [
-            'result' => false,
+            'status' => false,
             'message' => '',
         ];
         $reservationDates = [];
@@ -99,7 +99,10 @@ class ReservationController extends Controller
                     ->whereNull('deleted_at')
                     ->first();
                 if ($result) {
-                    return $data['message'] = '「' . $reservation . '」はすでに予約中です';
+                    return [
+                        'status' => false,
+                        'message' => "「" . $reservation . "」はすでに予約中です",
+                    ];
                 }
             }
             $now = Carbon::today()->format('Y-m-d H:m:i');
@@ -124,7 +127,7 @@ class ReservationController extends Controller
             DB::commit();
         }
         return $data = [
-            'result' => true,
+            'status' => true,
             'message' => 'suceess',
         ];
 

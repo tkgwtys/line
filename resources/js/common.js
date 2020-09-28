@@ -334,6 +334,7 @@ $('#course_time').on('input', function () {
  * 予約モーダル表示
  */
 $('.reservationDateTap').on('click', function (e) {
+    $('#alert_message').html('');
     const selectedDate = $(this).data('date');
     if (selectedDate) {
         // 選択された日付をセット
@@ -363,11 +364,18 @@ $('#reservation_form_user').submit(function (e) {
         dataType: 'json',
         timeout: 10000,
     }).done(function (data) {
-        // 選択された日時
-        const playerId = $('#player_id').val() ? $('#player_id').val() : '';
-        setTimeout(function () {
-            location.href = `/reservation/end?player_id=${playerId}`;
-        }, 500);
+        if (data.status) {
+            $('#alert_message').html('<div class="alert alert-success" role="alert"><strong>' + data.message + '</strong></div>');
+            // 選択された日時
+            const playerId = $('#player_id').val() ? $('#player_id').val() : '';
+            setTimeout(function () {
+                location.href = `/reservation/end?player_id=${playerId}`;
+            }, 500);
+        } else {
+            $('.spinner-border').css('display', 'none');
+            $('button').attr('disabled', false);
+            $('#alert_message').html('<div class="alert alert-danger" role="alert"><strong>' + data.message + '</strong></div>');
+        }
     }).fail(function (e) {
         $('.spinner-border').css('display', 'none');
         $('button').attr('disabled', false);
