@@ -108,6 +108,9 @@ class ReservationController extends Controller
                 'updated_at' => $now,
                 'reserved_at' => $reservation,
                 ]);
+            ReservationMemo::where('reservation_id',$reservation_id)->update([
+               'reservation_memo' => $reservation_memo,
+            ]);
             DB::commit();
         } else {
             /////////////////
