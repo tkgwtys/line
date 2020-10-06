@@ -6,6 +6,7 @@ use App\Http\Requests\CreateReservationRequest;
 use App\Models\Course;
 use App\Models\Player;
 use App\Models\Reservation;
+use App\Models\ReservationMemo;
 use App\Models\Store;
 use App\Models\User;
 use Carbon\Carbon;
@@ -47,6 +48,8 @@ class ReservationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     * @param $now
+     * @param $reservation
      * @return array
      */
     public function store(Request $request)
@@ -59,7 +62,7 @@ class ReservationController extends Controller
         // 10は仮予約
         $status = 30;
         // カテゴリー
-        $category = 10;
+        $category_id = 10;
         // トレーナ
         $player_id = $request->get('player');
         // コース
@@ -74,6 +77,9 @@ class ReservationController extends Controller
         $selected_time = $request->get('selected_time');
         // 予約した人
         $user_id = $request->get('user');
+        // 備考
+        $reservation_memo = $request->get('reservation_memo');
+
         //////////////////
         /// トレーナがいるか
         $player = User::where('id', $player_id)->where('level', 20)->whereNull('blocked_at')->first();
@@ -87,9 +93,22 @@ class ReservationController extends Controller
             return $data['message'] = '店舗が見つかりません';
         }
         //////////////////
+        $now = Carbon::today()->format('Y-m-d H:m:i');
         /// アップデート
         if ($reservation_id) {
-            Reservation::where('reservation_id', $reservation_id)->update(['status' => 30]);
+            $reservation = Carbon::parse($selected_date . ' ' . $selected_time);
+            DB::beginTransaction();
+            Reservation::where('reservation_id', $reservation_id)->update([
+                'status' => $status,
+                'category'=> $category_id,
+                'player_id' => $player_id,
+                'course_id' => $course_id,
+                'store_id' => $store_id,
+                'user_id' => $user_id,
+                'updated_at' => $now,
+                'reserved_at' => $reservation,
+                ]);
+            DB::commit();
         } else {
             /////////////////
             /// 予約データー作成（45分）
@@ -101,7 +120,7 @@ class ReservationController extends Controller
                 // 予約データーがかぶってないか
                 foreach ($reservationDates as $key => $reservation) {
                     $result = Reservation::where('reserved_at', $reservation)
-                        ->where('category', $category)
+                        ->where('category', $category_id)
                         ->where('player_id', $player_id)
                         ->where('status', $status)
                         ->whereNull('deleted_at')
@@ -113,7 +132,7 @@ class ReservationController extends Controller
                         ];
                     }
                 }
-                $now = Carbon::today()->format('Y-m-d H:m:i');
+
                 // トランザクション
                 $reservation_id = Str::random(10);
                 DB::beginTransaction();
@@ -123,7 +142,7 @@ class ReservationController extends Controller
                         'user_id' => $user_id,
                         'player_id' => $player_id,
                         'status' => $status,
-                        'category' => $category,
+                        'category' => $category_id,
                         'course_id' => $course_id,
                         'store_id' => $store_id,
                         'reserved_at' => $reservation,
@@ -133,6 +152,13 @@ class ReservationController extends Controller
                     ];
                     Reservation::insert($insert_data);
                 }
+                $memoData = [
+                    'reservation_id' => $reservation_id,
+                    'reservation_memo' => $reservation_memo,
+                ];
+                Log::debug($memoData);
+                ReservationMemo::insert($memoData);
+
                 DB::commit();
             }
         }

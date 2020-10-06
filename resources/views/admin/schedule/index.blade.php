@@ -14,6 +14,7 @@
     'next_link' => $next_link,
     'today_link' => $today_link,
     'unsettled' => $unsettled,
+    'reservation_memos' => $reservation_memos,
     ])
     </div>
 @endsection

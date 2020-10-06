@@ -72,6 +72,7 @@ class ReservationController extends Controller
         $reservationDate = $request->get('reservationDate');
         // 予約ID
         $reservation_id = Str::random(10);
+
         //////////////////
         // ユーザー（予約社）
         $user_id = Auth::id();

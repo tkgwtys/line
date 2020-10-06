@@ -14,6 +14,8 @@ class ReservationMemos extends Migration
     public function up()
     {
         Schema::create('reservation_memos', function (Blueprint $table) {
+            $table->string('reservation_id', 64)->comment('予約ID')->nullable();
+            $table->text('reservation_memo')->nullable();
             $table->bigIncrements('id');
             $table->timestamps();
         });

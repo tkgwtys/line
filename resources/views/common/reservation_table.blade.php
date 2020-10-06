@@ -75,6 +75,7 @@
                                                 data-sei="{{$reservation->sei}}"
                                                 data-mei="{{$reservation->mei}}"
                                                 data-store_id="{{$reservation->store_id}}"
+                                                data-reservation_memo="{{$reservation->reservation_memo}}"
                                                 class="reservationButton plan plan--undecided plan__left-{{ltrim(str_replace(':', '', $hi), '0')}} plan__width--60">
                                                 <div class="@if($reservation->status == 30) plan @endif">
                                                     <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->store_name}}】</span>
@@ -287,7 +288,18 @@
                                 </div>
                             </div>
                         </div>
-                        {{--                    <!-- トレーナ -->--}}
+                        <div class="form-group">
+                            <div class="card">
+                                <div class="card-header">備考欄</div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <textarea rows="4" cols="55" id="reservation_memo" name="reservation_memo">
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--                    <!-- トレーナ -->--}}
                         {{--                    <div class="modal-footer">--}}
                         {{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>--}}
                         {{--                        <button type="button" class="btn btn-danger">予約却下</button>--}}
