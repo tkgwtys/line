@@ -75,11 +75,13 @@ class Reservation extends Model
         $query->leftJoin('users', 'reservations.user_id', '=', 'users.id');
         $query->leftJoin('courses', 'reservations.course_id', '=', 'courses.id');
         $query->leftJoin('stores', 'reservations.store_id', '=', 'stores.id');
+        $query->leftJoin('reservation_memos', 'reservations.reservation_id', '=', 'reservation_memos.reservation_id');
         $query->select(
             'users.*',
             'courses.*',
             'reservations.*',
-            'stores.name as store_name'
+            'stores.name as store_name',
+            'reservation_memos.*'
         );
         if ($player_id) {
             $query->where('player_id', $player_id);
@@ -125,6 +127,7 @@ class Reservation extends Model
                 'reservations.course_id as reservations_course_id',
                 'reservations.store_id as reservations_store_id',
                 'reservations.status as reservations_status',
+                'reservations.memo as reservations_memo',
                 DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
                 'courses.name as courses_name',
                 'courses.price as courses_price',
@@ -169,6 +172,7 @@ class Reservation extends Model
                 'reservations.course_id as reservations_course_id',
                 'reservations.store_id as reservations_store_id',
                 'reservations.status as reservations_status',
+                'reservations.memo as reservations_memo',
                 DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
                 'courses.name as courses_name',
                 'courses.price as courses_price',

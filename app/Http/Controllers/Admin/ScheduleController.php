@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Course;
 use App\Models\Player;
 use App\Models\Reservation;
+use App\Models\ReservationMemo;
 use App\Models\Schedule;
 use App\Models\Store;
 use App\Models\User;
@@ -54,6 +55,8 @@ class ScheduleController extends Controller
         $users = User::getUsers(10);
         // 店舗一覧
         $stores = Store::all();
+        // 備考欄一覧
+        $reservation_memos = ReservationMemo::all();
         // 予約一覧
         $reservation = new Reservation();
         $reservations = $reservation->getReservation($start_date, last($days_array), '', 1);
@@ -76,7 +79,8 @@ class ScheduleController extends Controller
                 'back_link',
                 'next_link',
                 'today_link',
-                'unsettled'
+                'unsettled',
+                'reservation_memos'
             )
         );
     }
