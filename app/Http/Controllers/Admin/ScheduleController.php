@@ -60,6 +60,7 @@ class ScheduleController extends Controller
         // 予約一覧
         $reservation = new Reservation();
         $reservations = $reservation->getReservation($start_date, last($days_array), '', 1);
+        //print_r($reservations);exit;
         // 未確定合計
         $unsettled = Reservation::where('status', 10)->where('reservation_sort', 1)->count();
         // view

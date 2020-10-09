@@ -71,17 +71,38 @@ class Reservation extends Model
      */
     public function getReservation($start, $end, $player_id = '', $sort = '')
     {
-        $query = DB::table($this->table);
+        $query = DB::table('reservations');
         $query->leftJoin('users', 'reservations.user_id', '=', 'users.id');
         $query->leftJoin('courses', 'reservations.course_id', '=', 'courses.id');
         $query->leftJoin('stores', 'reservations.store_id', '=', 'stores.id');
         $query->leftJoin('reservation_memos', 'reservations.reservation_id', '=', 'reservation_memos.reservation_id');
         $query->select(
-            'users.*',
-            'courses.*',
-            'reservations.*',
-            'stores.name as store_name',
-            'reservation_memos.*'
+            'reservations.reservation_id',
+            'reservations.user_id as reservations_user_id',
+            'reservations.player_id as reservations_player_id',
+            'reservations.status as reservations_status',
+            'reservations.category as reservations_category',
+            'reservations.course_id as reservations_course_id',
+            'reservations.store_id as reservations_store_id',
+            'reservations.status as reservations_status',
+            'reservation_memos.reservation_memo as reservations_memo',
+            //DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
+            'reservations.reserved_at as reservations_reserved_at',
+            'courses.name as courses_name',
+            'courses.price as courses_price',
+            'courses.total_price as courses_total_price',
+            'courses.month_count as courses_month_count',
+            'courses.course_time as courses_course_time',
+            'courses.description as courses_description',
+            'stores.name as stores_name',
+            'stores.address as stores_address',
+            'stores.tel as stores_tel',
+            'stores.url as stores_url',
+            'stores.business_hours as stores_business_hours',
+            'users.sei as player_sei',
+            'users.mei as player_mei',
+            'users.sei as user_sei',
+            'users.mei as user_mei'
         );
         if ($player_id) {
             $query->where('player_id', $player_id);
@@ -118,6 +139,7 @@ class Reservation extends Model
             ->leftJoin('users', 'reservations.user_id', '=', 'users.id')
             ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
             ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
+            ->leftJoin('reservation_memos', 'reservations.reservation_id', '=', 'reservation_memos.reservation_id')
             ->select(
                 'reservations.reservation_id',
                 'reservations.user_id as reservations_user_id',
@@ -127,7 +149,7 @@ class Reservation extends Model
                 'reservations.course_id as reservations_course_id',
                 'reservations.store_id as reservations_store_id',
                 'reservations.status as reservations_status',
-                'reservations.memo as reservations_memo',
+                'reservation_memos.reservation_memo as reservations_memo',
                 DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
                 'courses.name as courses_name',
                 'courses.price as courses_price',

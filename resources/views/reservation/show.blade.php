@@ -27,7 +27,7 @@
                                 @php $var = '◯'; $class = 'reservationDateTap'; @endphp
                                 <td style="padding: 0;text-align: center;vertical-align: middle">
                                     @foreach($reservations as $reservation)
-                                        @if($reservation->reserved_at == $days_array[$i] . ' ' . $hi . ':00')
+                                        @if($reservation->reservations_reserved_at == $days_array[$i] . ' ' . $hi . ':00')
                                             @php $var = '✖';$class= ''; @endphp
                                             @break
                                         @endif

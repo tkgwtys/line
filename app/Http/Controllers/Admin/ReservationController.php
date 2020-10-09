@@ -96,21 +96,32 @@ class ReservationController extends Controller
         $now = Carbon::today()->format('Y-m-d H:m:i');
         /// アップデート
         if ($reservation_id) {
-            $reservation = Carbon::parse($selected_date . ' ' . $selected_time);
+            /////////////////
+            /// 予約データー作成（45分）
+            $reservationDates[0] = Carbon::parse($selected_date . ' ' . $selected_time);
+            $reservationDates[1] = Carbon::parse($reservationDates[0])->addMinutes(15);
+            $reservationDates[2] = Carbon::parse($reservationDates[1])->addMinutes(15);
+            $reservationDates[3] = Carbon::parse($reservationDates[2])->addMinutes(15);
+            /// 現在予約されている時間を取得する
+            //$old_reservations = Reservation::where('reservation_id', $reservation_id)->pluck('reserved_at');
             DB::beginTransaction();
-            Reservation::where('reservation_id', $reservation_id)->update([
-                'status' => $status,
-                'category'=> $category_id,
-                'player_id' => $player_id,
-                'course_id' => $course_id,
-                'store_id' => $store_id,
-                'user_id' => $user_id,
-                'updated_at' => $now,
-                'reserved_at' => $reservation,
+            foreach ($reservationDates as $key => $reservation) {
+                Reservation::where('reservation_id', $reservation_id)->where('reservation_sort', ++$key)->update([
+                    'status' => $status,
+                    'category' => $category_id,
+                    'player_id' => $player_id,
+                    'course_id' => $course_id,
+                    'store_id' => $store_id,
+                    'user_id' => $user_id,
+                    'updated_at' => $now,
+                    'reserved_at' => $reservation,
                 ]);
-            ReservationMemo::where('reservation_id',$reservation_id)->update([
-               'reservation_memo' => $reservation_memo,
-            ]);
+            }
+            if ($reservation_memo) {
+                ReservationMemo::where('reservation_id', $reservation_id)->update([
+                    'reservation_memo' => $reservation_memo,
+                ]);
+            }
             DB::commit();
         } else {
             /////////////////

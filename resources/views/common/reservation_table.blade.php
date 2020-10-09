@@ -61,24 +61,24 @@
                             @foreach($time_array as $key => $time)
                                 @foreach($time as $hi)
                                     @foreach($reservations as $reservation)
-                                        @if($day.' '.$hi.':00' == $reservation->reserved_at && $player->id == $reservation->player_id)
+                                        @if($day.' '.$hi.':00' == $reservation->reservations_reserved_at && $player->id == $reservation->reservations_player_id)
                                             <div
                                                 data-toggle="modal"
                                                 data-day="{{$day}}"
                                                 data-player_id="{{$player->id}}"
                                                 data-time="{{$hi}}:00"
                                                 data-target="#modalLarge"
-                                                data-course_id="{{$reservation->course_id}}"
-                                                data-status="{{$reservation->status}}"
-                                                data-user_id="{{$reservation->user_id}}"
+                                                data-course_id="{{$reservation->reservations_course_id}}"
+                                                data-status="{{$reservation->reservations_status}}"
+                                                data-user_id="{{$reservation->reservations_user_id}}"
                                                 data-reservation_id="{{$reservation->reservation_id}}"
-                                                data-sei="{{$reservation->sei}}"
-                                                data-mei="{{$reservation->mei}}"
-                                                data-store_id="{{$reservation->store_id}}"
-                                                data-reservation_memo="{{$reservation->reservation_memo}}"
+                                                data-sei="{{$reservation->user_sei}}"
+                                                data-mei="{{$reservation->user_mei}}"
+                                                data-store_id="{{$reservation->reservations_store_id}}"
+                                                data-reservation_memo="{{$reservation->reservations_memo}}"
                                                 class="reservationButton plan plan--undecided plan__left-{{ltrim(str_replace(':', '', $hi), '0')}} plan__width--60">
-                                                <div class="@if($reservation->status == 30) plan @endif">
-                                                    <span>{{$reservation->sei}}{{$reservation->mei}} {{$reservation->name}}【{{$reservation->store_name}}】</span>
+                                                <div class="@if($reservation->reservations_status == 30) plan @endif">
+                                                    <span>{{$reservation->user_sei}}{{$reservation->user_mei}} {{$reservation->courses_name}}【{{$reservation->stores_name}}】</span>
                                                 </div>
                                             </div>
                                             {{--                                                    <button--}}
