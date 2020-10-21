@@ -17,33 +17,30 @@ class AdminsTableSeeder extends Seeder
                 'email' => 'bushi.chiba@abihc.com',
                 'password' => bcrypt('XwGHZH3w'),
             ],
-        ]);
-        DB::table('admins')->insert([
             [
                 'name' => 'nar',
                 'email' => 'nagaric@gmail.com',
                 'password' => bcrypt('196JwhPf'),
             ],
-        ]);
-        DB::table('admins')->insert([
             [
                 'name' => 'takagawa',
                 'email' => 'tkgw@inmarks.jp',
                 'password' => bcrypt('8Y0vufXx'),
             ],
-        ]);
-        DB::table('admins')->insert([
             [
                 'name' => 'hirano',
                 'email' => 'nobori-satuma@live.jp',
                 'password' => bcrypt('mefg72hP'),
             ],
-        ]);
-        DB::table('admins')->insert([
             [
                 'name' => 'ueda',
                 'email' => 'sho.12no.1@gmail.com',
                 'password' => bcrypt('ueda11030'),
+            ],
+            [
+                'name' => 'k.maduka',
+                'email' => 'k.maduka@flama.co.jp',
+                'password' => bcrypt('47914090'),
             ],
         ]);
     }
