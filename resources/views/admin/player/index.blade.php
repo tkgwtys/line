@@ -10,7 +10,7 @@
                         <a href="{{url('/admin/player/'. $player->id . '?start_date='. $today. '&day_count=7')}}">
                             {{$player->sei}}{{$player->mei}}
                         </a>
-                        <img src="{{ asset('storage/images/users/'. $player->id .'/original.jpg'). '?' . time() }}"
+                        <img src="{{ asset('storage/images/users/'. $player->id .'/300x300.jpg'). '?' . time() }}"
                              width="50">
                     </td>
                     <td align="right">

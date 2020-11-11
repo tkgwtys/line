@@ -26,12 +26,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'id',
-        'name',
+        'display_name',
         'sei',
         'mei',
         'sei_hira',
         'mei_hira',
+        'picture_url',
+        'self_introduction',
         'tel',
+        'level',
         'email',
         'password',
         'blocked_at',
