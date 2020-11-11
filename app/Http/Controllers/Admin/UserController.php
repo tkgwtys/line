@@ -10,6 +10,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 use Intervention\Image\ImageManagerStatic as Image;
 
 
@@ -60,7 +61,7 @@ class UserController extends Controller
         $user = User::find($id);
         $notes = (new \App\Models\User)->getNotes($id);
 
-        return view('admin.user.show', compact('user','notes'));
+        return view('admin.user.show', compact('user', 'notes'));
     }
 
     /**
@@ -87,8 +88,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user_level = User::getLevelAll();
+        $rules = [
+            'image' => 'image|max:15360',
+        ];
+        $this->validate($request, $rules);
 
+        $user_level = User::getLevelAll();
         //UserをDBで見つける
         $user = User::find($id);
         //データ代入
@@ -110,16 +115,17 @@ class UserController extends Controller
         }
 
         if ($request->image) {
+            $exif = Image::make($request->image)->exif();
+            $width = 300;
+            $height = $exif['COMPUTED']['Height'] / ($exif['COMPUTED']['Width'] / $width);
             $request->file('image')->storeAs('public/images/users/' . $user->id, 'original.jpg');
-            Image::make($request->file('image'))->resize(300, 300)->save('storage/images/users/' . $user->id . '/300x300.jpg');
-            Image::make($request->file('image'))->resize(500, 500)->save('storage/images/users/' . $user->id . '/500x500.jpg');
+            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/300x300.jpg');
+            $width = 500;
+            $height = $exif['COMPUTED']['Height'] / ($exif['COMPUTED']['Width'] / $width);
+            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/500x500.jpg');
         }
-
-
         session()->flash('flash_message', '登録が完了しました');
         return view('admin.user.edit', ['user' => $user, 'user_level' => $user_level]);
-
-
     }
 
     /**
