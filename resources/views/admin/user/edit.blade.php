@@ -83,7 +83,7 @@
                 <div class="col-sm">
                     <div class="form-group">
                         <label>トレーナープロフィール画像</label><br>
-                        <img src="{{ asset('storage/images/users/'. $user->id .'/300x300.jpg') . '?' . time() }}"
+                        <img src="{{ asset('storage/images/users/'. $user->id .'/w300.jpg') . '?' . time() }}"
                              width="300">
                         {{Form::input('file', 'image',null,['class' => 'form-control-file'])}}
                         <small id="imageHelp" class="form-text text-muted">対応拡張子：jpeg,png,jpg</small>

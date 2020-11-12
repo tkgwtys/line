@@ -245,9 +245,10 @@ class LineBotController extends Controller
             //'self_introduction'キー -> self_introduction
             $players_data[$key]['self_introduction'] = mb_strimwidth($player['self_introduction'], 0, 80, '...');
             //image取得
-            $image = asset('storage/images/users/' . $player['id'] . '/300x300.jpg?' . time());
+            $image = asset('storage/images/users/' . $player['id'] . '/1000x700.jpg?' . time());
             $players_data[$key]['image'] = $image;
         }
+        Log::debug($players_data);
         return $players_data;
     }
 }

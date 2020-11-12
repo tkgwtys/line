@@ -119,10 +119,12 @@ class UserController extends Controller
             $width = 300;
             $height = $exif['COMPUTED']['Height'] / ($exif['COMPUTED']['Width'] / $width);
             $request->file('image')->storeAs('public/images/users/' . $user->id, 'original.jpg');
-            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/300x300.jpg');
+            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/w200.jpg');
+
             $width = 500;
             $height = $exif['COMPUTED']['Height'] / ($exif['COMPUTED']['Width'] / $width);
-            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/500x500.jpg');
+            Image::make($request->file('image'))->resize($width, $height)->save('storage/images/users/' . $user->id . '/w500.jpg');
+            Image::make($request->file('image'))->crop(1000, 700, 20, 0)->save('storage/images/users/' . $user->id . '/1000x700.jpg');
         }
         session()->flash('flash_message', '登録が完了しました');
         return view('admin.user.edit', ['user' => $user, 'user_level' => $user_level]);
