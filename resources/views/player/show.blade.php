@@ -12,10 +12,9 @@
                 </button>
                 <br>
                 <div style="text-align: center; ">
-                    <img width="200"
-                         style="border-radius: 50%;width: 180px;height: 180px;"
-                         src="{{$player->image . '?' . time()}}"
-                         alt="Card image cap">
+                    <img width="300"
+                         src="{{asset('storage/images/users/'. $player->id. '/w500.jpg?' . time())}}"
+                         alt="">
                 </div>
                 <br>
                 <div class="card">

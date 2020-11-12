@@ -9,8 +9,8 @@
                     <div style="text-align: center; ">
                         <img
                             style="border-radius: 50%;width: 180px;height: 180px;"
-                            src="{{ asset('storage/images/users/'. $player->id .'/original.jpg?'. time())}}"
-                            width="200">
+                            src="{{ asset('storage/images/users/'. $player->id .'/w500.jpg?'. time())}}"
+                            width="500">
                     </div>
                     <br>
                     <div class="card">
