@@ -185,6 +185,7 @@ class Reservation extends Model
             ->leftJoin('users', 'reservations.player_id', '=', 'users.id')
             ->leftJoin('stores', 'reservations.store_id', '=', 'stores.id')
             ->leftJoin('courses', 'reservations.course_id', '=', 'courses.id')
+            ->leftJoin('reservation_memos', 'reservation_memos.reservation_id', '=', 'reservations.reservation_id')
             ->select(
                 'reservations.reservation_id',
                 'reservations.user_id as reservations_user_id',
@@ -194,7 +195,7 @@ class Reservation extends Model
                 'reservations.course_id as reservations_course_id',
                 'reservations.store_id as reservations_store_id',
                 'reservations.status as reservations_status',
-                'reservations.memo as reservations_memo',
+                'reservation_memos.reservation_memo as reservation_memos',
                 DB::raw('DATE_FORMAT(reservations.reserved_at, "%Y年%m月%d日 %H:%i") as reservations_reserved_at'),
                 'courses.name as courses_name',
                 'courses.price as courses_price',
@@ -212,7 +213,7 @@ class Reservation extends Model
                 'users.sei as user_sei',
                 'users.mei as user_mei'
             )->where([
-                ['reservation_id', '=', $reservation_id],
+                ['reservations.reservation_id', '=', $reservation_id],
             ])->whereNull('reservations.deleted_at')
             ->first();
     }
