@@ -69,7 +69,8 @@ class ReservationService
                 'users.mei as players_mei'
             )->where([
                 ['user_id', '=', $user_id],
-                ['reserved_at', '>=', $now]
+                ['reserved_at', '>=', $now],
+                ['reservation_sort', '=', 1]
             ])->whereNull('reservations.deleted_at')
             ->orderBy('reservations_reserved_at', 'ASC')
             ->get();

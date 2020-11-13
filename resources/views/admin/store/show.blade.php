@@ -30,10 +30,10 @@
                 <th>営業時間</th>
                 <td>{{$store->business_hours}}</td>
             </tr>
-            <tr>
-                <th>カラーコード</th>
-                <td>{{$store->color_code}}</td>
-            </tr>
+            {{--            <tr>--}}
+            {{--                <th>カラーコード</th>--}}
+            {{--                <td>{{$store->color_code}}</td>--}}
+            {{--            </tr>--}}
             </tbody>
         </table>
         <a class="btn btn-primary btn-lg btn-block" href="{{url('/admin/store/'.$store->id.'/edit')}}" role="button">編集</a>

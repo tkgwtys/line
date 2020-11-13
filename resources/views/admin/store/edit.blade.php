@@ -55,12 +55,12 @@
                         {{Form::input('text','business_hours', $store->business_hours,['class' => 'form-control form-control-lg'])}}
                     </div>
                 </div>
-                <div class="col-sm">
-                    <div class="form-group" id="color_code">
-                        <label>カラーコード</label>
-                        {{Form::select('color_code', ['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'],$store->color_code,['class' => 'form-control form-control-lg','id'=>'select-color','onblur'=>'changeColor();'])}}
-                    </div>
-                </div>
+                {{--                <div class="col-sm">--}}
+                {{--                    <div class="form-group" id="color_code">--}}
+                {{--                        <label>カラーコード</label>--}}
+                {{--                        {{Form::select('color_code', ['#cce5ff' => '青','#e2e3e5' =>'灰','#d4edda'=>'緑','#f8d7da'=>'赤','#fff3cd'=>'黄','#d1ecf1'=>'薄緑'],$store->color_code,['class' => 'form-control form-control-lg','id'=>'select-color','onblur'=>'changeColor();'])}}--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
             </div>
             <div class="row">
                 <div class="col-sm">
